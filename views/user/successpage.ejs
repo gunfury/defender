@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        *{
+  box-sizing:border-box;
+ /* outline:1px solid ;*/
+}
+body{
+background: #ffffff;
+background: linear-gradient(to bottom, #ffffff 0%,#e1e8ed 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='pruple',GradientType=0 );
+    height: 100%;
+        margin: 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+
+}
+.image {
+  height: 100px;
+  width: auto;
+}
+.main-content__checkmark {
+  font-size:4.0625rem !important;
+  line-height:1 !important;
+  color:#24b663;
+}
+.wrapper-1{
+  width:100%;
+  height:100vh;
+  display: flex;
+flex-direction: column;
+}
+.wrapper-2{
+  padding :30px;
+  text-align:center;
+}
+.wrapper-4{
+  padding :30px;
+  text-align:center;
+}
+h1{
+    font-family: 'Kaushan Script', cursive;
+  font-size:4em;
+  letter-spacing:3px;
+  color: #BAFF39 ;
+  margin:0;
+  margin-bottom:20px;
+}
+.wrapper-4 p{
+  margin:0;
+  font-size:1.3em;
+  color:#000;
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing:1px;
+}
+.wrapper-2 p{
+  margin:0;
+  font-size:1.3em;
+  color:#aaa;
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing:1px;
+}
+.go-home{
+  color:#fff;
+  background:#050505;
+  border:none;
+  padding:10px 50px;
+  margin:30px 0;
+  border-radius:30px;
+  text-transform:capitalize;
+  box-shadow: 4px 8px 40px 8px #BAFF3975;
+}
+.footer-like{
+  margin-top: auto;
+  background:#BAFF3933;
+  padding:6px;
+  text-align:center;
+}
+.footer-like p{
+  margin:0;
+  padding:4px;
+  color:#000;
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing:1px;
+}
+.footer-like p a{
+  text-decoration:none;
+  color:#BAFF39;
+  font-weight:600;
+}
+iframe {
+  margin-top:  20px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+@media (min-width:360px){
+  h1{
+    font-size:4.5em;
+  }
+  .go-home{
+    margin-bottom:20px;
+  }
+}
+
+
+@media (min-width:600px){
+  .content{
+  max-width:1000px;
+  margin:0 auto;
+}
+  .wrapper-1{
+  height: initial;
+  max-width:750px;
+  margin:0 auto;
+  margin-top:50px;
+  box-shadow: 4px 8px 40px 8px #BAFF3975;
+}
+
+}
+
+    </style>
+
+
+  </head>
+  <body>
+    <div class=content>
+  <div class="wrapper-1">
+    <div class="wrapper-2">
+      <img src="https://tulipex.com/wp-content/uploads/2019/06/Tulipex-Logo-Op.png" alt="" class="image">
+      <h1>Success!</h1>
+      <i class="fa fa-check main-content__checkmark" id="checkmark"></i>
+      <h2>Your product on it's way</h2>
+      <p>Thanks for visting Defender </p>
+      <button class="go-home" onclick="window.location.href='/home'">
+      go home
+      </button>
+      <button class="go-home" onclick="window.location.href='/userProfile'">
+        profile
+        </button>
+    </div>
+    
+    
+</div>
+</div>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Source+Sans+Pro" rel="stylesheet">
+<script>
+    $( document ).ready(function() {
+  // perform some jQuery when page is loaded
+  
+$("h1").hover(function() { 
+  // when user is hovering the h1
+  $( this ).addClass("animated infinite pulse"); 
+  // we add pulse animation and to infinite
+}, function() {
+  // when user no longer hover on the h1
+  $( this ).removeClass("animated infinite pulse");
+  // we remove the pulse
+});
+});
+
+</script>
+  </body>
+</html>

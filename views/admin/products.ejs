@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Product Page - Admin HTML Template</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="admin/css/fontawesome.min.css" />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="admin/css/bootstrap.min.css" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="admin/css/templatemo-style.css">
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+  <style>
+    /* Style for when the user is blocked */
+.blocked-user {
+border-radius: 20px;
+background-color: green; /* Change to desired color */
+color: white; /* Change to desired text color */
+}
+
+/* Style for when the user is unblocked */
+.unblocked-user {
+border-radius: 20px;
+background-color: rgb(255, 145, 0);/* Change to desired color */
+color: white; /* Change to desired text color */
+}
+</style>
+  </head>
+
+  <body id="reportsPage">
+    <nav class="navbar navbar-expand-xl">
+      <div class="container h-100">
+          <a class="navbar-brand" href="/dashboard">
+              <h1 class="tm-site-title mb-0">Product Admin</h1>
+          </a>
+          <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fas fa-bars tm-nav-icon"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mx-auto h-100">
+                  <li class="nav-item">
+                      <a class="nav-link " href="/dashboard">
+                          <i class="fas fa-tachometer-alt"></i>
+                          Dashboard
+                          <span class="sr-only">(current)</span>
+                      </a>
+                  </li>
+                  <li class="nav-item dropdown">
+
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="far fa-file-alt"></i>
+                          <span>
+                              Reports <i class="fas fa-angle-down"></i>
+                          </span>
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="#">Daily Report</a>
+                          <a class="dropdown-item" href="#">Weekly Report</a>
+                          <a class="dropdown-item" href="#">Yearly Report</a>
+                      </div>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link active" href="/product">
+                          <i class="fas fa-shopping-cart"></i>
+                          Products
+                      </a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/cartegories">
+                          <i class="far fa-folder"></i>
+                          Categories
+                      </a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="/userManagement">
+                          <i class="far fa-user"></i>
+                          Users
+                      </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-cog"></i>
+                          <span>
+                              Settings <i class="fas fa-angle-down"></i>
+                          </span>
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="#">Profile</a>
+                          <a class="dropdown-item" href="#">Billing</a>
+                          <a class="dropdown-item" href="#">Customize</a>
+                      </div>
+                  </li>
+              </ul>
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link d-block" href="/logout">
+                          Admin, <b>Logout</b>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+  </nav>
+   
+    
+       
+          <div class="tm-bg-primary-dark tm-block tm-block-products">
+            <a href="/addproduct"><button class="btn btn-primary btn-block text-uppercase">
+              Add products
+            </button></a><BR>
+            <div class="tm-product-table-container">
+              <table class="table table-hover tm-table-small tm-product-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">PRODUCT NAME</th>
+                    <th scope="col">CATEGORY</th>
+                    <th scope="col" style=" max-width: 200px;">IMAGE</th>
+                    <th scope="col">STOCK</th>
+                    <th scope="col">PRICE</th>
+                    <th scope="col">DISCOUNT</th>
+                    <th scope="col">ACTION</th>
+                    <th scope="col">VISIABITY</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% productModels.forEach((items,id)=>{%>
+                  <tr>
+                    <th scope="col"><%=id +1%></th>
+                    <th scope="col"><%=items.productName%></th>
+                    <th scope="col"><%=items.cartegory%></th>
+                    <th scope="col">
+
+                      <% items.images.forEach((img, index) => { %>
+                        <img src="<%= img%>"  style="width: 50px; height: 50px;" />
+                         <!-- Check if the URL is correct -->
+                      <% }); %>
+                      
+                    </th>
+                    <th scope="col"><%=items.stock%></th>
+                    <th scope="col"><b> ₹ </b> <%=items.price%></th>
+                    <th scope="col"><%=items.discount%><b>%</b></th>
+                    <th scope="col"><a href="/editProduct/<%=items._id%>"><button style="background-color: blue; border-radius: 20px; color: whitesmoke;">edit</button></a>
+                      <a href="#" onclick="openModal('<%=items._id%>')">
+                        <button style="background-color: rgb(242, 14, 14); border-radius: 20px; color: whitesmoke">delete</button>
+                      </a>
+                      
+                    </th>
+                    <th scope="col">
+                    <a href="/softDeleteProduct/<%= items._id %>">
+                      <button class="toggle-button <%= items.isBlocked ? 'unblocked-user' : 'blocked-user' %>">
+                          <% if (items.isBlocked) { %>
+                            unvisible
+                          <% } else { %>
+                            visible
+                          <% } %>
+                        </button>
+                        </a></th>
+                  </tr>
+                  <%});%>
+                </tbody>
+              </table>
+            </div>
+            <!-- table container -->
+
+            <!-- Modal container -->
+                <div id="modalContainer" class="modal-container" style="border-color:#f5a623;">
+                  <!-- Modal content -->
+                  <div class="modal-content">
+                    <p>Are you sure you want to delete this item?</p>
+                    <a><button onclick="closeModal()" style="background-color: rgb(119, 116, 116);border-radius:20px;color:white;">Cancel</button></a>
+                    <a><button id="confirmButton"style="background-color:  rgb(209, 2, 2);border-radius:20px;color:white;">Confirm</button></a>
+                  </div>
+                </div>
+
+            
+            
+    </div>
+    <footer class="tm-footer row tm-mt-small">
+      <div class="col-12 font-weight-light">
+        <p class="text-center text-white mb-0 px-4 small">
+          Copyright &copy; <b>2024</b> All rights reserved. 
+          
+          Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Secure Skull</a>
+      </p>
+      </div>
+    </footer>
+
+    <script src="admin/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="admin/xjs/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script>
+      $(function() {
+        $(".tm-product-name").on("click", function() {
+          window.location.href = "edit-product.html";
+        });
+      });
+
+      function confirmDelete(itemId) {
+    if (confirm("Are you sure you want to delete this item?")) {
+      window.location.href = "/deleteProduct/" + itemId;
+    }
+  }
+
+  function openModal(itemId) {
+    document.getElementById("modalContainer").style.display = "block";
+    // Pass item ID to the confirm function
+    document.getElementById("confirmButton").onclick = function() { confirmDelete(itemId); };
+  }
+
+  function closeModal() {
+    document.getElementById("modalContainer").style.display = "none";
+  }
+
+  function confirmDelete(itemId) {
+    window.location.href = "/deleteProduct/" + itemId;
+  }
+    </script>
+  </body>
+</html>

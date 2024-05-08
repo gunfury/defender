@@ -1,0 +1,53 @@
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  max-width: 300px;
+height: 50px;
+  margin-left: 40%;
+  margin-right: 35%;
+  margin-top: 20%;
+  /* Full width */
+  /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS devices */
+  border-radius: 10px;
+  
+}
+#model_data {
+  background-color: #383838;
+  color: whitesmoke;
+}
+.modal-content {
+  margin: auto; /* 15% from the top and centered */
+  padding: 20px;
+  width: 50%; /* Could be more or less, depending on screen size */
+  height: 150px;
+  border: 2px solid #BAFF39;
+}
+.close {
+  color: #aaa;
+  position: absolute; /* Position absolute for custom positioning */
+  top: 10px; /* Adjust the distance from the top */
+  right: 10px; /* Adjust the distance from the right */
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+#confirmBtn {
+  margin-left: 30%;
+  background-color: #BAFF39;
+  border-radius: 20px;
+  border-color: #BAFF39;
+  max-width: 100px;
+}
+#confirmBtn:hover {
+  border: 3px solid #BAFF39;
+}

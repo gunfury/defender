@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- Basic -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <!-- Site Metas -->
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="shortcut icon" href="/user/images/favicon.png" type="">
+      <title>Famms - Fashion HTML Template</title>
+      <!-- bootstrap core css -->
+      <link rel="stylesheet" type="text/css" href="/user/css/bootstrap.css" />
+      <!-- font awesome style -->
+      <link href="/user/css/font-awesome.min.css" rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link href="/user/css/style.css" rel="stylesheet" />
+      <!-- responsive style -->
+      <link href="/user/css/responsive.css" rel="stylesheet" />
+   </head>
+   <body>
+      <div class="hero_area">
+         <!-- header section strats -->
+         <header class="header_section">
+            <div class="container">
+               <nav class="navbar navbar-expand-lg custom_nav-container ">
+                  <a class="navbar-brand" href="index.html"id="defender">𝕯𝖊𝖋𝖊𝖓𝖉𝖊𝖗</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                       <li class="nav-item dropdown">
+                           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Pages <span class="caret"></span></a>
+                           <ul class="dropdown-menu">
+                              <li><a href="about.html">About</a></li>
+                              <li><a href="testimonial.html">Testimonial</a></li>
+                           </ul>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="/userSideProduct/sort">Products</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="blog_list.html">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="/userProfile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="/cart">
+                              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                                 <g>
+                                    <g>
+                                       <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                                          c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                                    </g>
+                                 </g>
+                                 <g>
+                                    <g>
+                                       <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                                          C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                                          c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                                          C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                                    </g>
+                                 </g>
+                                 <g>
+                                    <g>
+                                       <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                                          c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                                    </g>
+                                 </g>
+                                 
+                              </svg>
+                           </a>
+                        </li>
+                        
+                        <form class="form-inline">
+                           <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                           <i class="fa fa-search" aria-hidden="true"></i>
+                           </button>
+                        </form>
+                        <li class="nav-item">
+                           <a class="nav-link" href="/userlogout">logout</a>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </header>
+
+         <style>
+            .woocommerce-order-overview {
+                box-shadow: 2px 0px 4px 2px rgba(0, 0, 0, 0.3);
+  background: #ffffff;
+  list-style: none;
+ margin-top: 30px;
+ margin-bottom: 0px;
+  padding: 0;
+  position: relative;
+  display: flex;
+  border-top-right-radius: 2%;
+  border-top-left-radius: 2%;
+  align-items: center;
+  width: 100%;
+  @media (min-width: 768px) {
+  .woocommerce-order-overview {
+    width: 80%; /* Adjust this value as per your preference */
+  }
+}
+  &:before,
+  &:after {
+   
+    content: "";
+    display: block;
+    position: absolute;
+    top: -16px;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background-size: 0 100%, 16px 16px, 16px 16px;
+  }
+
+  &:after {
+    top: auto;
+    bottom: -16px;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  li {
+    padding: 1em 1.618em;
+    font-size: 0.8em;
+    width: 25%;
+    text-transform: uppercase;
+    border-right: 1px dotted #e3e3e3;
+    text-align: center;
+    @media (max-width: breakpoint-xs) {
+      width: auto;
+      text-align: left;
+      padding: 10px 0;
+      margin: 0 15px;
+      border-right: none;
+      border-bottom: 1px dotted #e3e3e3;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+.woocommerce-order-container {
+  display: flex;
+  justify-content: space-between;
+  
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);
+  
+  margin: auto;
+}
+
+.woocommerce-order-details,
+.woocommerce-customer-details,.woocommerce-customer-detail {
+  flex-basis: 45%; /* Adjust as needed */
+  width: 600px;
+  margin-left: 10px;
+  
+}
+
+.woocommerce-customer-details {
+  margin-left: 20px;
+  border-left: 2px solid black;
+  
+}
+.woocommerce-customer-detail{
+    margin-left: 20px;
+}
+h2{
+    margin-top: 10px;
+    margin-left: 5px;
+}
+address{
+    margin-top: 30px;
+}
+.woocommerce-table--customer-details {
+  border: none;
+  tbody {
+    th {
+      background: #f8f8f8;
+      padding-left: 25px;
+      @media (max-width:breakpoint-xs) {
+        width: 100%;
+        display: block;
+        text-align: left;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+    td {
+      background: #fdfdfd;
+      padding-left: 25px;
+      text-align: left !important;
+    }
+  }
+}
+
+/* TABLE ORDER DETAIL */
+.shop_table.woocommerce-table--order-details {
+  box-shadow: 0 0 5px rgba(#39b44a, 0.1);
+  thead {
+    background: #000;
+    color: #fff;
+    th {
+      border-bottom: none;
+      font-weight: normal;
+      font-size: .9rem;
+      &.product-name {
+        text-align: left;
+      }
+    }
+  }
+
+  tbody {
+    td {
+      border-color: #f0f2f7;
+    }
+  }
+}
+
+.canel-order{
+    border-radius: 20px;
+    color: darkgrey;
+    border-radius: 20px;
+    box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);
+    color: #000;
+    margin-left: 10px;
+
+}
+         </style>
+
+         <style>
+            .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 700px;
+   height: 300px;
+  margin-left: 35%;
+  margin-right: 35%;
+  margin-top: 20%;
+  /* Full width */
+  /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS devices */
+  border-radius: 10px;
+  
+}
+#model_data {
+  background-color: #383838;
+  color: whitesmoke;
+}
+.modal-content {
+   /* 15% from the top and centered */
+  
+  padding-right: 40px;
+  padding-top: 30px;
+  width: 50%; /* Could be more or less, depending on screen size */
+  height: 180px;
+  border: 2px solid #BAFF39;
+}
+.close {
+  color: #aaa;
+  position: absolute; /* Position absolute for custom positioning */
+  top: 10px; /* Adjust the distance from the top */
+  right: 10px; /* Adjust the distance from the right */
+  font-size: 28px;
+  font-weight: bold;
+}
+input{
+  margin-left: 25px;
+  height: 10px;
+  border-radius: 20px;
+}
+p{
+  color: #baff39c9;
+  margin-right: 20px;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+#confirmBtn {
+  margin-right: 90px;
+  background-color: #BAFF39;
+  border-radius: 20px;
+  border-color: #BAFF39;
+  max-width: 100px;
+  margin-top: -10px;
+}
+#confirmBtn:hover {
+  border: 3px solid #BAFF39;
+}
+
+         </style>
+
+
+         <div style="margin: 0 auto; max-width: 900px; padding: 50px" class="outerdiv">
+            Thank you. Your orders has been received.
+            <div >
+              <%if(orderData.length===0){%>
+                <p style="color: #000; text-align: center;" ><strong>NO orders to show</strong> </p>
+             <% }else{%>
+            <%orderData.forEach((item,id)=>{%>
+            
+              <div class="woocommerce-order <%= id % 2 === 0 ? 'even' : 'odd' %>"></div>
+                
+               
+                <ul class="woocommerce-order-overview">
+                  <li class="woocommerce-order-overview__order order">
+                    Order number: <strong><%=item.orderNumber%></strong>
+                  </li>
+                  <li class="woocommerce-order-overview__date date">
+                    Date & Time: <br><strong><%= new Date(item.orderDate).toLocaleDateString("en-US") %> <%= new Date(item.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></strong>
+                  </li>
+                  <li class="woocommerce-order-overview__total total">
+                    Download: <strong><span class="woocommerce-Price-amount amount"><br><a href="/downloadInvoice/<%=item._id%>">invoice</a></strong>
+                  </li>
+                  <li class="woocommerce-order-overview__payment-method method">
+                    Payment method: <strong><%=item.paymentMethod%></strong>
+                  </li>
+                </ul>
+                <div class="woocommerce-order-container">
+                    <div class="woocommerce-order-details">
+                <section class="woocommerce-order-details">
+                 
+                    <table class="woocommerce-table woocommerce-table--order-details shop_table order_details" style="width: 750px;">
+                      <thead >
+                        <tr>
+                          <th class="woocommerce-table__product-name product-name">Product</th>
+                          <th class="woocommerce-table__product-name product-quanitity">QUANTITY</th>
+                          <th class="woocommerce-table__product-table product-total">Total</th>
+                          <th class="woocommerce-table__product-table product-total" style="padding-left: 100px;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody><br>
+                        <% item.products.forEach(product => { %>
+                            <tr class="woocommerce-table__line-item order_item" style="border-bottom:1px solid black;">
+                                <td class="woocommerce-table__product-name product-name">
+                                    <br><img src="<%=product.productImage%>" style="height: 50px; width: 60px; border:1px solid black; border-radius: 10px;"><br>
+                                    <strong style="margin-left: 5%;"><%=product.productName%> </strong> 
+                                </td>
+                                <td style="padding-left: 35px;"><%=product.quantity%> </td>
+                                <td class="woocommerce-table__product-total product-total">
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₹ </span><%=product.price*product.quantity%></span>
+                                </td>
+                                <td style="text-align:center;">
+                                    <%if(product.status==='Pending'||product.status==='Processing'||product.status==='shipped'){%>
+                                    <button class="close-button" onclick="openModal('<%=product.productId %>','<%=item._id%>')" style="background-color:rgb(34, 255, 0);border-radius: 20px;">canel-order</button><br>
+                                    <p style="color: #39b44a;"> status:<%=product.status%></p>
+                                        <%}else if(product.status==='delivered'){%>
+                                            <button class="close-button" id="returnproduct" value="return Product" onclick="openModalreturn('<%= product.productId %>','<%=item._id%>')" style="background-color: rgb(255, 60, 0);border-radius: 20px;">Return</button><br>
+                                            <p style="color: #39b44a;"> status:<%=product.status%></p>
+                                            <%}else if(product.status==='Cancelled'){%>
+                                                <p style="color: #ff0000;">Order Cancelled</p>
+                                                <p style="color: #ff0000;"> status:Cancelled</p>
+                                                <%}else if(product.status==='returned'){%>
+                                                  
+                                                  <p style="color: #ff0000;"> status:returned</p>
+                                                  
+                                                <%}else{%>
+                                                    <button class="close-button" onclick="openModal('<%=product.productId%>','<%=item._id%>')" style="background-color:rgb(34, 255, 0);border-radius: 20px;" disabled>canel-order</button><br>
+                                                    <p style="color: #4c10cd;"> status:<%=product.status%></p>
+                                                    <%}%>
+                                    <!-- modal -->
+                                    <div id="myModal_<%= product.productId %>" class="modal">
+                                        <div class="modal-content" id="model_data">
+                                          <span class="close" onclick="closeModal('<%=product.productId%>')">&times;</span>
+                                            <p>Are you sure want to cannel ?</p>
+                                            <!-- Form with dynamically set action -->
+                                            <form id="removeForm_<%=product.productId %>" method="post" action="/removeProductFromOrder/<%=product.productId %>/<%=item._id%>">
+                                                <input type="text" placeholder="Please mention the reason" name="reason">
+                                                <button type="submit" id="confirmBtn">Confirm</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- end modal -->
+
+
+                                    
+                                </td>
+                            </tr>
+                        <% }) %>
+                        
+                      </tbody>
+                      <tfoot>
+                        
+                        <tr>
+                          <th scope="row">Subtotal:</th>
+                          <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₹ </span><%=item.totalPrice%></span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Total Quantity:</th>
+                          <td><%=item.totalQuantity%></td>
+                        </tr>
+                       
+                      </tfoot>
+                    </table>
+                    <br>
+                </div>
+            </section>
+            
+                
+                </div>
+
+                   
+               
+             <!-- woocommerce-order -->
+
+              <%})}%>
+             <!-- Pagination -->  
+             <br>                 
+             <% if (totalPages > 1) { %>
+              <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-center">
+                      <% if (currentPage > 1) { %>
+                          <li class="page-item">
+                              <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                                  <span aria-hidden="true">Previous</span>
+                                  <span class="sr-only">Previous</span>
+                              </a>
+                          </li>
+                      <% } else { %>
+                          <li class="page-item disabled">
+                              <span class="page-link" aria-hidden="true">&laquo;</span>
+                          </li>
+                      <% } %>
+                      <% if (currentPage < totalPages) { %>
+                          <li class="page-item">
+                              <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                                  <span aria-hidden="true">Next</span>
+                                  <span class="sr-only">Next</span>
+                              </a>
+                          </li>
+                      <% } else { %>
+                          <li class="page-item disabled">
+                              <span class="page-link" aria-hidden="true">&raquo;</span>
+                          </li>
+                      <% } %>
+                  </ul>
+              </nav>
+          <% } %>
+            
+            
+
+                <!-- Modal -->
+               
+  
+                <script>
+                  // Function to open the modal and set form action dynamically
+                  function openModal(productId, orderId) {
+                      // Get the modal corresponding to the product
+                      console.log(productId);
+                      var modal = document.getElementById("myModal_" + productId);
+                      // Set the form action dynamically
+                      var form = document.getElementById("removeForm_" + productId);
+                      form.action = "/removeProductFromOrder/"+productId+"/"+orderId;
+                      // Display the modal
+                      modal.style.display = "block";
+                  }
+              
+                  // Function to close the modal
+                  function closeModal(productId) {
+                      // Get the modal corresponding to the product
+                      var modal = document.getElementById("myModal_" + productId);
+                      // Close the modal
+                      modal.style.display = "none";
+                  }
+              
+                  // When the user clicks anywhere outside of the modal, close it
+                  window.onclick = function(event) {
+                      if (event.target.className === "modal") {
+                          event.target.style.display = "none";
+                      }
+                  };
+              
+                  // When the user clicks the confirm button, close the modal
+                  var confirmButtons = document.querySelectorAll(".confirmBtn");
+                  confirmButtons.forEach(function(button) {
+                      button.addEventListener("click", function(event) {
+                          event.preventDefault(); // Prevent form submission
+                          var modal = button.closest(".modal");
+                          modal.style.display = "none";
+                          // Submit the form
+                          var form = button.closest("form");
+                          form.submit();
+                      });
+                  });
+              </script>
+
+            <!-- open returnproduct -->
+            
+              <script>
+                function openModalreturn(productId,orderId){
+                  const returnProduct=document.getElementById('returnproduct').value;
+                  fetch('/returnproduct', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ returnProduct:returnProduct,productId:productId,orderId:orderId})
+                    }).then(response => {
+                                        if (!response.ok) {
+                                                          throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                        })
+                        .then(data => {
+                          // Handle the JSON response data here
+                          console.log(data); // Example: You might want to log it to the console
+                      })
+                      .catch(error => {
+                          // Handle errors here
+                          console.error('There was a problem with the fetch operation:', error);
+                      });
+                                      
+                  }
+              </script>
+
+
+
+
+
+</div>
+</div>
+
+</div></div>
+
+
+
+         <footer>
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-4">
+                      <div class="full">
+                         <div class="logo_footer">
+                          <a class="navbar-brand" href="index.html"id="defender">𝕯𝖊𝖋𝖊𝖓𝖉𝖊𝖗</a>
+                         </div>
+                         <div class="information_f">
+                           <p><strong>ADDRESS:</strong> 28 White tower, Street Name New York City, USA</p>
+                           <p><strong>TELEPHONE:</strong> +91 987 654 3210</p>
+                           <p><strong>EMAIL:</strong> yourmain@gmail.com</p>
+                         </div>
+                      </div>
+                  </div>
+                  <div class="col-md-8">
+                     <div class="row">
+                     <div class="col-md-7">
+                        <div class="row">
+                           <div class="col-md-6">
+                        <div class="widget_menu">
+                           <h3>Menu</h3>
+                           <ul>
+                              <li><a href="#">Home</a></li>
+                              <li><a href="#">About</a></li>
+                              <li><a href="#">Services</a></li>
+                              <li><a href="#">Testimonial</a></li>
+                              <li><a href="#">Blog</a></li>
+                              <li><a href="#">Contact</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="widget_menu">
+                           <h3>Account</h3>
+                           <ul>
+                              <li><a href="#">Account</a></li>
+                              <li><a href="#">Checkout</a></li>
+                              <li><a href="#">Login</a></li>
+                              <li><a href="#">Register</a></li>
+                              <li><a href="#">Shopping</a></li>
+                              <li><a href="#">Widget</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                        </div>
+                     </div>     
+                     <div class="col-md-5">
+                        <div class="widget_menu">
+                           <h3>Newsletter</h3>
+                           <div class="information_f">
+                             <p>Subscribe by our newsletter and get update protidin.</p>
+                           </div>
+                           <div class="form_sub">
+                              <form>
+                                 <fieldset>
+                                    <div class="field">
+                                       <input type="email" placeholder="Enter Your Mail" name="email" />
+                                       <input type="submit" value="Subscribe" />
+                                    </div>
+                                 </fieldset>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </footer>
+         <!-- footer end -->
+         <div class="cpy_">
+            <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
+            
+               Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            
+            </p>
+         </div>
+         </div>
+         <!-- jQery -->
+         <script src="/user/js/jquery-3.4.1.min.js"></script>
+         <!-- popper js -->
+         <script src="/user/js/popper.min.js"></script>
+         <!-- bootstrap js -->
+         <script src="/user/js/bootstrap.js"></script>
+         <!-- custom js -->
+         <script src="/user/js/custom.js"></script>
+      </body>
+   </html>
