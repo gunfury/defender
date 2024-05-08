@@ -55,7 +55,7 @@ exports.getcheckout=async(req,res)=>{
 exports.getUserCart = async (req, res) => {
     try {
         const userId = req.session.user;
-        console.log("User ID is getting:", userId);
+        
         // Assuming cartMdl is a Mongoose model for the cart
         const cartData = await cartMdl.find({ userid: userId });
         //console.log("Cart Data:", cartData);
@@ -71,7 +71,7 @@ exports.getUserCart = async (req, res) => {
 
             // Handle case where product is not found
             if (!product) {
-                console.log(`Product not found for item with product ID: ${item.productid}`);
+               
                 continue; // Skip this item and move to the next one
             }
 
@@ -90,8 +90,7 @@ exports.getUserCart = async (req, res) => {
             }
         }
 
-        console.log("total price", totalPrice);
-        
+       
         
        
         // Pass additional data to the template if needed
@@ -107,7 +106,7 @@ exports.getChangeUSerName=async(req,res)=>{
         const errorMessage=req.flash("errorMessage");
         const sessionId=req.session.user;
         const userDetails=await signupcollection.findById({_id:sessionId}) ;
-        console.log('userDetails',userDetails);
+       
         res.render('user/changeUserName',{userDetails,errorMessage})
     } catch (error) {
         console.error("Error retrieving user cart:", error);
@@ -158,7 +157,7 @@ exports.getdownloadInvoice=async(req,res)=>{
     try {
         const orderId=req.params.id;
         const order=await orderModel.findById({_id:orderId});
-        console.log("order",order);
+      
         res.render('user/orderDetails',{order})
         
     } catch (error) {
@@ -172,8 +171,7 @@ exports.posteditprofile = async (req, res) => {
     try {
         const { editedUserName, editPassword, editConfirmPassword} = req.body;
          const image=req.file;
-         console.log("image",image)
-     
+        
 
         const specialCharsRegex = /[!@#$%^&*(),.?":{}|<>]/;
         const strongPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
@@ -188,7 +186,7 @@ exports.posteditprofile = async (req, res) => {
             return res.json({ errorMessage: "Username should not contain special characters" });
         } else {
             const userId = req.session.user;
-            console.log("editid", userId);
+           
             let updateUser = await signupcollection.findByIdAndUpdate(userId, {
                 username: editedUserName,
                 password: editPassword,
@@ -232,7 +230,7 @@ exports.postUserCart=async(req,res)=>{
       if (cartProduct) {
         const newQuantity = cartProduct.quantity + 1;
         await cartMdl.updateOne({ _id: cartProduct._id }, { $set: { quantity: newQuantity } });
-        console.log("Cart updated successfully");
+       
   
       } else {
         await cartMdl.create(cartData);
@@ -263,8 +261,7 @@ exports.postCartUpdateQuantity=async(req,res)=>{
 
          return res.status(200).json({ success: true, message: "Quantity updated successfully"});
 
-         console.log("updatedCart",updatedCart);
-
+        
    
     }
     catch (error) {
@@ -348,12 +345,11 @@ exports.postAddAddress=async(req,res)=>{
 exports.posteditAddress=async(req,res)=>{
     try {
         const id=req.params.id;
-        console.log("addressid",id);
+       
         const addresscurrent= req.body.editedAddress
-        console.log("addresscurrent",addresscurrent);
+        
         const addressmdl=await addressMdl.findById({_id:id})
-        console.log('addressmdl',addressmdl);
-
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ errorMessage: 'Internal server error' });
@@ -366,9 +362,9 @@ exports.postDeleteAddress=async(req,res)=>{
     console.log("postdelete is working")
     try{
         const addressId=req.params.id;
-        console.log("addressId",addressId);
+        
         await addressMdl.findByIdAndDelete({_id:addressId});
-        console.log('addressMdl',addressMdl);
+        
         res.redirect('/address');
 
     }catch (error) {
@@ -380,7 +376,7 @@ exports.postDeleteAddress=async(req,res)=>{
 exports.postupdateUserName = async (req, res) => {
     try {
         const UpdatedUserName = req.body.userName;
-        console.log("UpdatedUserName", UpdatedUserName);
+        
         const user = await signupcollection.findById(req.session.user);
 
         
@@ -492,13 +488,12 @@ exports.postcheckoutform = async (req, res) => {
     try {
         const user = req.session.user;
         const cart = await cartMdl.find({ userid: user });
-        console.log("cart", cart);
+       
         const payment = req.body.paymentMethod;
-        console.log("payment", payment);
+       
         const address = req.body.address;
         const addressdata = await addressMdl.findById({ _id: address });
-        console.log("addressdata", addressdata);
-
+       
         const products = [];
 
         // Loop through each item in the cart
@@ -538,9 +533,8 @@ exports.postcheckoutform = async (req, res) => {
             orderDate: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
         };
 
-        console.log("orderData", orderData);
         const orderDetails = await orderModel.create(orderData);
-        console.log("orderDetails", orderDetails); // Corrected variable name
+       
         await cartMdl.deleteMany({ userid: user });
 
         for (const item of cart) {
@@ -554,12 +548,12 @@ exports.postcheckoutform = async (req, res) => {
         }
        
 
-        if(res.json){
-            return res.status(200).json({message:'order'})
-        }
-        else{
+        // if(res.json){
+        //     return res.status(200).json({message:'order'})
+        // }
+        // else{
        return res.redirect('/successpage');
-        }
+       // }
 
 
     } catch (error) {
@@ -572,14 +566,13 @@ exports.postRemoveProductFromOrder=async(req,res)=>{
     try {
         const CancelproductID=req.params.id;
         const orderId=req.params.orderId;
-        console.log('orderId',orderId);
-        console.log("productID",CancelproductID);
+     
         const statusUpdatedOrderModel = await orderModel.findOneAndUpdate(
             { _id: orderId, "products.productId": CancelproductID },
             { $set: { "products.$.status": "canelled" } }, // $ refers to the matched array element
             { new: true }
         );
-        console.log("statusUpdatedOrderModel",statusUpdatedOrderModel);
+       
         res.redirect('/userOrder')
     } catch (error) {
         console.error("Error during checkout:", error);
@@ -592,7 +585,7 @@ exports.postReturnProduct=async(req,res)=>{
         const CancelproductID=req.body.productId;
         const orderId=req.body.orderId;
         const newStatus=req.body.returnProduct;
-        console.log("newStatus",newStatus);
+    
         const statusUpdatedOrderModel = await orderModel.findOneAndUpdate(
             { _id: orderId, "products.productId": CancelproductID },
             { $set: { "products.$.status":'returned' } }, // $ refers to the matched array element
@@ -612,7 +605,7 @@ exports.postRazorpayInstance = async (req, res) => {
     console.log("is working");
     try {
         const { amount } = req.body;
-        console.log(amount);
+        
         
         // Creating a new instance of Razorpay
         const razorpay = new Razorpay({
@@ -657,7 +650,7 @@ exports.postaddMoneytowallet=async(req,res)=>{
         
         walletUpdate.wallet.balance=walletUpdate.wallet.balance+amount;
         await walletUpdate.save();
-    console.log("amount",amount);
+        return res.json( walletUpdate.wallet.balance);
     } catch (error) {
         console.error(error);
         res.status(404).json({ error: 'Internal server error' });
@@ -665,5 +658,27 @@ exports.postaddMoneytowallet=async(req,res)=>{
     }
     
 }
+exports.postWalletPayment = async (req, res) => {
+    try {
+        const user = req.session.user;
+        console.log("user", user);
+        const userData = await signupcollection.findById({ _id: user });
+        console.log("userData", userData);
+        const amount = req.body.amount;
+        console.log("walletwpaymet", amount);
+        if (userData.wallet.balance >= amount) {
+            userData.wallet.balance = userData.wallet.balance - amount;
+            console.log("vhvhgv",userData.wallet.balance);
+            await userData.save();
+            res.json({ success: true }); // Send success response to frontend
+        } else {
+            res.json({ error: "insufficient balance" }); // Send error response to frontend
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' }); // Send error response to frontend
+    }
+}
+
 
 

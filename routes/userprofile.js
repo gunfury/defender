@@ -32,6 +32,7 @@ postRemoveProductFromOrder,
 postReturnProduct,
 postRazorpayInstance,
 postaddMoneytowallet,
+postWalletPayment,
 
 }=require("../controllers/userProfileCtrl");
 
@@ -65,6 +66,7 @@ router.post('/removeProductFromOrder/:id/:orderId',userSession,postRemoveProduct
 router.post('/returnproduct',userSession,postReturnProduct);
 router.post('/RazorpayInstance', userSession,postRazorpayInstance);
 router.post('/addMoneytowallet',postaddMoneytowallet);
+router.post('/walletPayment',postWalletPayment);
 
 
 
