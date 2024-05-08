@@ -151,15 +151,13 @@
 
 <div class="col-md-4 mb-4">
    <br><br>
-   <div class="card-container">
-      <div class="cardrotate" onmouseenter="rotateCard(this, event)" onmouseleave="rotateCard(this, event)">
+   <div class="card-container" onmouseenter="rotateCard(this, event)" onmouseleave="rotateCard(this, event)">
+       <div class="cardrotate">
            <div class="front">
-               
                <div class="content">
                    <div class="main">
                        <h2 class="name" style="text-align: center;">𝕯𝖊𝖋𝖊𝖓𝖉𝖊𝖗</h2>
                        <p class="profession">Wallet</p>
-
                        <p class="text-center">"Defender Vault: Secure Your Journey."</p>
                    </div>
                    <div class="footer">
@@ -175,81 +173,82 @@
                </div>
                <div class="content">
                    <div class="main">
-                       <h4 class="text-center">₹ <%=userData.wallet.balance%></h4>
-                      <input type="number" id="addMoneytowallet"><button onclick="addMoneytowallet()">Add</button>
-                      <br><br><br>
-                      <a href="walletTranaction"><p>View tranaction</p></a>
-
-                     
+                       <h4 class="text-center" id="walletmoney">₹ <%=userData.wallet.balance%></h4>
+                       <input type="number" id="addMoneytowallet"><button onclick="addMoneytowallet()">Add</button>
+                       <br><br><br>
+                       <a href="walletTranaction"><p>View transaction</p></a>
                    </div>
                </div>
-              
            </div> <!-- end back panel -->
-       </div> <!-- end card -->
+       </div> <!-- end cardrotate -->
    </div> <!-- end card-container -->
    <div class="card mt-3"></div>
 </div>
 
+
 <style>
    .card-container {
-  perspective: 1000px; /* Add perspective for 3D effect */
-  box-shadow: 0 0 15px rgba(84, 70, 70, 0.5);
+    perspective: 1000px;
+    box-shadow: 0 0 15px rgba(84, 70, 70, 0.5);
+    border-radius: 20px;
+    text-align: center;
+}
 
-      border-radius: 20px;
-  text-align: center;
+input {
+    border-radius: 20px;
+    width: 100px;
 }
-input{
-   border-radius: 20px;
-   width: 100px;
+
+button {
+    margin-left: 5px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
 }
-button{
-   margin-left: 5px;
-   border-radius: 20px;
-   background-color: black;
-   color:white;
+
+a {
+    text-decoration: none;
 }
-a{
-   text-decoration: none;
-}
-p:hover{
-   color: #5c8413;
+
+p:hover {
+    color: #5c8413;
 }
 
 .cardrotate {
-  position: relative;
-  width: 100%;
-  height: 306px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-  padding-top: 25%;
+    position: relative;
+    width: 100%;
+    height: 306px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    padding-top: 25%;
 }
 
 .cardrotate.hover {
-  transform: rotateY(180deg); /* Rotate the card to reveal the back panel */
+    transform: rotateY(180deg);
 }
 
 .front,
 .back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
 }
 
 .back {
-  transform: rotateY(180deg); /* Initially hide the back panel */
+    transform: rotateY(180deg);
 }
-
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-   function rotateCard(card, event) {
-      if (event.type === 'mouseenter') {
-         card.classList.add('hover');
-      } else if (event.type === 'mouseleave') {
-         card.classList.remove('hover');
-      }
-   }
+  function rotateCard(cardContainer, event) {
+    const cardRotate = cardContainer.querySelector('.cardrotate');
+    if (event.type === 'mouseenter') {
+        cardRotate.classList.add('hover');
+    } else if (event.type === 'mouseleave') {
+        cardRotate.classList.remove('hover');
+    }
+}
 
    //addMoneytowallet
    function addMoneytowallet(){
@@ -302,14 +301,25 @@ p:hover{
                         amount: amount,
                        
                     })
+                  })
+                    .then(response => response.json())
+                     .then(data => {
+                       document.getElementById('walletmoney').innerHTML=data;
+                       document.getElementById('addMoneytowallet').value=" ";
+                        
+                     })
+                     .catch(error => {
+                        console.error('Error fetching balance:', error);   
+                       
+                     })
 
-        
-    })
-} 
-      }
-var rzp = new Razorpay(options);
-            rzp.open();
-}
+                  
+               
+            } 
+                  }
+            var rzp = new Razorpay(options);
+                        rzp.open();
+            }
 
 </script>
 
