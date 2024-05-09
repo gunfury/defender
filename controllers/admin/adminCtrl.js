@@ -179,6 +179,17 @@ exports.getOrderManagement=async(req,res)=>{
     }
     
 }
+
+exports.getCoupon = async (req,res)=>{
+    try {
+        res.render('admin/coupon')
+        
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 exports.postfetchOrderStatusUpdate = async (req, res) => {
     try {
         const orderId = req.body.orderId;

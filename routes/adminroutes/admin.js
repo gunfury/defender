@@ -20,6 +20,7 @@ const{
     getSoftDeleteProduct,
     getBlockUser,
     getOrderManagement,
+    getCoupon,
     
     
 
@@ -57,6 +58,7 @@ router.get('/deleteProduct/:id',adminSession,getDeleteproduct);
 router.get('/softDeleteProduct/:id',adminSession,getSoftDeleteProduct);
 router.get('/userblock/:id',adminSession,getBlockUser);
 router.get('/order',getOrderManagement);
+router.get('/coupon',adminSession,getCoupon)
 
 
 
