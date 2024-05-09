@@ -540,7 +540,20 @@ footer .row{
   background-color: transparent;
   color: #000000;
 }
+.product_section .options .option3 {
+  background-color: #d94040;
+  border: 1px solid #d94040;
+  width: 170px;
+  height: 40px;
+  border-radius: 30px;
+  color: #ffffff;
+  margin-top: 5px;
+}
 
+.product_section .options .option3:hover {
+  background-color: transparent;
+  color: #000000;
+}
 .product_section .btn-box {
   display: -webkit-box;
   display: -ms-flexbox;

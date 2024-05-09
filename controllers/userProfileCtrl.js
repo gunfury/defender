@@ -7,6 +7,7 @@ const fs = require('fs');
 const addressMdl=require('../models/addressMdl');
 const productMdl=require('../models/admin/productModel');
 const cartMdl=require('../models/cartModel');
+const wishlistModel=require('../models/wishlist');
 const orderModel=require('../models/orderModel');
 const { log } = require("console");
 const Razorpay=require('razorpay');
@@ -165,6 +166,17 @@ exports.getdownloadInvoice=async(req,res)=>{
         res.status(500).send("Internal Server Error");
     }
 }
+exports.getwishlist=async(req,res)=>{
+    try {
+        const currentUser=req.session.user;
+        const userWishlist=await wishlistModel.find({userId:currentUser})
+        res.render('user/wishlist',{userWishlist});
+        
+    } catch (error) {
+        console.error("Error fetching user orders:", error);
+        res.status(500).send("Internal Server Error");    
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.posteditprofile = async (req, res) => {
@@ -246,6 +258,49 @@ catch (error) {
     res.status(500).send("Internal Server Error");
 }
 
+}
+exports.postUSerWishlist=async(req,res)=>{
+    try {
+        const currentproductId=req.params.currentProductID;
+        const currentproduct= await productMdl.findById({_id:currentproductId})
+        const existingWishlistItem = await wishlistModel.findOne({
+            userId: req.session.user,
+            productId: currentproductId
+        });
+        if (!existingWishlistItem) {
+        const data={
+            userId:req.session.user,
+            productId:currentproductId,
+            productName:currentproduct.productName,
+            productImage:currentproduct.images,
+            price:currentproduct.price
+        }
+      
+        await wishlistModel.create(data);
+        return res.redirect('/wishlist');
+       }else {
+      
+        return res.redirect('/wishlist'); 
+       }
+        
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Internal Server Error");   
+    }
+   
+}
+exports.postWishlistRemove=async(req,res)=>{
+    try {
+        const data=req.params.id;
+        const finddataFromWishlistModel=await wishlistModel.findOneAndDelete({productId:data});
+        
+        return res.redirect('/wishlist');
+        
+        
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Internal Server Error");
+    }
 }
 
 

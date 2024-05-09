@@ -16,13 +16,16 @@ getChangeUserPassword,
 getSuccesspage,
 getUserOrder,
 getdownloadInvoice,
+getwishlist,
 
 postUserCart,
+postUSerWishlist,
 posteditprofile,
 postAddAddress,
 posteditAddress,
 postCartUpdateQuantity,
 postCartRemove,
+postWishlistRemove,
 postDeleteAddress,
 postupdateUserName,
 postupdateUserPassword,
@@ -45,6 +48,7 @@ router.get('/changeUserPassword',userSession,getChangeUserPassword)
 router.get('/successpage',userSession,getSuccesspage)
 router.get('/userOrder/:page',userSession,getUserOrder)
 router.get('/downloadInvoice/:id',userSession,getdownloadInvoice)
+router.get('/wishlist',getwishlist)
 
 
 
@@ -55,8 +59,10 @@ router.post('/edit-profile',multer,userSession,posteditprofile);
 router.post('/addAddress',userSession,postAddAddress);
 router.post('/editAddress/:id',userSession,posteditAddress)
 router.post('/addcart/:currentProductID',userSession,postUserCart);
+router.post('/addwishlist/:currentProductID',userSession,postUSerWishlist);
 router.post('/update_quantity',userSession,postCartUpdateQuantity);
 router.post('/cartRemove/:id',userSession,postCartRemove);
+router.post('/removefromwishList/:id',userSession,postWishlistRemove);
 router.post('/deleteAddress/:id',userSession,postDeleteAddress);
 router.post('/updateUserName',userSession,postupdateUserName);
 router.post('/updateUserPassword',userSession,postupdateUserPassword);
