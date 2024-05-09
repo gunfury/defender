@@ -4,13 +4,20 @@
   <meta charset="UTF-8">
   <title>CodeAtNow - CSS Filter Cards</title>
   <link rel="stylesheet" href="/user/css/Coupon.css">
+  <link rel="stylesheet" type="text/css" href="/user/css/bootstrap.css" />
+      <!-- font awesome style -->
+      <link href="/user/css/font-awesome.min.css" rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link href="/user/css/style.css" rel="stylesheet" />
+      <!-- responsive style -->
+      <link href="/user/css/responsive.css" rel="stylesheet" />
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
-
+<%-include('./partials/navbar.ejs')%>
 <section class="hero-section">
   <div class="card-grid">
     <a class="card" href="#">
@@ -28,6 +35,6 @@
 <a class="back-to-profile" href="/userProfile">Back to Profile</a>
 
 <!-- partial -->
-  
+<%-include('./partials/footer.ejs')%>
 </body>
 </html>
