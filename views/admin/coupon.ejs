@@ -35,6 +35,331 @@ background-color: rgb(255, 145, 0);/* Change to desired color */
 color: white; /* Change to desired text color */
 }
 </style>
+<style>
+    .clear {
+  zoom: 1;
+}
+.clear:before, .clear:after {
+  display: table;
+  content: "";
+}
+.clear:after {
+  clear: both;
+}
+body {
+  background:#e8f5fa;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+p {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+a {
+  text-decoration:none;
+}
+a:hover {
+  text-decoration:none;
+  color:#fe495d;
+}
+.section-heading {
+    font-size: 21px;
+    letter-spacing: -0.3px;
+    font-weight: 300;
+    margin-bottom: 14px;
+}
+.store-offer-item {
+  padding: 20px 20px 16px 20px;
+  margin-bottom: 15px;
+  display:block;
+}
+.store-offer-item:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  
+}
+.shadow-box {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
+  background: #FFFFFF;
+}
+
+.store-offer-item .store-thumb-link {
+    float: left;
+    margin-right: 20px;
+}
+.store-offer-item .store-thumb-link .offer-image {
+    max-width: 126px;
+    line-height: 0px;
+    margin-bottom: 5px;
+  text-align:center;
+}
+.offer-image a {
+  border: 2px solid #f5f5f5;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  display: block;
+}
+.offer-image a:hover {
+  border-color: #fe495d;
+}
+.offer-image img {
+    width: 80%;
+}
+.offer-text {
+  display:block;
+  width:100%;
+  height:100px;
+  font-size:42px;
+  line-height:36px;
+  margin:10px 0 0 0;
+  display: table-cell;
+   
+    text-align: center;
+  font-family: 'Passion One', cursive;
+}
+.store-offer-item .store-thumb-link .store-name a {
+    display: inline-block;
+    line-height: 1;
+    font-size: 13px;
+    color: #1c9ab3;
+    text-align: center;
+    width:100%;
+}
+.store-offer-item .store-thumb-link .store-name a:hover {
+  color:#fe495d;
+}
+.store-offer-item .store-thumb-link .store-name a span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 85%;
+    display: block;
+    float: left;
+    white-space: nowrap;
+}
+.store-offer-item .store-thumb-link .store-name a i,
+.des-more i{
+  font-size:9px;
+}
+
+.store-offer-item .latest-coupon {
+    max-width: 300px;
+    margin-right: 20px;
+  float: left;
+  width: 100%;
+  }
+.latest-coupon .coupon-title {
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  margin-top: -2px;
+  line-height: 1.5;
+}
+.latest-coupon .coupon-des {
+    font-size: 13px;
+    line-height: 1.7;
+    position: relative;
+}
+.store-offer-item .coupon-detail {
+    float: right;
+  margin-top: 25px;
+}
+.coupon-button-type .coupon-deal, .coupon-button-type .coupon-print, .coupon-button-type .coupon-code {
+    line-height: 1;
+    padding: 14px 38px;
+    background: #fc8c99;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-block;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    min-width: 195px;
+    text-align: center;
+}
+.coupon-button-type .coupon-code {
+  color: #444444;
+  background: linear-gradient(315deg, rgba(0, 0, 0, 0.06) 10%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.06) 40%, rgba(0, 0, 0, 0.06) 60%, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.06) 90%) repeat scroll 0 0/6px 6px rgba(0, 0, 0, 0);
+  text-align: right;
+  padding: 10px 12px;
+  font-size: 20px;
+  border: 2px solid #DDDDDD;
+  position: relative;
+}
+.coupon-button-type .coupon-code .code-text {
+  text-transform: uppercase;
+}
+.coupon-button-type .coupon-code .get-code {
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  background: #fc8c99;
+  color: #FFFFFF;
+  font-size: 16px;
+  padding: 14px 15px 14px 14px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  transition: all 0.5s ease;
+}
+.coupon-button-type .coupon-code .get-code:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 44px solid transparent;
+  border-left: 44px solid #fc8c99;
+  position: absolute;
+  right: -44px;
+  top: 0;
+}
+.coupon-button-type .coupon-code .get-code:hover {
+  padding-right: 5px;
+  transition: all 0.5s ease;
+}
+.coupon-detail .exp-text {
+    font-size: 13px;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: -2px;
+    color: #888888;
+}
+.coupon-save {
+    float: right;
+    font-size: 15px;
+    margin-right: -4px;
+    margin-top: -2px;
+    color: #999999;
+}
+.widget-area .widget .widget-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+}
+.newsletter-box-wrapper.shadow-box {
+    padding: 20px;
+}
+a.store-gird img {
+  border:1px solid #f1f1f1;
+  display:table;
+}
+a.store-gird:hover img {
+  display:table;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+a.store-gird span {
+    margin: 5px 0 15px 0;
+    display: block;
+    text-align: center;
+    line-height:1.4;
+}
+/* store coupon style */
+.coupon-listing-item {
+    padding-bottom: 0px;
+}
+.coupon-listing-item .offer-image img {
+    width: 100%;
+}
+.coupon-listing-item .c-type .c-code {
+    background: #b9dc2f;
+    color: #FFFFFF;
+    padding: 4px 10px 4px;
+    line-height: 1;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: inline-block;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.coupon-listing-item .c-type .exp {
+    font-size: 12px;
+    color: #999999;
+    margin-left: 10px;
+}
+.coupon-listing-item .coupon-detail .voted-value {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.coupon-listing-footer {
+  margin: 18px -20px 0px;
+  padding: 10px 20px 12px;
+  border-top: 1px solid #f5f5f5;
+}
+.coupon-listing-footer ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.coupon-listing-footer ul li {
+    padding: 0;
+    display: inline-block;
+   
+    margin-left: 15px;
+}
+.ui.buttons {
+    display: inline-block;
+    vertical-align: middle;
+    margin:5px .25em 0 0;
+}
+.ui.basic.buttons .button {
+    border-left: 1px solid rgba(39,41,43,.15);
+    box-shadow: none;
+}
+.coupon-listing-item .coupon-detail .ui.basic.buttons {
+    border-radius: 2px;
+    border: 1px solid #ccc;
+}
+.ui.buttons:not(.basic):not(.inverted)>.button, .ui.buttons>.ui.button:not(.basic):not(.inverted) {
+    box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgba(39,41,43,.15) inset;
+}
+.coupon-listing-item .coupon-detail .user-ratting .ui.button {
+    padding: 5px 10px 5px;
+}
+.ui.buttons .button {
+    float: left;
+    border-radius: 0;
+    margin: 0;
+}
+.ui.buttons .button:first-child {
+    border-left: none;
+}
+.coupon-listing-footer ul li:first-child {
+    margin-left: 0px;
+}
+.coupon-listing-footer ul li a, .coupon-listing-footer ul li span {
+    font-size: 12px;
+    color: #999999;
+}
+.coupon-listing-footer ul li a:hover, .coupon-listing-footer ul li span:hover {
+  color:#1c9ab3;
+}
+.coupon-listing-footer ul li:last-child {
+    float: right;
+    margin-left: 0px;
+}
+.coupon-listing-footer .reveal-content {
+    padding: 30px 20px 40px;
+    border-top: 1px solid #f5f5f5;
+    margin: 12px -20px -12px;
+    display: none;
+    position: relative;
+}
+</style>
   </head>
 
   <body id="reportsPage">
@@ -121,100 +446,154 @@ color: white; /* Change to desired text color */
    
     
        
-          <div class="tm-bg-primary-dark tm-block tm-block-products">
-            <a href="#" id="addCouponButton" class="btn btn-primary btn-block text-uppercase">
-                Add Coupon
-            </a>
-            <BR>
-            <div class="tm-product-table-container">
-              <table class="table table-hover tm-table-small tm-product-table">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">couponCode</th>
-                    <th scope="col">DISCOUNT</th>
-                    <th scope="col">ACTION</th>
-                    
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    
-                    
-                  </tr>
-                  
-                </tbody>
-              </table>
+  <div class="container blue-bg">
+    <br>
+    <div class="row">
+    <div class="col-md-6">
+      <h2 class="section-heading">Coupons</h2>
+      <div class="coupons-list">
+        
+        <!--       second coupon -->
+        <%if(couponData.length===0){%>
+            <p>NO coupon to show</p>
+            <%}else{%>
+                <%couponData.forEach((items,id)=>{%>
+        <div class="store-offer-item shadow-box" style="width: 550px;">
+          <div class="store-thumb-link">
+            <div class="offer-image">
+              <a href="">
+                <span class="offer-text"><%=items.discount%>% OFF</span></a>
+                
             </div>
-            <!-- table container -->
 
-            <div class="modal fade" id="addCouponModal" tabindex="-1" role="dialog" aria-labelledby="addCouponModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addCouponModalLabel">Add Coupon</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="couponForm">
-                                <div class="form-group">
-                                    <label for="couponName">Name:</label>
-                                    <input type="text" class="form-control" id="couponName" name="couponName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="couponDiscount">Discount:</label>
-                                    <input type="text" class="form-control" id="couponDiscount" name="couponDiscount">
-                                </div>
-                                <div class="form-group">
-                                    <label for="couponExpiry">Expiry Date:</label>
-                                    <input type="date" class="form-control" id="couponExpiry" name="couponExpiry">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="saveCoupon()">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
+          <div class="latest-coupon">
             
-            <!-- jQuery and Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <h3 class="coupon-title">coupon code:<%=items.couponCode%></h3><br>
+            <div class="exp-text">Expires on <%=items.expiryDate%> <a title="Save This Coupon" href="#" class="coupon-save"><i class="glyphicon glyphicon-star"></i></a></div>
+           <form action="/removeCoupon/<%=items._id%>" method="post"> <button type="submit" class="btn btn-primary">Remove</button>
+           </form>
+            
+          </div>
+          
+  
+        </div>
+        <%})%>
+        <%}%>
+       
+        
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+        <br><br>
+        <div class="store-offer-item shadow-box" style="width: 550px;">
+            <h3>Add coupon</h3>
+            <form id="couponForm">
+                <div class="form-group">
+                    <label for="couponCode" style="color: black;">Coupon code:</label>
+                    <input type="text" id="couponCode" class="form-control">
+                    <span id="couponCodeError" class="error-message" style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label for="discount" style="color: black;">Discount:</label>
+                    <input type="number" id="discount" class="form-control">
+                    <span id="discountError" class="error-message" style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label for="expiryDate" style="color: black;">Expiry date:</label>
+                    <input type="date" id="expiryDate" class="form-control">
+                    <span id="expiryDateError" class="error-message" style="color: red;"></span>
+                </div>
+                <button type="button" onclick="addcoupon()" class="btn btn-primary">Submit</button>
+            </form>
+            
+             
             
             <script>
-                $(document).ready(function(){
-                    $("#addCouponButton").click(function(){
-                        $("#addCouponModal").modal('show');
-                    });
-                });
-            
-                function saveCoupon() {
-                    // Here you can add your logic to save the coupon details
-                    // For example, you can retrieve form data and send it to your backend
-                    // You can access form data like this:
-                    // var name = document.getElementById("couponName").value;
-                    // var discount = document.getElementById("couponDiscount").value;
-                    // var expiry = document.getElementById("couponExpiry").value;
-                    // Then you can perform further actions like sending it to the server via AJAX
-                    // This is just a placeholder function
-                    alert("Coupon saved!");
-                    $("#addCouponModal").modal('hide');
-                }
-            </script>
+               function addcoupon() {
+    const couponcode = document.getElementById('couponCode').value;
+    const discount = document.getElementById('discount').value;
+    const expiryDate = document.getElementById('expiryDate').value;
 
+    // Clear previous error messages
+    document.getElementById('couponCodeError').textContent = '';
+    document.getElementById('discountError').textContent = '';
+    document.getElementById('expiryDateError').textContent = '';
+
+    // Basic validation
+    if (!couponcode) {
+        showError('couponCodeError', 'Coupon code is required');
+        return;
+    }
+
+    if (!discount) {
+        showError('discountError', 'Discount is required');
+        return;
+    }
+
+    if (discount < 0 || discount > 100) {
+        showError('discountError', 'Discount should be between 0 and 100');
+        return;
+    }
+
+    if (!expiryDate) {
+        showError('expiryDateError', 'Expiry date is required');
+        return;
+    }
+
+    const formData = {
+        couponCode: couponcode,
+        discount: discount,
+        expiryDate: expiryDate
+    };
+
+    fetch('/addcoupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ formData: formData })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json().catch(() => ({}));
+        })
+        .then(data => {
+            if (data.error) {
+                showError('couponCodeError', data.error);
+            } else {
+                window.location.href = '/coupon';
+            }
+        })
+        .catch(error => {
+            // Handle network errors or server-side errors
+            console.error('There was a problem with your fetch operation:', error);
+            // Display a generic error message to the user
+            showError('couponCodeError', 'The coupon code is already existing.');
+        });
+}
+
+function showError(fieldId, errorMessage) {
+    const errorElement = document.createElement('span');
+    errorElement.className = 'error-message';
+    errorElement.textContent = errorMessage;
+    errorElement.style.color = 'red'; 
+
+    const field = document.getElementById(fieldId);
+    field.parentNode.insertBefore(errorElement, field.nextSibling);
+}
+
+
+            </script>
             
-            
+    
+          </div>
     </div>
+    </div>
+  </div>
     <footer class="tm-footer row tm-mt-small">
       <div class="col-12 font-weight-light">
         <p class="text-center text-white mb-0 px-4 small">

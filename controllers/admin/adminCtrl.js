@@ -5,6 +5,7 @@ const fs = require('fs');
 const user=require('../../models/signupModel');
 const cartegoryModel=require('../../models/admin/categoryModel');
 const productMdl=require('../../models/admin/productModel');
+const couponModel=require('../../models/couponModel')
 const { log, Console } = require("console");
 const flash = require('connect-flash');
 const orderModel=require('../../models/orderModel');
@@ -182,7 +183,9 @@ exports.getOrderManagement=async(req,res)=>{
 
 exports.getCoupon = async (req,res)=>{
     try {
-        res.render('admin/coupon')
+        const couponData=await couponModel.find();
+        console.log("couponData",couponData);
+        res.render('admin/coupon',{couponData})
         
     } catch (error) {
         console.error("Error adding product:", error);
@@ -405,6 +408,48 @@ exports.postEditproduct=async(req,res)=>{
             res.redirect("/product");
           });
     }catch(error){
+        console.error("Error adding product:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+exports.postAddcoupon = async (req, res) => {
+    try {
+        const data = req.body.formData;
+        console.log("formData", data);
+        
+        // Check if the coupon code already exists in the database
+        const existingCoupon = await couponModel.findOne({ couponCode: data.couponCode });
+        if (existingCoupon) {
+            return res.status(400).json({ error: 'Coupon code already exists' });
+        }
+
+        // If the coupon code is unique, proceed with saving the new coupon
+        const newCoupon = new couponModel({
+            couponCode: data.couponCode,
+            discount: data.discount,
+            expiryDate: data.expiryDate,
+            // Add other fields as needed
+        });
+        
+        // Save the newCoupon instance to the database
+        await newCoupon.save();
+        
+        // Send a JSON response indicating success
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+exports.postRemoveCoupon=async(req,res)=>{
+    try {
+        const data=req.params.id;
+        console.log("data",data);
+        await couponModel.findByIdAndDelete({_id:data})
+        return res.redirect("/coupon");
+        
+    } catch (error) {
         console.error("Error adding product:", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }

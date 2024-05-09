@@ -32,6 +32,8 @@ const{
     postAddproduct,
     postEditproduct,
     postfetchOrderStatusUpdate,
+    postAddcoupon,
+    postRemoveCoupon,
     
    
 
@@ -70,6 +72,8 @@ router.post("/editDone/:Id",adminSession,postEditCartegory);
 router.post("/productAdded",adminSession,multer,postAddproduct);
 router.post('/editProductDone/:id',adminSession,multer,postEditproduct);
 router.post('/orderStatusUpdate',postfetchOrderStatusUpdate);
+router.post('/addcoupon',postAddcoupon);
+router.post('/removeCoupon/:id',postRemoveCoupon);
 
 
 
