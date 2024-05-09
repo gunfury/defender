@@ -213,9 +213,14 @@
                      <div class="option_container">
                         <div class="options">
                            <form method="post" action="/addcart/<%=items._id%>">
+                              <%if(items.stock===0){%>
+                                 <button class="option4">Out of stock</button>
+                              <%}else{%>
+                              
                            <button class="option1">
                            Add to cart
                            </button>
+                           <%}%>
                            </form>
                            <form method="post" action="/addwishlist/<%=items._id%>">
                            <button class="option3">

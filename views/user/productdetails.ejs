@@ -570,8 +570,14 @@ color: gold;
             </ul>
             <table>
             <tr>
-            <td> <form method="post" action='/addcart/<%=productDetails._id%>'><a herf=""><button type="submit" class="btn2">Add to cart</button></a></form></td>
+               <%if(productDetails.stock===0){%>
+                  <h4 style="color: red; text-decoration:underline;">Out of stock</h4>
+                  <%}else{%><td> <form method="post" action='/addcart/<%=productDetails._id%>'>
+              
+                 
+                 <a herf=""><button type="submit" class="btn2">Add to cart</button></a></form></td>
             <td><button class="btn3">BUY NOW</button></td>
+            <%}%>
             </tr>
             </table>
             
@@ -594,7 +600,7 @@ color: gold;
             
             <div id="Description" class="review_container tab_type">
             <h2>Description</h2>
-            <p><%=productDetails.productName%></p>
+            <p><%=productDetails.description%></p>
             </div>
             
             <div id="Specification" class="review_container tab_type" style="display:none">

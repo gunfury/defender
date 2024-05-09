@@ -177,6 +177,15 @@ exports.getwishlist=async(req,res)=>{
         res.status(500).send("Internal Server Error");    
     }
 }
+exports.getUserCoupon=async(req,res)=>{
+    try {
+        res.render('user/coupon');
+        
+    } catch (error) {
+        console.error("Error fetching user orders:", error);
+        res.status(500).send("Internal Server Error");      
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.posteditprofile = async (req, res) => {

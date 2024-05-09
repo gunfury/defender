@@ -17,6 +17,7 @@ getSuccesspage,
 getUserOrder,
 getdownloadInvoice,
 getwishlist,
+getUserCoupon,
 
 postUserCart,
 postUSerWishlist,
@@ -49,6 +50,7 @@ router.get('/successpage',userSession,getSuccesspage)
 router.get('/userOrder/:page',userSession,getUserOrder)
 router.get('/downloadInvoice/:id',userSession,getdownloadInvoice)
 router.get('/wishlist',getwishlist)
+router.get('/userCoupon',getUserCoupon)
 
 
 
