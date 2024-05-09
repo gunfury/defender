@@ -9,6 +9,7 @@ const productMdl=require('../models/admin/productModel');
 const cartMdl=require('../models/cartModel');
 const wishlistModel=require('../models/wishlist');
 const orderModel=require('../models/orderModel');
+const couponModel=require('../models/couponModel');
 const { log } = require("console");
 const Razorpay=require('razorpay');
 
@@ -42,7 +43,8 @@ exports.getcheckout=async(req,res)=>{
         const userId=req.session.user;
         const address=await addressMdl.find({userID:userId})
         const currentCart=await cartMdl.find({userid:userId})
-        res.render('user/checkout',{currentCart,address});
+        const couponData=await couponModel.find();
+        res.render('user/checkout',{currentCart,address,couponData});
         
     } catch (error) {
         console.error("Error during login:", error);
@@ -179,7 +181,8 @@ exports.getwishlist=async(req,res)=>{
 }
 exports.getUserCoupon=async(req,res)=>{
     try {
-        res.render('user/coupon');
+        const couponData=await couponModel.find();
+        res.render('user/coupon',{couponData});
         
     } catch (error) {
         console.error("Error fetching user orders:", error);
@@ -666,7 +669,7 @@ exports.postReturnProduct=async(req,res)=>{
 
 
 exports.postRazorpayInstance = async (req, res) => {
-    console.log("is working");
+   
     try {
         const { amount } = req.body;
         

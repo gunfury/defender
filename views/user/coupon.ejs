@@ -18,20 +18,37 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
 <%-include('./partials/navbar.ejs')%>
+<%if(couponData.length===0){%>
+  <p>Tempory no coupon is available</p>
+<%}else{%>
+ 
 <section class="hero-section">
-  <div class="card-grid">
-    <a class="card" href="#">
-      <div class="card__background" style="background-image: url(https://images.unsplash.com/photo-1557177324-56c542165309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)"></div>
-      <div class="card__content">
-        <p class="card__category">Category</p>
-        <h3 class="card__heading">Example Card Heading</h3>
+ 
+  <div class="container">
+    <div class="row">
+      <!-- Start of loop -->
+      <%couponData.forEach((items,id)=>{%>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card__content">
+            <p class="card__category" style="color: black;"><%=items.couponCode%></p>
+            <h3 class="card__heading" style="color: black;"><%=items.discount%></h3>
+          </div>
+        </div>
       </div>
-    </a>
+      <%})%>
+
+
+    </div>
+  </div>
+   
+ 
+   
     
-   
-  <div>
-   
 </section>
+
+<%}%>
 <a class="back-to-profile" href="/userProfile">Back to Profile</a>
 
 <!-- partial -->
