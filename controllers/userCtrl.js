@@ -105,20 +105,17 @@ exports.getuserlogout=(req,res)=>{
 exports.getuserSideProduct = async (req, res) => {
     try {
         const sortType = req.params.sortType;
-        console.log("sort type", sortType);
         const categoryData = await categoryMdl.find();
-        console.log("data type", categoryData);
-
         let productDisplay;
 
-        // Find the category matching the sortType
-        const category = categoryData.find(cat => cat.Category === sortType);
+        // Check if there's a search query in the request body
+        const searchQuery = req.body.query;
 
-        if (category) {
-            // If category found, filter products by category
-            productDisplay = await productMdl.find({ cartegory: category.Category });
+        if (searchQuery) {
+            // If there's a search query, find the product matching the query
+            productDisplay = await productMdl.find({ productName: { $regex: new RegExp(searchQuery, 'i') } });
         } else {
-            // If category not found, handle it based on sortType
+            // Otherwise, apply sorting/filtering based on sortType
             switch (sortType) {
                 case 'aA-zZ':
                     productDisplay = await productMdl.find().sort({ productName: 1 });
@@ -139,16 +136,12 @@ exports.getuserSideProduct = async (req, res) => {
                     productDisplay = await productMdl.find();
                     break;
                 case 'category1':
-                    // Sort products by category 1
                     productDisplay = await productMdl.find({ cartegory: 'category1' }).sort({ productName: 1 });
                     break;
                 case 'category2':
-                    // Sort products by category 2
                     productDisplay = await productMdl.find({ cartegory: 'category2' }).sort({ productName: 1 });
                     break;
-                // Add more cases for other categories as needed
                 default:
-                    // If sortType is not recognized, return all products
                     productDisplay = await productMdl.find();
                     break;
             }
@@ -157,10 +150,10 @@ exports.getuserSideProduct = async (req, res) => {
         res.render('user/product', { productDisplay, categoryData });
     } catch (error) {
         console.error(error);
-        // Handle error
         res.status(500).send("Internal Server Error");
     }
 };
+
 
 
 
@@ -172,6 +165,28 @@ exports.getproductDetails=async(req,res)=>{
     
     
     res.render('user/productdetails',{productDetails});
+}
+
+
+exports.postProductSearch = async (req, res) => {
+    try {
+        const search = req.body.query;
+        console.log("search", search);
+        // Use a case-insensitive regex to find products with names that contain the search query
+        const matchingSearchingDataFromProduct = await productMdl.find({ productName: { $regex: new RegExp(search, 'i') } });
+        console.log("matchingSearchingDataFromProduct",matchingSearchingDataFromProduct);
+        
+        // Check if there are any matching products
+        if (matchingSearchingDataFromProduct.length === 0) {
+            return res.json({ message: "No matching products found." });
+        }
+
+        // Send the matching products as a response
+        res.json({value:matchingSearchingDataFromProduct});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 }
 
                                                       // POST Method

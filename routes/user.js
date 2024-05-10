@@ -16,15 +16,15 @@ getresendotp,
 getuserlogout,
 getuserSideProduct,
 getproductDetails,
-getUserProfile,
-getUserAddress,
+
 
 
 
 
 postOtp,
 postsignup,
-postlogin
+postlogin,
+postProductSearch,
 
 }=require("../controllers/userCtrl");
 
@@ -48,6 +48,7 @@ router.get('/showproductdetails/:id',userSession,getproductDetails)
 router.post('/otp',postOtp);
 router.post('/signup',postsignup)
 router.post('/',postlogin);
+router.post('/productSearch',postProductSearch);
 
 
 module.exports =router;

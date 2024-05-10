@@ -33,16 +33,114 @@
       <section class="product_section layout_padding">
          <div class="container">
            <div class="heading_container heading_center">
-            <h2>
-               Our <span>products</span>
-            </h2>
+           
+               <h2>
+                   Our <span>products</span>
+               </h2>
+               <form class="form-inline" action="" method="POST">
+                   <div class="input-group">
+                       <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="query">
+                       <div class="input-group-append">
+                           <button class="btn" type="submit" style="background-color: #BAFF39;">
+                               <i class="fa fa-search" aria-hidden="true"></i>
+                           </button>
+                       </div>
+                   </div>
+               </form>
+
+               <script>
+                                    // Capture form submission event
+                                    document.querySelector('.form-inline').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    
+    const searchQuery = document.querySelector('.form-control').value; // Extract search query
+    
+    try {
+        // Send POST request to server with search query
+        const response = await fetch('/productSearch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: searchQuery }) // Send search query as JSON
+        });
+
+        if (response.ok) {
+         const { value } = await response.json();
+         renderProducts(value);
+            // Parse response JSON
+            
+        } else {
+            console.error('Search request failed.');
+        }
+    } catch (error) {
+        console.error('Error during search request:', error);
+    }
+});
+function renderProducts(products) {
+    // Find the container element
+    const productsContainer = document.querySelector('.products-container');
+
+    // Check if the container element exists
+    if (productsContainer) {
+        // Clear existing products from the container
+        productsContainer.innerHTML = '';
+
+        // Loop through the array of products and create HTML elements to display each product
+        products.forEach(item => {
+            // Create HTML structure for displaying product details
+            const productElement = document.createElement('div');
+            productElement.classList.add('product-item');
+
+            productElement.innerHTML = `
+                <div class="product-image">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="product-details">
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <p>Price: $${item.price}</p>
+                    <button>Add to Cart</button>
+                </div>
+            `;
+
+            // Append the product element to the products container
+            productsContainer.appendChild(productElement);
+        });
+    } else {
+        console.error('Products container not found');
+    }
+}
+
+           
+
+               </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           
             <div class="input_container">
                
                <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" id="sort">Sort</button>
+               
 
                <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
                  <div class="offcanvas-header">
                    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Sort</h5>
+                   
                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                  </div>
                  <div class="offcanvas-body">
@@ -62,7 +160,7 @@
                       </div>
                   </div>
               </div>
-                 
+                 <br>
                <div class="catergorydiv">
                   <label for="sorting-order" class="dropdown-label">Sorting order</label>
                   <div class="dropdown">
@@ -73,7 +171,7 @@
                       </div>
                   </div>
               </div>
-                 
+              <br>
               <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label">New Arrivals</label>
                <div class="dropdown">
@@ -84,7 +182,7 @@
                    </div>
                </div>
              </div>
-               
+             <br>
             <div class="catergorydiv">
                   <label for="sorting-order" class="dropdown-label">Price</label>
                   <div class="dropdown">
@@ -95,7 +193,7 @@
                       </div>
                   </div>
               </div>
-                
+              <br>
               <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label">Popularity</label>
                <div class="dropdown">
@@ -106,7 +204,7 @@
                    </div>
                </div>
               </div>      
-                     
+              <br>   
               <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label">Average Ratings</label>
                <div class="dropdown">
@@ -117,7 +215,7 @@
                    </div>
                </div>
               </div> 
-                 
+              <br>
               <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label"> Featured</label>
                <div class="dropdown">
@@ -137,7 +235,7 @@
            </div>
             
          </div>
-            <div class="row">
+            <div class="row products-container">
                <%productDisplay.forEach((items,id)=>{
                   if(!items.isBlocked){%>
 
