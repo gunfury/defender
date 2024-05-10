@@ -37,6 +37,7 @@ postReturnProduct,
 postRazorpayInstance,
 postaddMoneytowallet,
 postWalletPayment,
+postCheckingCoupon,
 
 }=require("../controllers/userProfileCtrl");
 
@@ -75,6 +76,7 @@ router.post('/returnproduct',userSession,postReturnProduct);
 router.post('/RazorpayInstance', userSession,postRazorpayInstance);
 router.post('/addMoneytowallet',postaddMoneytowallet);
 router.post('/walletPayment',postWalletPayment);
+router.post('/checkingCoupon',postCheckingCoupon);
 
 
 

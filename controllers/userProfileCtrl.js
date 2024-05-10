@@ -560,7 +560,7 @@ exports.postcheckoutform = async (req, res) => {
        
         const address = req.body.address;
         const addressdata = await addressMdl.findById({ _id: address });
-       
+        const coupon=req.body.coupon ? req.body.coupon : null;
         const products = [];
 
         // Loop through each item in the cart
@@ -576,7 +576,7 @@ exports.postcheckoutform = async (req, res) => {
                 price: item.price,
                 status: "Pending",
                 reason: "aaaaaaaa",
-                couponCode: null,
+                
                 referralCode: null, // Corrected field name
             });
         }
@@ -595,6 +595,7 @@ exports.postcheckoutform = async (req, res) => {
                 zipcode: addressdata.zipCode,
                 phone: addressdata.phone,
             },
+            couponCode: coupon,
             discountPrice: null,
             paymentMethod: payment,
             orderDate: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
@@ -741,6 +742,29 @@ exports.postWalletPayment = async (req, res) => {
         } else {
             res.json({ error: "insufficient balance" }); // Send error response to frontend
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' }); // Send error response to frontend
+    }
+}
+
+exports.postCheckingCoupon=async(req,res)=>{
+    try {
+        const coupon=req.body.couponCode;
+        const coupondiscount=await couponModel.findOne({couponCode:coupon});
+        console.log("coupondiscount",coupondiscount.discount);
+        const user=req.session.user;
+        const ifUserIsAlreadyUsedTheCoupon=await orderModel.find({userId:user,couponCode:coupon});
+        if(ifUserIsAlreadyUsedTheCoupon.length === 0 ){
+            console.log("coupon is not used");
+            res.json({ discount: coupondiscount.discount });;
+
+        }
+        else{
+            res.json({ error: 'Already used this coupon' });
+        }
+
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' }); // Send error response to frontend

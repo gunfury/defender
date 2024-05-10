@@ -169,11 +169,12 @@
                         <select class="form-control" id="coupon" name="coupon">
                             <option value="" selected disabled>Select a Coupon</option>
                             <%couponData.forEach((items,id)=>{%>
-                            <option value="<%= items._id %>">
+                            <option id="coupon" value="<%= items.couponCode %>" name="coupon">
                                 <%= items.couponCode %>
                             </option>
                             <%})%>
                         </select>
+                        <span id="couponerrorMessage" style="color: #FF8C00;"></span>
                     </div>
                 </div>
                 <div id="couponsData" data-coupons=""></div>
@@ -182,6 +183,45 @@
             
                 <button class="btn btn-primary"  id="checkoutBtn">Proceed to Checkout</button>
             </form>
+
+            <script>
+                function applyCoupon(){
+                    const coupon=document.getElementById('coupon').value;
+                    console.log("coupon",coupon);
+                    fetch('/checkingCoupon', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ couponCode: coupon })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.discount){
+                const totalPriceElement = document.getElementById('totalPrice');
+                const totalPrice = parseFloat(totalPriceElement.innerText); 
+                const discountedPrice = totalPrice * (1 - data.discount/100);
+                totalPriceElement.innerText = discountedPrice.toFixed(2);
+                const discountAmountElement = document.getElementById('discountAmount');
+                 discountAmountElement.innerText = data.discount+"%";
+                 const errorElement = document.getElementById('couponerrorMessage');
+                errorElement.innerHTML = " ";
+                }
+                else if(data.error){
+                    const errorElement = document.getElementById('couponerrorMessage');
+                errorElement.innerHTML = data.error;
+
+
+                }
+               
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                // Handle errors, e.g., displaying an error message to the user
+            });
+                }
+
+            </script>
           <script>
             document.addEventListener("DOMContentLoaded", function() {
     var checkoutBtn = document.getElementById("checkoutBtn");
@@ -202,6 +242,7 @@
             console.log("Selected address:", address);
             const totalPrice = parseFloat(document.getElementById('totalPrice').innerHTML);
             console.log("Total price:", totalPrice);
+            const coupon=document.getElementById('coupon').value;
 
             // Fetch Razorpay instance
             fetch("/RazorpayInstance", {

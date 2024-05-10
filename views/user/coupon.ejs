@@ -28,15 +28,23 @@
     <div class="row">
       <!-- Start of loop -->
       <%couponData.forEach((items,id)=>{%>
-
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card__content">
-            <p class="card__category" style="color: black;"><%=items.couponCode%></p>
-            <h3 class="card__heading" style="color: black;"><%=items.discount%></h3>
+        <div class="coupons">
+        <div class="coupon">
+          <div class="coupon-intro">
+            <h4><%=items.couponCode%></h4>
+            <ul>
+             
+              <li><%=items.expiryDate%></li>
+              <li><%=items.couponCode%></li>
+            </ul>
+          </div>
+          <div class="coupon-value">
+            <%=items.discount%>%
           </div>
         </div>
-      </div>
+
+        </div>
+        
       <%})%>
 
 
@@ -49,7 +57,6 @@
 </section>
 
 <%}%>
-<a class="back-to-profile" href="/userProfile">Back to Profile</a>
 
 <!-- partial -->
 <%-include('./partials/footer.ejs')%>

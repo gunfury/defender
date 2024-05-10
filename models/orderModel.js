@@ -17,7 +17,7 @@ const orderSchema = mongoose.Schema({
         price: { type: Number,min: 0 },
         reason: { type: String,default: "" },
       
-        couponCode: { type: String },
+       
         refferalCode: { type: String },
     }],
     totalQuantity: { type: Number,min: 1 },
@@ -30,7 +30,7 @@ const orderSchema = mongoose.Schema({
         zipcode: {type:String},
         phone:{type:String},
     },
-    
+    couponCode: { type: String },
     discountPrice: { type: Number},
     paymentMethod: { type: String},
     orderDate: { type: Date, default: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),}
