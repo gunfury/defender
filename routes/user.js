@@ -36,7 +36,7 @@ router.get('/home',userSession,gethomepage);
 router.get('/otp',getotp);
 router.get('/resend',getresendotp);
 router.get('/userlogout',userSession,getuserlogout)
-router.get('/userSideProduct/:sortType',userSession,getuserSideProduct)
+router.get('/userSideProduct/:sortType', userSession, getuserSideProduct);
 router.get('/showproductdetails/:id',userSession,getproductDetails)
 
 

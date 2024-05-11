@@ -105,88 +105,70 @@ exports.getuserlogout=(req,res)=>{
 exports.getuserSideProduct = async (req, res) => {
     try {
         const sortType = req.params.sortType;
+        const categoryName = req.query.categoryName;
+        console.log("categoryName",categoryName); // Get the category name from the URL
         const categoryData = await categoryMdl.find();
-
-        // Check if there's a search query in the request query parameters
-        const searchQuery = req.query.query;
-
-        // Initialize the productDisplay array
         let productDisplay;
+
+        const searchQuery = req.query.query;
 
         // Retrieve all products if no search query, otherwise, apply search filter
         if (searchQuery) {
+            // Filter products based on search query
             productDisplay = await productMdl.find({ productName: { $regex: new RegExp(searchQuery, 'i') } });
-            
-            // Apply sorting based on sortType only to the search results
-            switch (sortType) {
-                case 'aA-zZ':
-                    productDisplay.sort((a, b) => a.productName.localeCompare(b.productName));
-                    break;
-                case 'zZ-aA':
-                    productDisplay.sort((a, b) => b.productName.localeCompare(a.productName));
-                    break;
-                case 'Low-High':
-                    productDisplay.sort((a, b) => a.price - b.price);
-                    break;
-                case 'High-Low':
-                    productDisplay.sort((a, b) => b.price - a.price);
-                    break;
-                case 'new-arrivals':
-                    productDisplay.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
-                    break;
-                case 'old-arrivals':
-                    productDisplay.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
-                    break;
-                case 'category1':
-                    productDisplay = productDisplay.filter(product => product.category === 'category1');
-                    break;
-                case 'category2':
-                    productDisplay = productDisplay.filter(product => product.category === 'category2');
-                    break;
-                default:
-                    break;
-            }
+        } else if (categoryName) { // Check if categoryName is provided
+            // Filter products based on category name
+            productDisplay = await productMdl.find({cartegory:categoryName});
+            console.log("hit",productDisplay);
         } else {
-            // If there's no search query, retrieve all products
+            // If there's no search query or category name, retrieve all products
             productDisplay = await productMdl.find();
-
-            // Apply sorting based on sortType to all products
-            switch (sortType) {
-                case 'aA-zZ':
-                    productDisplay.sort((a, b) => a.productName.localeCompare(b.productName));
-                    break;
-                case 'zZ-aA':
-                    productDisplay.sort((a, b) => b.productName.localeCompare(a.productName));
-                    break;
-                case 'Low-High':
-                    productDisplay.sort((a, b) => a.price - b.price);
-                    break;
-                case 'High-Low':
-                    productDisplay.sort((a, b) => b.price - a.price);
-                    break;
-                case 'new-arrivals':
-                    productDisplay.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
-                    break;
-                case 'old-arrivals':
-                    productDisplay.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
-                    break;
-                case 'category1':
-                    productDisplay = productDisplay.filter(product => product.category === 'category1');
-                    break;
-                case 'category2':
-                    productDisplay = productDisplay.filter(product => product.category === 'category2');
-                    break;
-                default:
-                    break;
-            }
         }
 
-        res.render('user/product', { productDisplay, categoryData });
+        // Apply sorting based on sortType to the filtered products
+        switch (sortType) {
+            case 'aA-zZ':
+                productDisplay.sort((a, b) => a.productName.localeCompare(b.productName));
+                break;
+            case 'zZ-aA':
+                productDisplay.sort((a, b) => b.productName.localeCompare(a.productName));
+                break;
+            case 'Low-High':
+                productDisplay.sort((a, b) => a.price - b.price);
+                break;
+            case 'High-Low':
+                productDisplay.sort((a, b) => b.price - a.price);
+                break;
+            case 'new-arrivals':
+                productDisplay.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
+                break;
+            case 'old-arrivals':
+                productDisplay.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
+                break;
+            case 'category1':
+                productDisplay = productDisplay.filter(product => product.category === 'category1');
+                break;
+            case 'category2':
+                productDisplay = productDisplay.filter(product => product.category === 'category2');
+                break;
+            default:
+                break;
+        }
+
+        res.render('user/product', { productDisplay, categoryData,sortType});
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 };
+
+
+        // Apply sorting based on sortType to the filtered products
+       
+
+    
+
+
 
 
 
