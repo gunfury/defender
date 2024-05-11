@@ -106,43 +106,77 @@ exports.getuserSideProduct = async (req, res) => {
     try {
         const sortType = req.params.sortType;
         const categoryData = await categoryMdl.find();
+
+        // Check if there's a search query in the request query parameters
+        const searchQuery = req.query.query;
+
+        // Initialize the productDisplay array
         let productDisplay;
 
-        // Check if there's a search query in the request body
-        const searchQuery = req.body.query;
-
+        // Retrieve all products if no search query, otherwise, apply search filter
         if (searchQuery) {
-            // If there's a search query, find the product matching the query
             productDisplay = await productMdl.find({ productName: { $regex: new RegExp(searchQuery, 'i') } });
-        } else {
-            // Otherwise, apply sorting/filtering based on sortType
+            
+            // Apply sorting based on sortType only to the search results
             switch (sortType) {
                 case 'aA-zZ':
-                    productDisplay = await productMdl.find().sort({ productName: 1 });
+                    productDisplay.sort((a, b) => a.productName.localeCompare(b.productName));
                     break;
                 case 'zZ-aA':
-                    productDisplay = await productMdl.find().sort({ productName: -1 });
+                    productDisplay.sort((a, b) => b.productName.localeCompare(a.productName));
                     break;
                 case 'Low-High':
-                    productDisplay = await productMdl.find().sort({ price: -1 });
+                    productDisplay.sort((a, b) => a.price - b.price);
                     break;
                 case 'High-Low':
-                    productDisplay = await productMdl.find().sort({ price: 1 });
+                    productDisplay.sort((a, b) => b.price - a.price);
                     break;
                 case 'new-arrivals':
-                    productDisplay = await productMdl.find().sort({ _id: -1 });
+                    productDisplay.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
                     break;
                 case 'old-arrivals':
-                    productDisplay = await productMdl.find();
+                    productDisplay.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
                     break;
                 case 'category1':
-                    productDisplay = await productMdl.find({ cartegory: 'category1' }).sort({ productName: 1 });
+                    productDisplay = productDisplay.filter(product => product.category === 'category1');
                     break;
                 case 'category2':
-                    productDisplay = await productMdl.find({ cartegory: 'category2' }).sort({ productName: 1 });
+                    productDisplay = productDisplay.filter(product => product.category === 'category2');
                     break;
                 default:
-                    productDisplay = await productMdl.find();
+                    break;
+            }
+        } else {
+            // If there's no search query, retrieve all products
+            productDisplay = await productMdl.find();
+
+            // Apply sorting based on sortType to all products
+            switch (sortType) {
+                case 'aA-zZ':
+                    productDisplay.sort((a, b) => a.productName.localeCompare(b.productName));
+                    break;
+                case 'zZ-aA':
+                    productDisplay.sort((a, b) => b.productName.localeCompare(a.productName));
+                    break;
+                case 'Low-High':
+                    productDisplay.sort((a, b) => a.price - b.price);
+                    break;
+                case 'High-Low':
+                    productDisplay.sort((a, b) => b.price - a.price);
+                    break;
+                case 'new-arrivals':
+                    productDisplay.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
+                    break;
+                case 'old-arrivals':
+                    productDisplay.sort((a, b) => a._id.getTimestamp() - b._id.getTimestamp());
+                    break;
+                case 'category1':
+                    productDisplay = productDisplay.filter(product => product.category === 'category1');
+                    break;
+                case 'category2':
+                    productDisplay = productDisplay.filter(product => product.category === 'category2');
+                    break;
+                default:
                     break;
             }
         }
@@ -153,6 +187,8 @@ exports.getuserSideProduct = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
+
+
 
 
 
