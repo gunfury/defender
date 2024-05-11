@@ -193,6 +193,46 @@ exports.getCoupon = async (req,res)=>{
     }
 }
 
+exports.getSalesReport=async (req,res)=>{
+    try {
+        const orderData=await orderModel.find()
+        
+
+        const userNames = [];
+        for (const order of orderData) {
+            const userdata = await user.findById(order.userId);
+            userNames.push(userdata.username);
+        }
+        res.render('admin/saleReport',{orderData,userNames})
+        
+        
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+exports.getFilterData=async(req,res)=>{
+    try {
+        const startDate = req.query.startDate;
+        const endDate = req.query.endDate;
+        const salesFilter = req.query.salesFilter;
+        console.log("sdfgh",startDate,endDate,salesFilter);
+        // Your filtering logic here based on startDate, endDate, and salesFilter
+
+        // Example filtering logic:
+        const filteredData = await orderModel.find({
+            orderDate: { $gte: startDate, $lte: endDate },
+            salesFilter: salesFilter
+        });
+
+        // Render filtered data as HTML
+        res.render('filteredData', { filteredData: filteredData });
+    } catch (error) {
+        console.error("Error filtering data:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 exports.postfetchOrderStatusUpdate = async (req, res) => {
     try {
         const orderId = req.body.orderId;

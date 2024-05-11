@@ -21,6 +21,8 @@ const{
     getBlockUser,
     getOrderManagement,
     getCoupon,
+    getSalesReport,
+    getFilterData,
     
     
 
@@ -60,7 +62,9 @@ router.get('/deleteProduct/:id',adminSession,getDeleteproduct);
 router.get('/softDeleteProduct/:id',adminSession,getSoftDeleteProduct);
 router.get('/userblock/:id',adminSession,getBlockUser);
 router.get('/order',getOrderManagement);
-router.get('/coupon',adminSession,getCoupon)
+router.get('/coupon',adminSession,getCoupon);
+router.get('/salesReport',getSalesReport);
+router.get('/filterData',getFilterData)
 
 
 
