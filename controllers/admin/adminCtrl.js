@@ -196,14 +196,14 @@ exports.getCoupon = async (req,res)=>{
 exports.getSalesReport=async (req,res)=>{
     try {
         const orderData=await orderModel.find()
-        
-
+        let data=0;
+        console.log("dfghjk",typeof data);
         const userNames = [];
         for (const order of orderData) {
             const userdata = await user.findById(order.userId);
             userNames.push(userdata.username);
         }
-        res.render('admin/saleReport',{orderData,userNames})
+        res.render('admin/saleReport',{orderData,userNames,data:data})
         
         
     } catch (error) {
@@ -211,22 +211,32 @@ exports.getSalesReport=async (req,res)=>{
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-exports.getFilterData=async(req,res)=>{
+exports.postFilterData=async(req, res)=>{
     try {
-        const startDate = req.query.startDate;
-        const endDate = req.query.endDate;
-        const salesFilter = req.query.salesFilter;
-        console.log("sdfgh",startDate,endDate,salesFilter);
+        const startDate = req.body.data.startDate;
+        const endDate = req.body.data.endDate;
+        const salesFilter = req.body.data.salesFilter;
+        console.log("sdfgh", new Date(startDate), endDate, salesFilter);
+        const orderDat=await orderModel.find()
         // Your filtering logic here based on startDate, endDate, and salesFilter
-
+        
         // Example filtering logic:
         const filteredData = await orderModel.find({
-            orderDate: { $gte: startDate, $lte: endDate },
-            salesFilter: salesFilter
+            orderDate: { $gte: new Date(startDate), $lte: new Date(endDate) }
+            
         });
-
+        console.log("ghj");
+        
+        const userNames = [];
+        for (const order of filteredData) {
+            const userdata = await user.findById(order.userId);
+            userNames.push(userdata.username);
+        }
+        console.log("userNmae",userNames);
+        console.log("filteredData", filteredData);
+      // return res.render('admin/saleReport', { orderData: filteredData, userNames: userNames });
         // Render filtered data as HTML
-        res.render('filteredData', { filteredData: filteredData });
+        res.json({ filteredData: filteredData ,userNames:userNames});
     } catch (error) {
         console.error("Error filtering data:", error);
         res.status(500).json({ error: 'Internal Server Error' });

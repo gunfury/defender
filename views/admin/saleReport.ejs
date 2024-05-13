@@ -152,28 +152,54 @@
               </thead>
               <tbody>
                 <tbody>
-                   
-                    <% orderData.forEach((items,id)=>{%>
-                        <%items.products.forEach(product=>{%>
-                    <tr>
-                      <th scope="col"><%=items.orderNumber%></th>
-                      <th scope="col"><%=product.productName%></th>
-                      <th scope="col"><%=userNames[id]%></th>
-                      <th scope="col"><%=items.address.address,items.address.city,items.address.state,items.address.country,items.address.zipcode%></th>
-                      
-                      <th scope="col"><%=product.quantity%></th>
-                      <th scope="col"><%=product.price*product.quantity%></th>
-                      <th scope="col"></th>
-                      <th scope="col"><%=items.paymentMethod%></th>
-                      <th scope="col"><%=new Date(items.orderDate).toLocaleDateString("en-US") %> <%=  new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
-                      
-                     
-                     
-                    </tr>
-                    <%})})%>
-                   
-                    
+
+                    <% if (typeof data.filteredData !== 'undefined' && data.filteredData.length > 0) { %> 
+                        <style>
+                            .tablrow{
+                                background-color: greenyellow;
+                                font-size: 5rem;
+                            }
+                        </style>
+                        <% data.filteredData.forEach((items, id) => { %>
+                            <% items.products.forEach(product => { %>
+                
+                                <tr class="<%= items.products.length > 0 ? 'tablrow' : '' %>" >
+                                    <th scope="col"><%= items.orderNumber %></th>
+                                    <th scope="col"><%= product.productName %></th>
+                                    <th scope="col"><%= data.userNames[id] %></th>
+                                    <th scope="col"><%= items.address.address %>, <%= items.address.city %>, <%= items.address.state %>, <%= items.address.country %>, <%= items.address.zipcode %></th>
+                                    <th scope="col"><%= product.quantity %></th>
+                                    <th scope="col"><%= product.price * product.quantity %></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"><%= items.paymentMethod %></th>
+                                    <th scope="col"><%= new Date(items.orderDate).toLocaleDateString("en-US") %> <%= new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
+                                </tr>
+                
+                            <% }) %> 
+                        <% }) %> 
+                    <%}%>
+                
+                    <% if (typeof data.filteredData === 'undefined' || data.filteredData.length === 0) { %>
+                        <% orderData.forEach((items,id) => { %>
+                            <% items.products.forEach(product => { %>
+                                <tr class="tablrow" >
+                                    
+                                    <th scope="col"><%= items.orderNumber %></th>
+                                    <th scope="col"><%= product.productName %></th>
+                                    <th scope="col"><%= userNames[id] %></th>
+                                    <th scope="col"><%= items.address.address %>, <%= items.address.city %>, <%= items.address.state %>, <%= items.address.country %>, <%= items.address.zipcode %></th>
+                                    <th scope="col"><%= product.quantity %></th>
+                                    <th scope="col"><%= product.price * product.quantity %></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"><%= items.paymentMethod %></th>
+                                    <th scope="col"><%= new Date(items.orderDate).toLocaleDateString("en-US") %> <%= new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
+                                </tr>
+                            <% }) %>
+                        <% }) %>
+                    <%}%>
                 </tbody>
+                
+                
                 </table>
                 </div>
                 </div>
@@ -190,38 +216,84 @@
             </div>
         </footer>
     </div>
-    <script>
-        $(document).ready(function() {
-            $("#apply").click(function() {
-                var startDate = $("#startDate").val();
-                var endDate = $("#endDate").val();
-                var salesFilter = $("#salesFilter").val();
-    
-                // Make AJAX request to server
-                $.ajax({
-                    url: "/filterData", // Update with your server route
-                    method: "GET",
-                    data: {
-                        startDate: startDate,
-                        endDate: endDate,
-                        salesFilter: salesFilter
-                    },
-                    success: function(response) {
-                        // Update table with filtered data
-                        $(".table tbody").html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error:", error);
-                    }
-                });
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("apply").addEventListener("click", function () {
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        var salesFilter = document.getElementById("salesFilter").value;
+
+        // Construct the request body
+        var data = {
+            startDate: startDate,
+            endDate: endDate,
+            salesFilter: salesFilter
+        };
+
+        // Make Fetch request to server
+        fetch("/filterData", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ data: data })
+        })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json(); // Parse response as JSON
+            })
+            .then(function (data) {
+                console.log("Filtered data:", data.filteredData);
+                updateTable(data.filteredData, data.userNames); // Call function to update table with filtered data and usernames
+               
+            })
+            .catch(function (error) {
+                console.error("Error:", error);
             });
-    
-            $("#salesFilter").change(function() {
-                // Trigger click event of Apply button when sales filter is changed
-                $("#apply").click();
+    });
+
+    document.getElementById("salesFilter").addEventListener("change", function () {
+        // Trigger click event of Apply button when sales filter is changed
+        document.getElementById("apply").click();
+    });
+});
+
+// Function to update table with filtered data and usernames
+function updateTable(filteredData, userNames) {
+    var tableBody = document.querySelector(".table tbody");
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    // Loop through the filtered data and create table rows
+    if (Array.isArray(filteredData)) {
+        filteredData.forEach(function (item, index) {
+            item.products.forEach(function (product) {
+                var row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.orderNumber}</td>
+                    <td>${product.productName}</td>
+                    <td>${userNames[index]}</td> <!-- Use index to get the corresponding username -->
+                    <td>${item.address.address}, ${item.address.city}, ${item.address.state}, ${item.address.country}, ${item.address.zipcode}</td>
+                    <td>${product.quantity}</td>
+                    <td>${product.price * product.quantity}</td>
+                    <td></td>
+                    <td>${item.paymentMethod}</td>
+                    <td>${new Date(item.orderDate).toLocaleDateString("en-US")} ${new Date(item.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })}</td>
+                `;
+                tableBody.appendChild(row);
             });
         });
-    </script>
+    } else {
+        // Handle case when filteredData is not an array (e.g., single order)
+        // You can create a single row for the order here if needed
+        console.log("Filtered data is not an array:", filteredData);
+    }
+}
+
+   </script>
+    
+    
     
     <script src="admin/js/jquery-3.3.1.min.js"></script>
     <!-- https://jquery.com/download/ -->

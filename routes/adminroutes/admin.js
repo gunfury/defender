@@ -22,7 +22,7 @@ const{
     getOrderManagement,
     getCoupon,
     getSalesReport,
-    getFilterData,
+    
     
     
 
@@ -36,6 +36,7 @@ const{
     postfetchOrderStatusUpdate,
     postAddcoupon,
     postRemoveCoupon,
+    postFilterData,
     
    
 
@@ -64,7 +65,7 @@ router.get('/userblock/:id',adminSession,getBlockUser);
 router.get('/order',getOrderManagement);
 router.get('/coupon',adminSession,getCoupon);
 router.get('/salesReport',getSalesReport);
-router.get('/filterData',getFilterData)
+
 
 
 
@@ -78,6 +79,7 @@ router.post('/editProductDone/:id',adminSession,multer,postEditproduct);
 router.post('/orderStatusUpdate',postfetchOrderStatusUpdate);
 router.post('/addcoupon',postAddcoupon);
 router.post('/removeCoupon/:id',postRemoveCoupon);
+router.post('/filterData',postFilterData)
 
 
 
