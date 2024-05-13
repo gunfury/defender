@@ -152,18 +152,12 @@
               </thead>
               <tbody>
                 <tbody>
-
+                    
                     <% if (typeof data.filteredData !== 'undefined' && data.filteredData.length > 0) { %> 
-                        <style>
-                            .tablrow{
-                                background-color: greenyellow;
-                                font-size: 5rem;
-                            }
-                        </style>
                         <% data.filteredData.forEach((items, id) => { %>
                             <% items.products.forEach(product => { %>
-                
-                                <tr class="<%= items.products.length > 0 ? 'tablrow' : '' %>" >
+
+                                <tr>
                                     <th scope="col"><%= items.orderNumber %></th>
                                     <th scope="col"><%= product.productName %></th>
                                     <th scope="col"><%= data.userNames[id] %></th>
@@ -174,16 +168,22 @@
                                     <th scope="col"><%= items.paymentMethod %></th>
                                     <th scope="col"><%= new Date(items.orderDate).toLocaleDateString("en-US") %> <%= new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
                                 </tr>
-                
-                            <% }) %> 
+                                <style>
+                                    .tablrow{
+                                        display: none !important;
+                                    }
+                                </style>
+                            <% }) %>
                         <% }) %> 
-                    <%}%>
-                
-                    <% if (typeof data.filteredData === 'undefined' || data.filteredData.length === 0) { %>
+                       
+                  <%}%>
+                 
+                  <div class="ya" >
+                  <% if (typeof data.filteredData === 'undefined' || data.filteredData.length === 0) { %>
+
                         <% orderData.forEach((items,id) => { %>
                             <% items.products.forEach(product => { %>
-                                <tr class="tablrow" >
-                                    
+                                <tr class="tablrow"  >
                                     <th scope="col"><%= items.orderNumber %></th>
                                     <th scope="col"><%= product.productName %></th>
                                     <th scope="col"><%= userNames[id] %></th>
@@ -196,9 +196,10 @@
                                 </tr>
                             <% }) %>
                         <% }) %>
-                    <%}%>
+                   <%}%>
+                  
+                   </div>
                 </tbody>
-                
                 
                 </table>
                 </div>
