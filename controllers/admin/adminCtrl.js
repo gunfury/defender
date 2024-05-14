@@ -9,6 +9,7 @@ const couponModel=require('../../models/couponModel')
 const { log, Console } = require("console");
 const flash = require('connect-flash');
 const orderModel=require('../../models/orderModel');
+const PDFDocument = require('pdfkit');
 
 
 
@@ -197,7 +198,7 @@ exports.getSalesReport=async (req,res)=>{
     try {
         const orderData=await orderModel.find()
         let data=0;
-        console.log("dfghjk",typeof data);
+        
         const userNames = [];
         for (const order of orderData) {
             const userdata = await user.findById(order.userId);
@@ -263,6 +264,126 @@ exports.postfetchOrderStatusUpdate = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 }
+
+
+exports.postPDFdownload = async (req, res) => {
+    try {
+        const PDFDocument = require('pdfkit'); // Import PDFDocument module
+        const doc = new PDFDocument();
+        const tableData = req.body.tableData;
+        
+        res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
+        res.setHeader('Content-Type', 'application/pdf');
+
+        // Pipe the PDF content to the response
+        doc.pipe(res);
+
+        // Add sales report heading
+        doc.font('Helvetica-Bold').fontSize(14).text('Sales Report', { align: 'center' });
+
+        // Set up the table layout
+        const table = {
+            headers: ['ORDER NO', 'PRODUCT NAME', 'USERNAME', 'ADDRESS', ' QUANTITY', 'TOTALPRICE', 'DISCOUNT', 'PAYMENT METHOD', 'DATE & TIME'],
+            rows: []
+        };
+        const spacedHeaders = table.headers.map(header => header + ' ');
+
+        // Populate the table data
+        tableData.forEach(row => {
+            table.rows.push(row); // Add each row to the table
+        });
+
+        // Draw the table
+        // drawTable(doc, {
+        //     x: 50,
+        //     y: 100, // Adjusted y position with a margin top of 20 units
+        //     width: 500,
+        //     headers: spacedHeaders, // Use spacedHeaders instead of table.headers
+        //     rows: table.rows,
+        //     headerMarginBottom: 10, // Specify the margin bottom for the table header
+        //     rowSpacing: 5 // Specify the space between rows
+        // });
+        drawTable(doc, {
+            x: 10, // Adjusted x position
+            y: 100,
+            headers: table.headers,
+            rows: table.rows,
+            margin: 15, // Adjust the margin as needed
+            fourthColumnHeight: 30, // Adjust the height of the fourth column as needed
+            pageWidth: 600 // Width of the PDF document's page
+        });
+        
+        // End the PDF document
+        doc.end();
+    } catch (error) {
+        console.error("Error during PDF generation:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+// Function to draw a table
+function drawTable(doc, options) {
+    const { x, y, headers, rows, margin, fourthColumnHeight, pageWidth } = options;
+
+    doc.font('Helvetica-Bold');
+    doc.fontSize(6); // Reduce the font size further
+
+    // Calculate column widths based on the longest content in each column
+    const colWidths = headers.map((header, i) => {
+        const headerWidth = doc.widthOfString(header);
+        const maxCellWidth = rows.reduce((maxWidth, row) => {
+            const cellWidth = doc.widthOfString(row[i].toString());
+            return Math.max(maxWidth, cellWidth);
+        }, headerWidth);
+        return maxCellWidth + margin; // Add a small margin between columns
+    });
+
+    // Calculate row heights
+    const rowHeights = rows.map(row => {
+        // Increase the height of the fourth column in each row
+        return row.map((cell, columnIndex) => {
+            return columnIndex === 3 ? fourthColumnHeight : 10; // Adjust the height of the fourth column as needed
+        });
+    });
+
+    // Calculate the total width of the table
+    const tableWidth = colWidths.reduce((total, width) => total + width, 0);
+
+    // Calculate the available space on the page
+    const availableWidth = pageWidth - x;
+
+    // Adjust the table position if it exceeds the available width
+    const adjustedX = Math.max(x, x + (availableWidth - tableWidth) / 2);
+
+    // Draw headers
+    doc.fillColor('#000');
+    headers.forEach((header, i) => {
+        doc.text(header, adjustedX + sum(colWidths.slice(0, i)) + margin / 2, y, { width: colWidths[i], align: 'left' });
+    });
+
+    // Draw rows
+    doc.font('Helvetica').fontSize(6); // Reduce the font size further
+    rows.forEach((row, rowIndex) => {
+        const yPosition = y + (rowIndex + 1) * (10 + margin); // Add margin between rows
+        row.forEach((cell, columnIndex) => {
+            const startX = adjustedX + sum(colWidths.slice(0, columnIndex)) + margin / 2;
+            const cellHeight = rowHeights[rowIndex][columnIndex];
+            doc.text(cell.toString(), startX, yPosition, { width: colWidths[columnIndex], height: cellHeight, align: 'left' });
+        });
+    });
+}
+
+
+function sum(arr) {
+    return arr.reduce((total, num) => total + num, 0);
+}
+
+
+
+
+
+
+
 
 
 

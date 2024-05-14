@@ -265,6 +265,69 @@ function updateTable(filteredData, userNames) {
 }
 
  </script>
+
+ <script>
+                // Add event listener to the Download PDF button
+            document.getElementById("downloadPdf").addEventListener("click", function () {
+                downloadFile("/generatePdf");
+            });
+
+            // Add event listener to the Download Excel button
+            document.getElementById("downloadExcel").addEventListener("click", function () {
+                downloadFile("/generateExcel");
+            });
+
+          // Function to download file via AJAX
+function downloadFile(url) {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tableData: getTableData() }) // Send table data to the server
+    })
+    .then(function (response) {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.blob(); // Get the response body as a Blob
+    })
+    .then(function (blob) {
+        console.log("Blob object:", blob)
+        // Create a temporary link element to trigger the download
+        var link = document.createElement("a");
+        
+        link.href = window.URL.createObjectURL(blob);
+        
+        link.download = "report"; // Set the default filename
+        link.click(); // Trigger the download
+    })
+    .catch(function (error) {
+        console.error("Error:", error);
+    });
+}
+
+// Function to extract table data
+function getTableData() {
+    var data = [];
+    var rows = document.querySelectorAll('#tableBody tr');
+   
+    rows.forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll("th, td").forEach(function(cell) { // Check both "th" and "td"
+            rowData.push(cell.textContent.trim());
+        });
+        data.push(rowData);
+    });
+    console.log('sdfgh',data);
+    return data;
+}
+
+
+
+
+ </script>
+ 
     
     
     

@@ -25,6 +25,7 @@ const{
     
     
     
+    
 
     ///postmethods
     postBlockUser,
@@ -37,6 +38,7 @@ const{
     postAddcoupon,
     postRemoveCoupon,
     postFilterData,
+    postPDFdownload,
     
    
 
@@ -70,6 +72,7 @@ router.get('/salesReport',getSalesReport);
 
 
 
+
 //post
 router.post("/adminlogin",postAdminLogin);
 router.post("/addcartegory",adminSession,postAddcategory);
@@ -79,7 +82,8 @@ router.post('/editProductDone/:id',adminSession,multer,postEditproduct);
 router.post('/orderStatusUpdate',postfetchOrderStatusUpdate);
 router.post('/addcoupon',postAddcoupon);
 router.post('/removeCoupon/:id',postRemoveCoupon);
-router.post('/filterData',postFilterData)
+router.post('/filterData',postFilterData);
+router.post('/generatePdf',postPDFdownload);
 
 
 
