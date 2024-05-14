@@ -158,12 +158,12 @@ function renderProducts(products) {
            
             <div class="input_container">
                
-               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" id="sort">Sort</button>
+               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" id="sort" style="color: black;">Filter</button>
                
 
                <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
                  <div class="offcanvas-header">
-                   <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Sort</h5>
+                   <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Filter</h5>
                    
                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                  </div>
@@ -176,7 +176,7 @@ function renderProducts(products) {
                <div class="catergorydiv">
                   <label for="sorting-order" class="dropdown-label">Category</label>
                   <div class="dropdown">
-                      <button class="dropbtn">Sort</button>
+                      <button class="dropbtn">Filter</button>
                       <div class="dropdown-content">
                         <% categoryData.forEach((item) => { %>
                             <a style="color:white;" href="/userSideProduct/<%= sortType %>?categoryName=<%= item.Category %>"><%= item.Category %></a>
@@ -188,7 +188,7 @@ function renderProducts(products) {
                <div class="catergorydiv">
                   <label for="sorting-order" class="dropdown-label">Sorting order</label>
                   <div class="dropdown">
-                      <button class="dropbtn">Sort</button>
+                      <button class="dropbtn">Filter</button>
                       <div class="dropdown-content">
                           <a href="/userSideProduct/aA-zZ">aA-zZ</a>
                           <a href="/userSideProduct/zZ-aA">zZ-aA</a>
@@ -199,7 +199,7 @@ function renderProducts(products) {
               <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label">New Arrivals</label>
                <div class="dropdown">
-                   <button class="dropbtn">Sort</button>
+                   <button class="dropbtn">Filter</button>
                    <div class="dropdown-content">
                        <a href="/userSideProduct/new-arrivals">lastest arrivals</a>
                        <a href="/userSideProduct/old-arrivals">old arrivals</a>
@@ -210,7 +210,7 @@ function renderProducts(products) {
             <div class="catergorydiv">
                   <label for="sorting-order" class="dropdown-label">Price</label>
                   <div class="dropdown">
-                      <button class="dropbtn">Sort</button>
+                      <button class="dropbtn">Filter</button>
                       <div class="dropdown-content">
                           <a href="/userSideProduct/Low-High">Low to High</a>
                           <a href="/userSideProduct/High-Low">High to Low</a>
@@ -218,7 +218,7 @@ function renderProducts(products) {
                   </div>
               </div>
               <br>
-              <div class="catergorydiv">
+              <!-- <div class="catergorydiv">
                <label for="sorting-order" class="dropdown-label">Popularity</label>
                <div class="dropdown">
                    <button class="dropbtn">Sort</button>
@@ -249,7 +249,7 @@ function renderProducts(products) {
                        <a href="/sortProduct/za-ZA">Least rated</a>
                    </div>
                </div>
-              </div>  
+              </div>   -->
                 
                  
                 

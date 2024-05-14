@@ -151,39 +151,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tbody>
-                    
-                    <% if (typeof data.filteredData !== 'undefined' && data.filteredData.length > 0) { %> 
-                        <% data.filteredData.forEach((items, id) => { %>
+                <tbody id="tableBody">
+                    <!-- Table body content will be dynamically updated -->
+                    <% if (typeof data.filteredData === 'undefined' || data.filteredData.length === 0) { %>
+                        <% orderData.forEach((items, id) => { %>
                             <% items.products.forEach(product => { %>
-
                                 <tr>
-                                    <th scope="col"><%= items.orderNumber %></th>
-                                    <th scope="col"><%= product.productName %></th>
-                                    <th scope="col"><%= data.userNames[id] %></th>
-                                    <th scope="col"><%= items.address.address %>, <%= items.address.city %>, <%= items.address.state %>, <%= items.address.country %>, <%= items.address.zipcode %></th>
-                                    <th scope="col"><%= product.quantity %></th>
-                                    <th scope="col"><%= product.price * product.quantity %></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"><%= items.paymentMethod %></th>
-                                    <th scope="col"><%= new Date(items.orderDate).toLocaleDateString("en-US") %> <%= new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
-                                </tr>
-                                <style>
-                                    .tablrow{
-                                        display: none !important;
-                                    }
-                                </style>
-                            <% }) %>
-                        <% }) %> 
-                       
-                  <%}%>
-                 
-                  <div class="ya" >
-                  <% if (typeof data.filteredData === 'undefined' || data.filteredData.length === 0) { %>
-
-                        <% orderData.forEach((items,id) => { %>
-                            <% items.products.forEach(product => { %>
-                                <tr class="tablrow"  >
                                     <th scope="col"><%= items.orderNumber %></th>
                                     <th scope="col"><%= product.productName %></th>
                                     <th scope="col"><%= userNames[id] %></th>
@@ -196,9 +169,7 @@
                                 </tr>
                             <% }) %>
                         <% }) %>
-                   <%}%>
-                  
-                   </div>
+                    <% } %>
                 </tbody>
                 
                 </table>
@@ -217,8 +188,9 @@
             </div>
         </footer>
     </div>
-   <script>
+ <script>
     document.addEventListener("DOMContentLoaded", function () {
+    // Add event listener to the apply button
     document.getElementById("apply").addEventListener("click", function () {
         var startDate = document.getElementById("startDate").value;
         var endDate = document.getElementById("endDate").value;
@@ -239,22 +211,22 @@
             },
             body: JSON.stringify({ data: data })
         })
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json(); // Parse response as JSON
-            })
-            .then(function (data) {
-                console.log("Filtered data:", data.filteredData);
-                updateTable(data.filteredData, data.userNames); // Call function to update table with filtered data and usernames
-               
-            })
-            .catch(function (error) {
-                console.error("Error:", error);
-            });
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json(); // Parse response as JSON
+        })
+        .then(function (data) {
+            console.log("Filtered data:", data.filteredData);
+            updateTable(data.filteredData, data.userNames); // Call function to update table with filtered data and usernames
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+        });
     });
 
+    // Add event listener to the salesFilter dropdown
     document.getElementById("salesFilter").addEventListener("change", function () {
         // Trigger click event of Apply button when sales filter is changed
         document.getElementById("apply").click();
@@ -263,7 +235,7 @@
 
 // Function to update table with filtered data and usernames
 function updateTable(filteredData, userNames) {
-    var tableBody = document.querySelector(".table tbody");
+    var tableBody = document.getElementById("tableBody"); // Get table body element
     tableBody.innerHTML = ""; // Clear existing rows
 
     // Loop through the filtered data and create table rows
@@ -292,7 +264,7 @@ function updateTable(filteredData, userNames) {
     }
 }
 
-   </script>
+ </script>
     
     
     

@@ -289,10 +289,10 @@ exports.postUSerWishlist=async(req,res)=>{
         }
       
         await wishlistModel.create(data);
-        return res.redirect('/wishlist');
+        return res.redirect('/whistList');
        }else {
       
-        return res.redirect('/wishlist'); 
+        return res.redirect('/whistList'); 
        }
         
     } catch (error) {
