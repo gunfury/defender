@@ -25,6 +25,11 @@
       <div class="hero_area">
          <!-- header section strats -->
          <%-include('./partials/navbar.ejs')%>
+         <style>
+            .e-body {
+              padding: 60px; /* Adjust the padding value as needed */
+            }
+          </style>
 
          <style>
            
@@ -89,12 +94,35 @@ h2 {
     }
 }
          </style>
+         <style>
+            /* Your CSS styles */
+            .download-pdf-btn {
+                position: absolute;
+                
+                right: 220px;
+                width: 350px;
+                height: 50px;
+                margin-top: 250px;
+                background-color: orange;
+            }
+            .download-excel-btn{
+                position: absolute;
+                
+                right: 220px;
+                width: 350px;
+                height: 50px;
+                margin-top: 320px;
+                background-color: orange;
 
+            }
+         </style>
 
+<button id="downloadPdf" class="total download-pdf-btn" style="border: none;">Download PDF</button>
+  
          <div id="email">
            
             <div class="e-body">
-                <h1><strong style="font-size: 60px;"> Details</strong></h1>
+                <h1><strong style="font-size: 60px;"> Invoice</strong></h1>
                 <p>Thanks for your order, the details are listed below</p>
                 
                 <table width="50%" cellspacing="0" cellpadding="0">
@@ -206,17 +234,15 @@ h2 {
                             <th align="left">Total</th>
                             <th width="12%" align="right">₹ <%=order.totalPrice%></th>
                         </tr>
-                        <tr>
-                            <th colspan="2">
-                            <th class="total" align="center">Download</th>
-                            
-                        </tr>
+                        
                     </thead>
                 </table>
             </div>
+            </div>
+            </div>
+        
         </div>
-
-
+       
 
 
 
@@ -237,5 +263,31 @@ h2 {
          <script src="/user/js/bootstrap.js"></script>
          <!-- custom js -->
          <script src="/user/js/custom.js"></script>
+         <!-- download-pdf -->
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+         <script>
+            // When the button is clicked
+            document.getElementById('downloadPdf').addEventListener('click', function() {
+              // Target the element to convert to PDF
+              const element = document.querySelector('.e-body');
+          
+              // Define options (optional)
+              const options = {
+                filename: 'defender-invoice.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait', margin: { left: 2.5, right: 3.5, top: 3.5, bottom: 0.5 } }
+              };
+          
+              // Convert HTML element to PDF
+              html2pdf().set(options).from(element).save();
+            });
+          </script>
+
+      
+
+          
+          
       </body>
    </html>
