@@ -293,7 +293,7 @@ function downloadFile(url) {
         return response.blob(); // Get the response body as a Blob
     })
     .then(function (blob) {
-        console.log("Blob object:", blob)
+        console.log("Blob object:", blob) 
         // Create a temporary link element to trigger the download
         var link = document.createElement("a");
         

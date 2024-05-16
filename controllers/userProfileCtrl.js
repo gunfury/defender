@@ -630,36 +630,74 @@ exports.postcheckoutform = async (req, res) => {
     }
 };
 
-exports.postRemoveProductFromOrder=async(req,res)=>{
+exports.postRemoveProductFromOrder = async (req, res) => {
     try {
-        const CancelproductID=req.params.id;
-        const orderId=req.params.orderId;
-     
+        const CancelproductID = req.params.id;
+        const orderId = req.params.orderId;
+        const userData = req.session.user;
+
+        // Assuming signupcollection is your user collection, make sure to replace it with the correct model
+        const currentUser = await signupcollection.findById(userData);
+        console.log("asdfgh", orderId);
+
+        
+
         const statusUpdatedOrderModel = await orderModel.findOneAndUpdate(
             { _id: orderId, "products.productId": CancelproductID },
-            { $set: { "products.$.status": "canelled" } }, // $ refers to the matched array element
+            { $set: { "products.$.status": "cancelled" } },
             { new: true }
         );
        
-        res.redirect('/userOrder')
+
+        const cancelledProduct = statusUpdatedOrderModel.products.find(product => product.productId.toString() === CancelproductID);
+        
+        const productPrice=cancelledProduct.price;
+        const productQuantity=cancelledProduct.quantity;
+
+      
+        const moneyWantAddedToTheWallet=productPrice*productQuantity;
+       
+        
+        currentUser.wallet.balance= currentUser.wallet.balance+moneyWantAddedToTheWallet;
+        await currentUser.save();
+
+        res.redirect('/userOrder/:page');
     } catch (error) {
         console.error("Error during checkout:", error);
         res.status(500).send("Internal Server Error");
     }
-   
 }
 exports.postReturnProduct=async(req,res)=>{
     try {
         const CancelproductID=req.body.productId;
         const orderId=req.body.orderId;
         const newStatus=req.body.returnProduct;
+        const userData = req.session.user;
+
+        
+        const currentUser = await signupcollection.findById(userData);
     
         const statusUpdatedOrderModel = await orderModel.findOneAndUpdate(
             { _id: orderId, "products.productId": CancelproductID },
             { $set: { "products.$.status":'returned' } }, // $ refers to the matched array element
             { new: true }
         );
-        res.redirect('/userOrder')
+
+        const cancelledProduct = statusUpdatedOrderModel.products.find(product => product.productId.toString() === CancelproductID);
+        
+        const productPrice=cancelledProduct.price;
+        const productQuantity=cancelledProduct.quantity;
+
+      
+        const moneyWantAddedToTheWallet=productPrice*productQuantity;
+       
+        
+        currentUser.wallet.balance= currentUser.wallet.balance+moneyWantAddedToTheWallet;
+        await currentUser.save();
+     //  res.redirect('/userOrder')
+
+     res.json({sucess:'true'})
+    
         
         
     } catch (error) {

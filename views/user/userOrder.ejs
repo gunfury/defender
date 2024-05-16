@@ -156,6 +156,7 @@ address{
       &.product-name {
         text-align: left;
       }
+      
     }
   }
 
@@ -302,13 +303,13 @@ p{
                                     <p style="color: #39b44a;"> status:<%=product.status%></p>
                                         <%}else if(product.status==='delivered'){%>
                                             <button class="close-button" id="returnproduct" value="return Product" onclick="openModalreturn('<%= product.productId %>','<%=item._id%>')" style="background-color: rgb(255, 60, 0);border-radius: 20px;">Return</button><br>
-                                            <p style="color: #39b44a;"> status:<%=product.status%></p>
+                                            <p style="color: #39b44a;" id="deliveredstatus"> status:<%=product.status%></p>
                                             <%}else if(product.status==='Cancelled'){%>
                                                 <p style="color: #ff0000;">Order Cancelled</p>
                                                 <p style="color: #ff0000;"> status:Cancelled</p>
                                                 <%}else if(product.status==='returned'){%>
                                                   
-                                                  <p style="color: #ff0000;"> status:returned</p>
+                                                  <p style="color: #ff0000;" > status:returned</p>
                                                   
                                                 <%}else{%>
                                                     <button class="close-button" onclick="openModal('<%=product.productId%>','<%=item._id%>')" style="background-color:rgb(34, 255, 0);border-radius: 20px;" disabled>canel-order</button><br>
@@ -459,8 +460,21 @@ p{
                                         return response.json();
                         })
                         .then(data => {
-                          // Handle the JSON response data here
-                          console.log(data); // Example: You might want to log it to the console
+                          const returnProductElement = document.getElementById('returnproduct');
+                            if (returnProductElement) {
+                                const returnedStatusElement = document.createElement('p');
+                                returnedStatusElement.textContent = "status: returned";
+                                returnedStatusElement.style.color = '#ff0000';
+                                returnedStatusElement.id = 'returned';
+                                
+                                // Replace the old element with the new one
+                                returnProductElement.parentNode.replaceChild(returnedStatusElement, returnProductElement);
+                            }
+                            const deliveredStatusElement = document.getElementById('deliveredstatus');
+                            if (deliveredStatusElement) {
+                                deliveredStatusElement.remove();
+                            }
+
                       })
                       .catch(error => {
                           // Handle errors here

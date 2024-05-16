@@ -235,8 +235,26 @@
         }
 
         if(selectedPaymentMethod.value === "Cash On Delivery") {
-            var checkoutForm = document.getElementById("checkoutForm");
-            checkoutForm.submit();
+           
+            const totalPrice = parseFloat(document.getElementById('totalPrice').innerHTML);
+            console.log("Total price:", totalPrice);
+
+            if(totalPrice>=1500){
+               
+                Swal.fire({
+            icon: 'warning',
+            title: 'Cash On Delivery Alert',
+            text: 'Cash on delivery is only applicable for orders below  ₹ 1500.',
+            showConfirmButton: true
+        });
+
+            }else{
+                var checkoutForm = document.getElementById("checkoutForm");
+                console.log("else", totalPrice);
+                checkoutForm.submit();
+            }
+
+           
         } else if (selectedPaymentMethod.value === "Razor Pay") {
             const address = document.getElementById('address').value;
             console.log("Selected address:", address);
