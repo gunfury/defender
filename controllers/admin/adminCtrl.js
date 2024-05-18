@@ -29,9 +29,47 @@ exports.getAdminLogin=(req,res)=>{
 
 
 
-exports.getAdminDash=(req,res)=>{
-    res.render('admin/dashboard');
-}
+exports.getAdminDash = async (req, res) => {
+    try {
+        const totalOrders = await orderModel.countDocuments({});
+        const ordersPerStatus = await orderModel.aggregate([
+            { $unwind: "$products" },
+            { $group: { _id: "$products.status", count: { $sum: 1 } } }
+        ]);
+        const totalRevenue = await orderModel.aggregate([
+            { $group: { _id: null, total: { $sum: "$totalPrice" } } }
+        ]);
+        const revenuePerDay = await orderModel.aggregate([
+            { 
+                $group: { 
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } }, 
+                    total: { $sum: "$totalPrice" } 
+                } 
+            },
+            { $sort: { _id: 1 } }
+        ]);
+        console.log({
+            totalOrders,
+            ordersPerStatus,
+            totalRevenue: totalRevenue[0]?.total || 0,
+            revenuePerDay
+        });
+
+        res.render('admin/dashboard', {
+            totalOrders,
+            ordersPerStatus,
+            totalRevenue: totalRevenue[0]?.total || 0,
+            revenuePerDay
+        });
+    } catch (error) {
+        console.error("Can't fetch the data:", error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
+
 exports.getUserManagement=async(req,res)=>{
     try{
     const users=await user.find();
