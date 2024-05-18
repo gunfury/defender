@@ -18,7 +18,7 @@
 }
 </style>
 
-<body id="reportsPage">
+<body id="reportsPage" style="background-color: rgb(55, 54, 51);">
     <div class="" id="home">
         <nav class="navbar navbar-expand-xl">
             <div class="container h-100">
@@ -102,18 +102,23 @@
         
               
         <div class="container">
-            <h1>Admin Dashboard</h1>
+          <br>
             <div class="row">
-                <div class="col-md-6">
-                    <canvas id="totalOrdersChart"></canvas>
+                <div class="col-md-8">
+                    <h2 style="text-align: center; color: black;">Revenue per Day Chart</h2>
+                    <canvas id="revenuePerDayChart" style="height: 200px;"></canvas>
                 </div>
+                
               
-                <div class="col-md-6">
-                    <canvas id="ordersPerStatusChart"></canvas>
+                <div class="col-md-4">
+                    <h2 style="text-align: center; color: black;">Orders per Status Chart</h2>
+                    <canvas id="ordersPerStatusChart" style="height: 400px;"></canvas>
                     </div>
-            </div>
-            <div class="col-md-6">
-                <canvas id="revenuePerDayChart" style="padding-left: 35px;"></canvas>
+            </div><br><br>
+            
+            <div class="col-md-12">
+                <h2 style="text-align: center; color: black;">Total Orders Chart</h2>
+                <canvas id="totalOrdersChart" style="height: 400px;"></canvas>
             </div>
            
             <!-- Display raw data for debugging -->
@@ -145,7 +150,7 @@
                     data: {
                         labels: statusLabels,
                         datasets: [{
-                            label: '# of Orders',
+                            label: 'Total Orders',
                             data: statusCounts,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
@@ -194,14 +199,31 @@
                 data: {
                     labels: ['Total Orders'],
                     datasets: [{
-                        label: '# of Orders',
+                        label: 'Total Orders',
                         data: [<%= totalOrders %>],
                         backgroundColor: ['rgba(75, 192, 192, 0.2)'],
                         borderColor: ['rgba(75, 192, 192, 1)'],
                         borderWidth: 1
                     }]
+                },
+                options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Days'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Total Orders'
+                        }
+                    }
                 }
+            }
             });
+            
     
             // Orders per Status Chart
             const statusLabels = <%- JSON.stringify(ordersPerStatus.map(item => item._id)) %>;
@@ -211,7 +233,7 @@
                 data: {
                     labels: statusLabels,
                     datasets: [{
-                        label: '# of Orders',
+                        label: 'Total Orders',
                         data: statusCounts,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -253,7 +275,8 @@
         });
     </script>
     
-
+</div>
+</div>
         <footer class="tm-footer row tm-mt-small">
             <div class="col-12 font-weight-light">
                 <p class="text-center text-white mb-0 px-4 small">
