@@ -22,6 +22,7 @@ const{
     getOrderManagement,
     getCoupon,
     getSalesReport,
+    getBestSeller,
     
     
     
@@ -67,6 +68,7 @@ router.get('/userblock/:id',adminSession,getBlockUser);
 router.get('/order',getOrderManagement);
 router.get('/coupon',adminSession,getCoupon);
 router.get('/salesReport',getSalesReport);
+router.get('/bestSeller',getBestSeller);
 
 
 

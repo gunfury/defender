@@ -381,8 +381,82 @@ function sum(arr) {
 
 
 
+exports.getBestSeller = async (req, res) => {
+    try {
+        const topProducts = await orderModel.aggregate([
+            // Unwind the products array to deconstruct each order into multiple documents
+            { $unwind: "$products" },
+            // Group by productId and accumulate the total quantity purchased
+            {
+                $group: {
+                    _id: "$products.productId",
+                    productName: { $first: "$products.productName" },
+                    productImage: { $first: "$products.productImage" },
+                    price: { $first: "$products.price" },
+                    totalQuantity: { $sum: "$products.quantity" }
+                }
+            },
+            // Perform the lookup to join the product details
+            {
+                $lookup: {
+                    from: "products", // Name of the products collection
+                    localField: "_id", // Field from the grouped result
+                    foreignField: "_id", // Field from products collection
+                    as: "productDetails" // Name for the resulting array
+                }
+            },
+            // Unwind the productDetails array to get the first matching product
+            { $unwind: "$productDetails" },
+            // Add the StockCount from productDetails to the results
+            {
+                $addFields: {
+                    StockCount: "$productDetails.stock"
+                }
+            },
+            // Sort by total quantity in descending order
+            { $sort: { totalQuantity: -1 } },
+            // Limit to top 10 products
+            { $limit: 10 }
+        ]);
 
+        const topCategories = await orderModel.aggregate([
+            // Unwind the products array to deconstruct each order into multiple documents
+            { $unwind: "$products" },
+            // Perform the lookup to join the product details
+            {
+                $lookup: {
+                    from: "products", // Name of the products collection
+                    localField: "products.productId", // Field from the orders collection
+                    foreignField: "_id", // Field from products collection
+                    as: "productDetails" // Name for the resulting array
+                }
+            },
+            // Unwind the productDetails array to get the first matching product
+            { $unwind: "$productDetails" },
+            // Group by category and accumulate the total quantity purchased
+            
+            {
+                $group: {
+                    _id: "$productDetails.category",
+                    cartegory: { $first: "$productDetails.cartegory" },
+                    totalQuantity: { $sum: "$products.quantity" }
+                }
+            },
+            // Sort by total quantity in descending order
+            { $sort: { totalQuantity: -1 } },
+            // Limit to top 5 categories
+            { $limit: 2 }
+        ]);
 
+        console.log('Top Selling Categories:', topCategories);
+
+        res.render('admin/bestSeller', { topProducts, topCategories });
+
+    } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
 
 
 

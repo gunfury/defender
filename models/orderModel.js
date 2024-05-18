@@ -11,7 +11,7 @@ const orderSchema = mongoose.Schema({
         productDescription: { type: String,},
         productRating: { type: Number,default:0,},
         status: { type: String,default:"Pending"},
-          StockCount: { type: Number,},
+        StockCount: { type: Number},
         productImage: { type: [String]},
         quantity: { type: Number,min: 1 },
         price: { type: Number,min: 0 },

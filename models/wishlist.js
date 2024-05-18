@@ -14,7 +14,7 @@ const wishlistItemSchema = new mongoose.Schema({
     type: String,
   },
   productImage: {
-    type: [String],
+    type: [String]
   },    
   price: {
     type: Number,

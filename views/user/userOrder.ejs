@@ -303,7 +303,7 @@ p{
                                     <p style="color: #39b44a;"> status:<%=product.status%></p>
                                         <%}else if(product.status==='delivered'){%>
                                             <button class="close-button" id="returnproduct" value="return Product" onclick="openModalreturn('<%= product.productId %>','<%=item._id%>')" style="background-color: rgb(255, 60, 0);border-radius: 20px;">Return</button><br>
-                                            <p style="color: #39b44a;" id="deliveredstatus"> status:<%=product.status%></p>
+                                            <p style="color: #39b44a;" id="deliveredstatus  "> status:<%=product.status%></p>
                                             <%}else if(product.status==='Cancelled'){%>
                                                 <p style="color: #ff0000;">Order Cancelled</p>
                                                 <p style="color: #ff0000;"> status:Cancelled</p>

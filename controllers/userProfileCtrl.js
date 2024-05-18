@@ -306,7 +306,7 @@ exports.postWishlistRemove=async(req,res)=>{
         const data=req.params.id;
         const finddataFromWishlistModel=await wishlistModel.findOneAndDelete({productId:data});
         
-        return res.redirect('/wishlist');
+         res.redirect('/whistList');
         
         
     } catch (error) {
@@ -580,6 +580,7 @@ exports.postcheckoutform = async (req, res) => {
                 referralCode: null, // Corrected field name
             });
         }
+       
 
         const orderData = {
             orderNumber: Math.floor(100000 + Math.random() * 900000),
