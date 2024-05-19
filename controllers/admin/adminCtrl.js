@@ -667,10 +667,9 @@ exports.postAddproduct = async (req, res) => {
   
 exports.postEditproduct=async(req,res)=>{
     try{
-        const { productName, description, cartegory, discount, stock, price } = req.body;
+        const { productName, description, cartegory, discount, stock, price,image } = req.body;
         const productId=req.params.id
-        console.log("product ID in editing",productId);
-       
+       console.log("image",image);
         const currentProductData=await productMdl.findOne({_id:productId})
 
         const cartegoryProductData=await cartegoryModel.find();
@@ -692,25 +691,29 @@ exports.postEditproduct=async(req,res)=>{
         let productImages = [];
 
         if (req.files && req.files.length > 0) {
-           const fileUrls = req.files.map((file) => `/uploads/${file.filename}`);
+            // Files were uploaded, process them
+            const fileUrls = req.files.map((file) => `/uploads/${file.filename}`);
             productImages = fileUrls;
+        } else {
+            // No files were uploaded, retain existing images
+            productImages = currentProductData.images;
         }
-
-
-        console.log("product images in editing",productImages);
+        
+        console.log("product images in editing", productImages);
         
         await productMdl.findByIdAndUpdate(productId, {
             productName: req.body.productName,
             cartegory: req.body.cartegory,
             description: req.body.description,
-            images: productImages,
+            images: productImages, // Assign the productImages array here
             stock: req.body.stock,
             price: req.body.price,
-            discount:req.body.discount 
-          }).then((pass) => {
+            discount: req.body.discount
+        }).then((pass) => {
             console.log("UpdatedProduct", pass);
             res.redirect("/product");
-          });
+        });
+        
     }catch(error){
         console.error("Error adding product:", error);
         res.status(500).json({ error: 'Internal Server Error' });

@@ -195,15 +195,21 @@
               </div>
               <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
                 
-                <div id="imagePreviewContainer" class="row tm-product-img-dummy mx-auto" onclick="document.getElementById('fileInput').click();">
-                  <% if (currentProductData.images && currentProductData.images.length > 0) { %>
-                      <% currentProductData.images.forEach(function(image) { %>
-                          <img src="<%= image %>" class="img-thumbnail" />
-                      <% }); %>
-                  <% } else { %>
-                      <i class="fas fa-cloud-upload-alt tm-upload-icon"></i>
-                  <% } %>
-              </div>
+               <div id="imagePreviewContainer" class="row tm-product-img-dummy mx-auto">
+    <% if (currentProductData.images && currentProductData.images.length > 0) { %>
+        <div class="image-row">
+            <% currentProductData.images.forEach(function(image, index) { %>
+                <div class="image-container">
+                    <img src="<%= image %>" class="img-thumbnail" />
+                    <button class="btn btn-danger btn-sm delete-btn" onclick="deleteImage(<%= index %>)">Delete</button>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <i class="fas fa-cloud-upload-alt tm-upload-icon"></i>
+    <% } %>
+</div>
+
               
               
                 <div class="custom-file mt-3 mb-3">
@@ -286,17 +292,19 @@
 });
     </script>
     <style>
-      .tm-product-img-dummy {
+    .tm-product-img-dummy {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px 0; /* Add some padding */
 }
 
 .tm-product-img-dummy img {
-    width: calc(33.33% - 10px); /* Subtracting margin to ensure equal spacing */
-    margin: 5px; /* Adjust margin as needed */
-    box-sizing: border-box; /* Include padding and border in width calculation */
+    flex: 0 0 auto; /* Prevent images from shrinking */
+    width: auto; /* Set width to auto for flexibility */
+    height: 150px; /* Set a fixed height */
+    margin-right: 10px; /* Add some spacing between images */
 }
+
 
     
     </style>
