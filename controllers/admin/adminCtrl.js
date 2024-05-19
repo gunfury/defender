@@ -31,14 +31,21 @@ exports.getAdminLogin=(req,res)=>{
 
 exports.getAdminDash = async (req, res) => {
     try {
+        // Count total orders
         const totalOrders = await orderModel.countDocuments({});
+
+        // Aggregate orders per status
         const ordersPerStatus = await orderModel.aggregate([
             { $unwind: "$products" },
             { $group: { _id: "$products.status", count: { $sum: 1 } } }
         ]);
+
+        // Calculate total revenue
         const totalRevenue = await orderModel.aggregate([
             { $group: { _id: null, total: { $sum: "$totalPrice" } } }
         ]);
+
+        // Aggregate revenue per day
         const revenuePerDay = await orderModel.aggregate([
             { 
                 $group: { 
@@ -48,18 +55,32 @@ exports.getAdminDash = async (req, res) => {
             },
             { $sort: { _id: 1 } }
         ]);
+
+        // Aggregate total orders per day
+        const ordersPerDay = await orderModel.aggregate([
+            { 
+                $group: { 
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } }, 
+                    count: { $sum: 1 } 
+                } 
+            },
+            { $sort: { _id: 1 } }
+        ]);
+
         console.log({
             totalOrders,
             ordersPerStatus,
             totalRevenue: totalRevenue[0]?.total || 0,
-            revenuePerDay
+            revenuePerDay,
+            ordersPerDay
         });
 
         res.render('admin/dashboard', {
             totalOrders,
             ordersPerStatus,
             totalRevenue: totalRevenue[0]?.total || 0,
-            revenuePerDay
+            revenuePerDay,
+            ordersPerDay
         });
     } catch (error) {
         console.error("Can't fetch the data:", error);

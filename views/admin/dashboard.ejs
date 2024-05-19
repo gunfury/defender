@@ -103,6 +103,7 @@
         
               
         <div class="container">
+            
           <br>
             <div class="row">
                 <div class="col-md-7" style="border: 2px solid #ffffff;  background-color: #383a3c; padding: 20px;">
@@ -117,8 +118,9 @@
                     </div>
             </div><br><br>
             
-            <div class="col-md-11"  style="border: 2px solid #ffffff; background-color: #383a3c; padding: 20px;">
+            <div class="col-md-11"  style="border: 2px solid #ffffff; background-color: #383a3c; padding: 20px; ">
                 <h2 style="text-align: center; color: black;">Total Orders Chart</h2>
+                <h4  style="text-align: center; color: rgb(237, 206, 6);"><%=totalOrders%></h4>
                 <canvas id="totalOrdersChart" style="height: 400px;"></canvas>
             </div>
            
@@ -193,38 +195,39 @@
             });
         </script>
        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Total Orders Chart
-            new Chart(document.getElementById('totalOrdersChart').getContext('2d'), {
+       document.addEventListener('DOMContentLoaded', function() {
+    // Total Orders Chart
+    const ordersPerDayLabels = <%- JSON.stringify(ordersPerDay.map(item => item._id)) %>;
+    const ordersPerDayData = <%- JSON.stringify(ordersPerDay.map(item => item.count)) %>;
+    new Chart(document.getElementById('totalOrdersChart').getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: ['Total Orders'],
+                    labels: ordersPerDayLabels,
                     datasets: [{
-                        label: 'Total Orders',
-                        data: [<%= totalOrders %>],
-                        backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                        borderColor: ['rgba(75, 192, 192, 1)'],
+                        label: 'Total Orders per Day',
+                        data: ordersPerDayData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
                 },
                 options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Days'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Total Orders'
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Dates'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Number of Orders'
+                            }
                         }
                     }
                 }
-            }
             });
-            
     
             // Orders per Status Chart
             const statusLabels = <%- JSON.stringify(ordersPerStatus.map(item => item._id)) %>;
