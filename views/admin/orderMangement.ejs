@@ -129,6 +129,8 @@
                             <p style="color: red;">cancelled</p>
                             <%}else if(product.status==='returned'){%>
                                 <p style="color: rgb(199, 199, 49);">order returned</p>
+                                <%}else if(product.status==='failed'){%>
+                                    <p style="color: rgb(255, 162, 0);">waiting for update</p>
                                 <%}else {%>
                         <select onchange="updateOrderStatus('<%= items._id %>', '<%= product.productId %>', event)">
                         <option value="pending" <%= items.status === "Pending" ? 'selected' : '' %>>pending</option>
@@ -136,6 +138,7 @@
                         <option value="shipped" <%= items.status === "Shipped" ? 'selected' : '' %>>shipped</option>
                         <option value="delivered" <%= items.status === "Delivered" ? 'selected' : '' %>>delivered</option>
                         <option value="Cancelled" <%= items.status === "Cancelled" ? 'selected' : '' %>>Cancelled</option>
+                        <option value="failed" <%= items.status === "failed" ? 'selected' : '' %>>Failed</option>
                     </select>
                     
                 <%}%></th>

@@ -38,6 +38,8 @@ postRazorpayInstance,
 postaddMoneytowallet,
 postWalletPayment,
 postCheckingCoupon,
+postFailedcheckoutform,
+postPaymentFailedRetry,
 
 }=require("../controllers/userProfileCtrl");
 
@@ -77,6 +79,8 @@ router.post('/RazorpayInstance', userSession,postRazorpayInstance);
 router.post('/addMoneytowallet',postaddMoneytowallet);
 router.post('/walletPayment',postWalletPayment);
 router.post('/checkingCoupon',postCheckingCoupon);
+router.post('/failedcheckoutform',postFailedcheckoutform);
+router.post('/paymentFailedRetry',postPaymentFailedRetry);
 
 
 

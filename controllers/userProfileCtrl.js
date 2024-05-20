@@ -631,6 +631,90 @@ exports.postcheckoutform = async (req, res) => {
     }
 };
 
+
+exports.postFailedcheckoutform=async (req, res) => {
+    try {
+        console.log("c1");
+        const user = req.session.user;
+        const cart = await cartMdl.find({ userid: user });
+       
+        const payment = req.body.paymentMethod;
+       
+        const address = req.body.address;
+        const addressdata = await addressMdl.findById({ _id: address });
+        const coupon=req.body.coupon ? req.body.coupon : null;
+        const products = [];
+
+        // Loop through each item in the cart
+        for (const item of cart) {
+            products.push({
+                productId: item.productid,
+                productName: item.product,
+                productDescription: item.description,
+                productRating: null,
+                stockCount: parseInt(item.stock), // Corrected field name
+                productImage: item.image,
+                quantity: item.quantity,
+                price: item.price,
+                status: "failed",
+                reason: "aaaaaaaa",
+                
+                referralCode: null, // Corrected field name
+            });
+        }
+       
+
+        const orderData = {
+            orderNumber: Math.floor(100000 + Math.random() * 900000),
+            userId: user,
+            products: products,
+            totalQuantity: products.reduce((total, product) => total + product.quantity, 0),
+            totalPrice: products.reduce((total, product) => total + (product.price * product.quantity), 0),
+            address: {
+                address: addressdata.address,
+                city: addressdata.city,
+                state: addressdata.state,
+                country: addressdata.country,
+                zipcode: addressdata.zipCode,
+                phone: addressdata.phone,
+            },
+            couponCode: coupon,
+            discountPrice: null,
+            paymentMethod: payment,
+            orderDate: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+        };
+        const findCart=await orderModel.findOne(orderData);
+       if(!findCart){
+        const orderDetails = await orderModel.create(orderData);
+       }
+       console.log("c2");
+        // await cartMdl.deleteMany({ userid: user });
+
+        // for (const item of cart) {
+        //     const product = await productMdl.findById(item.productid);
+        //     if (product) {
+        //         product.stock -= item.quantity; // Decrease stock by the quantity in the cart
+        //         await product.save(); // Save the updated product
+        //     } else {
+        //         console.error(`Product with ID ${item.productid} not found.`);
+        //     }
+        // }
+       
+
+        // if(res.json){
+        //     return res.status(200).json({message:'order'})
+        // }
+        // else{
+            return res.status(200).json({ message: 'Order recorded as failed' })
+       // }
+
+
+    } catch (error) {
+        console.error("Error during checkout:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
 exports.postRemoveProductFromOrder = async (req, res) => {
     try {
         const CancelproductID = req.params.id;
@@ -807,6 +891,53 @@ exports.postCheckingCoupon=async(req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' }); // Send error response to frontend
+    }
+}
+exports.postPaymentFailedRetry = async (req, res) => {
+    try {
+        const pId = req.body.productId;
+        const oId = req.body.orderId;
+        const user=req.session.user;
+        console.log("pId", pId);
+        console.log("oId", oId);
+        
+        // Find the order by ID
+        const order = await orderModel.findById(oId);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Loop through products in the order
+        for (let orderProduct of order.products) {
+            const productId = orderProduct.productId;
+            const orderQuantity = orderProduct.quantity;
+
+            // Find the product by ID
+            const product = await productMdl.findById(productId);
+            if (!product) {
+                console.log(`Product not found: ${productId}`);
+                continue;  // Skip this product if not found
+            }
+
+            // Decrease the stock by the quantity in the order
+            product.stock = Math.max(product.stock - orderQuantity, 0);  // Ensure stock does not go below 0
+
+            // Save the updated product
+            await product.save();
+
+            // Change the status of the product in the order to "Pending"
+            orderProduct.status = 'Pending';
+        }
+
+        // Save the updated order
+        await order.save();
+        await cartMdl.deleteMany({ userid: user,productid:pId });
+
+
+        res.status(200).json({ message: 'Stock updated and status changed to Pending successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 

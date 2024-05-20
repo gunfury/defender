@@ -320,6 +320,7 @@
 
     // Define openRazorpay outside event listener
     function openRazorpay(orderId, totalPrice, address) {
+        var res={orderId,totalPrice,address};
         var options = {
             key: 'rzp_test_xxIa2EJbQL3tW2',
             amount: totalPrice * 100, // Convert to paisa
@@ -328,6 +329,7 @@
             description: 'Purchase Description',
             order_id: orderId,
             handler: function(response) {
+               
                 // Handle Razorpay response
                 console.log('Razorpay response:', response); // Log response to console for debugging
                 if(response){
@@ -356,15 +358,38 @@
                 })
                 .catch(error => {
                     console.error('failed payment', error);
+                    window.location.href = '/home';
                 });
-            }, modal: {
-            ondismiss: function() {
-                // Handle the modal dismissal event
-                console.log('Razorpay payment modal dismissed');
-                // Redirect to a failure or retry page
-                window.location.href = '/home';
+                 }, modal: {
+                          ondismiss: function() {
+                       console.log("response",res);
+                      fetch('/failedcheckoutform', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        orderId: res.razorpay_order_id,
+                        amount: totalPrice,
+                        address: address,
+                        paymentMethod: "Razor Pay" // Assuming this is the correct payment method name
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Failed checkout form response:', data); // Log response from the server
+                    // Redirect to home page after handling the failed checkout
+                    window.location.href = '/userOrder/:page';
+                })
+                .catch(error => {
+                    console.error('Failed payment:', error);
+                    // Optionally handle the error by redirecting to an error page or showing a message
+                });
+
+                }
             }
-        }
+
+                    
             // Rest of the options...
         };
 
