@@ -21,7 +21,25 @@
 	Product Admin CSS Template
 	https://templatemo.com/tm-524-product-admin
 	-->
+  <style>
+    .tm-product-img-dummy {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px 0; /* Add some padding */
+}
+
+.tm-product-img-dummy img {
+    flex: 0 0 auto; /* Prevent images from shrinking */
+    width: auto; /* Set width to auto for flexibility */
+    height: 150px; /* Set a fixed height */
+    margin-right: 10px; /* Add some spacing between images */
+}
+
+
+    
+    </style>
   </head>
+  
 
   <body>
     <nav class="navbar navbar-expand-xl">
@@ -198,17 +216,18 @@
                <div id="imagePreviewContainer" class="row tm-product-img-dummy mx-auto">
     <% if (currentProductData.images && currentProductData.images.length > 0) { %>
         <div class="image-row">
-            <% currentProductData.images.forEach(function(image, index) { %>
-                <div class="image-container">
-                    <img src="<%= image %>" class="img-thumbnail" />
-                    <button class="btn btn-danger btn-sm delete-btn" onclick="deleteImage(<%= index %>)">Delete</button>
-                </div>
-            <% }); %>
+          <% currentProductData.images.forEach(function(image, index) { %>
+            <div class="image-container" id="imageContainer<%= index %>">
+                <img src="<%= image %>" class="img-thumbnail" />
+                <button class="btn btn-danger btn-sm delete-btn" onclick="deleteImage('<%= image %>', '<%= currentProductData._id %>', <%= index %>)">Delete</button>
+            </div>
+        <% }); %>
+        
         </div>
     <% } else { %>
         <i class="fas fa-cloud-upload-alt tm-upload-icon"></i>
     <% } %>
-</div>
+                </div>
 
               
               
@@ -269,44 +288,63 @@
         });
       });
       document.getElementById('fileInput').addEventListener('change', function(event) {
-    const container = document.getElementById('imagePreviewContainer');
-    container.innerHTML = ''; // Clear previous previews
+            const container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = ''; // Clear previous previews
 
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (!file.type.startsWith('image/')) {
-            console.log('File is not an image:', file.name);
-            continue;
+            const files = event.target.files;
+
+            // Add new images to the preview container
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) {
+                    console.log('File is not an image:', file.name);
+                    continue;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = 'img-thumbnail';
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function deleteImage(imageUrl, productId, index) {
+          event.preventDefault(); 
+    console.log("productId:", productId);
+    console.log("imageUrl:", imageUrl);
+
+    fetch('/deleteImage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId, imageUrl })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            var containerId = 'imageContainer' + index;
+            var container = document.getElementById(containerId);
+            if (container) {
+                container.parentNode.removeChild(container);
+                console.log('Image deleted successfully.');
+            } else {
+                console.log('Image container not found.');
+            }
+        } else {
+            console.log('Failed to delete image:', data.error);
         }
-
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.className = 'img-thumbnail';
-            container.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    }
-});
-    </script>
-    <style>
-    .tm-product-img-dummy {
-    display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding: 10px 0; /* Add some padding */
+    })
+    .catch(error => {
+        console.error('Error deleting image:', error);
+    });
 }
 
-.tm-product-img-dummy img {
-    flex: 0 0 auto; /* Prevent images from shrinking */
-    width: auto; /* Set width to auto for flexibility */
-    height: 150px; /* Set a fixed height */
-    margin-right: 10px; /* Add some spacing between images */
-}
+</script>
 
-
-    
-    </style>
   </body>
 </html>

@@ -1,52 +1,137 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Creative Colorlib SignUp Form</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- Custom Theme files -->
-<link href="/user/css/signup.css" rel="stylesheet" type="text/css" media="all" />
-<!-- //Custom Theme files -->
-<!-- web font -->
-<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
-<!-- //web font -->
+    <title>Creative Colorlib SignUp Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <!-- Custom Theme files -->
+    <link href="/user/css/signup.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- //Custom Theme files -->
+    <!-- web font -->
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+    <!-- //web font -->
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+	
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // Prevent form submission for validation
+
+            const form = document.forms["signupForm"];
+            const username = form["username"].value.trim();
+            const email = form["email"].value;
+            const password = form["password"].value;
+            const confirmPassword = form["confirmPassword"].value;
+
+            let valid = true;
+
+            // Reset error messages
+            document.getElementById("usernameError").innerHTML = "";
+            document.getElementById("emailError").innerHTML = "";
+            document.getElementById("passwordError").innerHTML = "";
+            document.getElementById("confirmPasswordError").innerHTML = "";
+
+						if (username === "") {
+					document.getElementById("usernameError").innerHTML = "Username is required";
+					valid = false;
+				} else if (/^\s/.test(username)) {
+					document.getElementById("usernameError").innerHTML = "Username should not start with whitespace";
+					valid = false;
+				} else if (/^[!@#$%^&*(),.?":{}|<>\d]/.test(username)) {
+					document.getElementById("usernameError").innerHTML = "Username should not start with special character or number";
+					valid = false;
+				} else if (/\//.test(username)) {
+					document.getElementById("usernameError").innerHTML = "Username should not contain a forward slash";
+					valid = false;
+				}
+
+
+            const emailRegex = /\S+@\S+\.\S+/;
+            if (!emailRegex.test(email)) {
+                document.getElementById("emailError").innerHTML = "Invalid email address";
+                valid = false;
+            }
+            const strongPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+            if (!strongPasswordRegex.test(password)) {
+                document.getElementById("passwordError").innerHTML = "Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+                valid = false;
+            }
+            if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordError").innerHTML = "Password and confirm password do not match";
+                valid = false;
+            }
+
+            if (valid) {
+                // If valid, submit the form data via AJAX
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/signup", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Redirect to OTP page on successful signup
+                        window.location.href = '/otp';
+                    } else {
+                        // Show server-side error message if any
+                        document.getElementById("serverError").innerHTML = "Error during signup. Please try again.";
+                    }
+                };
+
+                const data = `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&confirmPassword=${encodeURIComponent(confirmPassword)}`;
+                xhr.send(data);
+            }
+			if(json.response){
+				console.log("asdfghjk");
+			}
+        }
+    </script>
 </head>
 <body>
-	<!-- main -->
-	<div class="main-w3layouts wrapper">
-		<h1>SignUp Form</h1>
-		<div class="main-agileinfo">
-			<div class="agileits-top">
-				<form action="/signup" method="post">
-					<input class="text" type="text" name="username" placeholder="Username" required="">
-					<input class="text email" type="email" name="email" placeholder="Email" required="">
-					<input class="text" type="password" name="password" placeholder="Password" required="">
-					<input class="text w3lpass" type="password" name="confirmPassword" placeholder="Confirm Password" required="">
-					<div class="wthree-text">
-						<label class="anim">
-							<input type="checkbox" class="checkbox" required="">
-							<span>I Agree To The Terms & Conditions</span>
-						</label>
-						<div class="clear"> </div>
-					</div>
-					<% if (message) { %>
-						<p style="color: red;"><%= message %></p>
-					<% } %>
-					<input type="submit" value="SIGNUP">
-				</form>
-				<p>Already have an Account? <a href="/"> Login Now!</a></p>
-			</div>
-		</div>
-		<!-- copyright -->
-		<div class="colorlibcopy-agile">
-			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
-		</div>
-		<!-- //copyright -->
-		<ul class="colorlib-bubbles">
-		</ul>
-	</div>
-	<!-- //main -->
+    <!-- main -->
+    <div class="main-w3layouts wrapper">
+        <h1>SignUp Form</h1>
+        <div class="main-agileinfo">
+            <div class="agileits-top">
+                <form name="signupForm" onsubmit="validateForm(event)">
+                    <input class="text" type="text" name="username" placeholder="Username" required="">
+                    <span id="usernameError" class="error-message"></span>
+                    
+                    <input class="text email" type="email" name="email" placeholder="Email" required="">
+                    <span id="emailError" class="error-message"></span>
+                    
+                    <input class="text" type="password" name="password" placeholder="Password" required="">
+                    <span id="passwordError" class="error-message"></span>
+                    
+                    <input class="text w3lpass" type="password" name="confirmPassword" placeholder="Confirm Password" required="">
+                    <span id="confirmPasswordError" class="error-message"></span>
+                    
+                    <div class="wthree-text">
+                        <label class="anim">
+                            <input type="checkbox" class="checkbox" required="">
+                            <span>I Agree To The Terms & Conditions</span>
+                        </label>
+                        <div class="clear"> </div>
+                    </div>
+                    <% if (message) { %>
+                        <p id="serverError" style="color: red;"><%= message %></p>
+                    <% } %>
+                    <input type="submit" value="SIGNUP">
+                </form>
+                <p>Already have an Account? <a href="/"> Login Now!</a></p>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div class="colorlibcopy-agile">
+            <p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+        </div>
+        <!-- //copyright -->
+        <ul class="colorlib-bubbles">
+        </ul>
+    </div>
+    <!-- //main -->
 </body>
 </html>

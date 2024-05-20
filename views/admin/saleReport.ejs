@@ -134,7 +134,7 @@
 
         <div class="tm-product-table-container">
             <table class="table table-hover tm-table-small tm-product-table">
-              <thead>
+                <thead id="tableHeader">
                 <tr>
                   <th scope="col">ORDER NO</th>
                   <th scope="col">PRODUCT NAME</th>
@@ -284,7 +284,7 @@ function downloadFile(url) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ tableData: getTableData() }) // Send table data to the server
+        body: JSON.stringify({ tableData: getTableData(), headers: getTableHeaders() }) // Send table data to the server
     })
     .then(function (response) {
         if (!response.ok) {
@@ -322,6 +322,16 @@ function getTableData() {
     console.log('sdfgh',data);
     return data;
 }
+
+
+    function getTableHeaders() {
+        var headers = [];
+        var headerCells = document.querySelectorAll('#tableHeader th');
+        headerCells.forEach(function(cell) {
+            headers.push(cell.textContent.trim());
+        });
+        return headers;
+    }
 
 
 

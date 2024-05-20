@@ -10,6 +10,8 @@ const { log, Console } = require("console");
 const flash = require('connect-flash');
 const orderModel=require('../../models/orderModel');
 const PDFDocument = require('pdfkit');
+const path = require('path');
+const XLSX = require('xlsx');
 
 
 
@@ -437,6 +439,61 @@ function sum(arr) {
     return arr.reduce((total, num) => total + num, 0);
 }
 
+exports.postExceldownload=async(req,res)=>{
+    try {
+        const { tableData, headers } = req.body;
+
+        if (!tableData || !Array.isArray(tableData) || tableData.length === 0 || !headers || !Array.isArray(headers) || headers.length === 0) {
+            return res.status(400).send('Invalid data');
+        }
+    
+        // Add headers to the beginning of the table data
+        const dataWithHeaders = [headers, ...tableData];
+    
+        // Create a new workbook and worksheet
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(dataWithHeaders);
+    
+        // Define a style object for bold font
+        const boldStyle = { font: { bold: true } };
+    
+        // Apply the bold style to the header cells
+        const headerRange = XLSX.utils.decode_range(ws['!ref']);
+        for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: headerRange.s.r, c: col });
+            ws[cellAddress].s = boldStyle;
+        }
+    
+        // Append the worksheet to the workbook
+        XLSX.utils.book_append_sheet(wb, ws, 'Report');
+    
+        // Define the file path
+        const filePath = path.join(__dirname, 'report.xlsx');
+    
+        // Write the Excel file to the file system
+        XLSX.writeFile(wb, filePath);
+    
+        // Send the file to the client
+        res.download(filePath, 'report.xlsx', (err) => {
+            if (err) {
+                console.error('Error sending file:', err);
+                res.status(500).send('Error downloading file');
+            } else {
+                // Delete the file after sending it to the client
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error('Error deleting file:', err);
+                    }
+                });
+            }
+        });
+        
+    } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
 
 
 
@@ -555,7 +612,7 @@ exports.postAddcategory = async (req, res) => {
         const { Category } = req.body;
         const data=req.body.Category;
         // Check if category already exists
-        if (data.trim() === '' || /[a-z]/.test(data) || /\d/.test(data)|| /[!@#$%^&*(),.?":{}|<>]/.test(data)) {
+        if (data.trim() === '' || /[a-z]/.test(data) || /\d/.test(data)|| /[\s!@#$%^&*(),.?":{}|<>\/]/.test(data)) {
             req.flash('errorMessage', 'Category name should not contain whitespace, lowercase letters, number or special characters');   
             return res.redirect(`/addCartegory`);
         }
@@ -618,22 +675,22 @@ exports.postAddproduct = async (req, res) => {
         const items = await cartegoryModel.find();
         const { productName, description, cartegory, discount, stock, price } = req.body;
 
-        if (!productName || !description || !cartegory || !discount || !stock || !price) {
-            return res.render('admin/add-product', { items,error: "All fields are required" });
-        }
-        // Function to check if a string starts with a capital letter
-        function startsWithCapital(str) {
-            return str.charAt(0) === str.charAt(0).toUpperCase();
-        }
-        if (!startsWithCapital(productName)) {
-            return res.render('admin/add-product', { items, error: "Product name must start with a capital letter" });
-        }
-        if ( /^\s/.test(productName)) {
-            return res.render('admin/add-product', { items, error: "Product name must start with a capital letter and cannot begin with white space" });
-        }
-        if (isNaN(discount) || isNaN(stock) || isNaN(price) || discount < 0 || stock < 0 || price < 0 || discount >= 100) {
-            return res.render('admin/add-product', { items, error: "Discount must be a non-negative number less than 100, and stock and price must be non-negative numbers" });
-        }
+        // if (!productName || !description || !cartegory || !discount || !stock || !price) {
+        //     return res.render('admin/add-product', { items,error: "All fields are required" });
+        // }
+        // // Function to check if a string starts with a capital letter
+        // function startsWithCapital(str) {
+        //     return str.charAt(0) === str.charAt(0).toUpperCase();
+        // }
+        // if (!startsWithCapital(productName)) {
+        //     return res.render('admin/add-product', { items, error: "Product name must start with a capital letter" });
+        // }
+        // if ( /^\s/.test(productName)) {
+        //     return res.render('admin/add-product', { items, error: "Product name must start with a capital letter and cannot begin with white space" });
+        // }
+        // if (isNaN(discount) || isNaN(stock) || isNaN(price) || discount < 0 || stock < 0 || price < 0 || discount >= 100) {
+        //     return res.render('admin/add-product', { items, error: "Discount must be a non-negative number less than 100, and stock and price must be non-negative numbers" });
+        // }
         let productImages = [];
         // Map uploaded files to file URLs
         if (req.files && req.files.length > 0) {
@@ -665,28 +722,29 @@ exports.postAddproduct = async (req, res) => {
     }
 };
   
-exports.postEditproduct=async(req,res)=>{
-    try{
-        const { productName, description, cartegory, discount, stock, price,image } = req.body;
-        const productId=req.params.id
-       console.log("image",image);
-        const currentProductData=await productMdl.findOne({_id:productId})
+exports.postEditproduct = async (req, res) => {
+    try {
+        const { productName, description, cartegory, discount, stock, price } = req.body;
+        const productId = req.params.id;
+        const currentProductData = await productMdl.findOne({ _id: productId });
+        const cartegoryProductData = await cartegoryModel.find();
 
-        const cartegoryProductData=await cartegoryModel.find();
         if (!productName || !description || !cartegory || !discount || !stock || !price) {
-            return res.render('admin/edit-product', { currentProductData,cartegoryProductData,error: "All fields are required" });
+            return res.render('admin/edit-product', { currentProductData, cartegoryProductData, error: "All fields are required" });
         }
+
         // Function to check if a string starts with a capital letter
         function startsWithCapital(str) {
             return str.charAt(0) === str.charAt(0).toUpperCase();
         }
+
         if (!startsWithCapital(productName)) {
-            return res.render('admin/edit-product', { currentProductData, cartegoryProductData,error: "Product name must start with a capital letter" });
+            return res.render('admin/edit-product', { currentProductData, cartegoryProductData, error: "Product name must start with a capital letter" });
         }
+
         if (isNaN(discount) || isNaN(stock) || isNaN(price) || discount < 0 || stock < 0 || price < 0 || discount >= 100) {
             return res.render('admin/edit-product', { currentProductData, cartegoryProductData, error: "Discount must be a non-negative number less than 100, and stock and price must be non-negative numbers" });
         }
-
 
         let productImages = [];
 
@@ -698,9 +756,7 @@ exports.postEditproduct=async(req,res)=>{
             // No files were uploaded, retain existing images
             productImages = currentProductData.images;
         }
-        
-        console.log("product images in editing", productImages);
-        
+
         await productMdl.findByIdAndUpdate(productId, {
             productName: req.body.productName,
             cartegory: req.body.cartegory,
@@ -709,16 +765,39 @@ exports.postEditproduct=async(req,res)=>{
             stock: req.body.stock,
             price: req.body.price,
             discount: req.body.discount
-        }).then((pass) => {
-            console.log("UpdatedProduct", pass);
-            res.redirect("/product");
         });
-        
-    }catch(error){
-        console.error("Error adding product:", error);
+
+        res.redirect("/product");
+
+    } catch (error) {
+        console.error("Error editing product:", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+exports.postdDeleteImage=async(req,res)=>{
+    const { imageUrl,productId } = req.body;
+    console.log("imageUrl",imageUrl);
+   console.log("productId",productId);
+    try {
+        const product = await productMdl.findById({_id: productId});
+        if (product) {
+            const imageIndex = product.images.indexOf(imageUrl);
+            console.log("imageIndex",imageIndex);
+            if (imageIndex > -1) {
+                product.images.splice(imageIndex, 1); // Remove the image from the array
+                await product.save(); // Save the updated product document
+                res.json({ success: true });
+            } else {
+                res.json({ success: false, error: 'Image not found in product' });
+            }
+        } else {
+            res.json({ success: false, error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
 
 exports.postAddcoupon = async (req, res) => {
     try {

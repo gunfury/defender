@@ -355,9 +355,16 @@
                     window.location.href = '/successpage';
                 })
                 .catch(error => {
-                    console.error('Error submitting payment details:', error);
+                    console.error('failed payment', error);
                 });
-            },
+            }, modal: {
+            ondismiss: function() {
+                // Handle the modal dismissal event
+                console.log('Razorpay payment modal dismissed');
+                // Redirect to a failure or retry page
+                window.location.href = '/home';
+            }
+        }
             // Rest of the options...
         };
 

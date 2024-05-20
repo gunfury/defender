@@ -40,6 +40,8 @@ const{
     postRemoveCoupon,
     postFilterData,
     postPDFdownload,
+    postExceldownload,
+    postdDeleteImage,
     
    
 
@@ -86,6 +88,8 @@ router.post('/addcoupon',postAddcoupon);
 router.post('/removeCoupon/:id',postRemoveCoupon);
 router.post('/filterData',postFilterData);
 router.post('/generatePdf',postPDFdownload);
+router.post('/generateExcel',postExceldownload)
+router.post('/deleteImage',postdDeleteImage)
 
 
 

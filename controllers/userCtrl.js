@@ -253,64 +253,81 @@ exports.postlogin = async (req, res) => {
 }
 
 
-exports.postsignup=async (req,res)=>{
-        
-        try {
-            const{username,email,password,confirmPassword}=req.body
-        console.log("datas" ,req.body);
-        if (!username || !email || !password) {
-            return res.render("user/signup",{ message: "All fields are required" });
-        }
-        if (username.trim() !== username) {
-            return res.render("user/signup",{ message: "Username should not start with whitespace" });
-        }
-       
+exports.postsignup = async (req, res) => {
+    try {
+        const { username, email, password, confirmPassword } = req.body;
 
-        // Validate email format
+        // Step 1: Check if all required fields are provided
+        if (!username || !email || !password) {
+            return res.render("user/signup", { message: "All fields are required" });
+        }
+
+        // Step 2: Validate the username
+        if (username.trim() !== username) {
+            return res.render("user/signup", { message: "Username should not start with whitespace" });
+        }
+        const specialCharsRegex = /[!@#$%^&*(),.?":{}|<>]/;
+        if (specialCharsRegex.test(username)) {
+            return res.render("user/signup", { message: "Username should not contain special characters" });
+        }
+
+        // Step 3: Validate the email format
         const emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
-            return res.render("user/signup",{ message: "Invalid email address" });
+            return res.render("user/signup", { message: "Invalid email address" });
         }
+
+        // Step 4: Validate the password
         const strongPasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
         if (!strongPasswordRegex.test(password)) {
             return res.render("user/signup", { message: "Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character" });
         }
+
+        // Step 5: Ensure the password and confirm password fields match
         if (password !== confirmPassword) {
-            return res.render("user/signup",{ message: "Password and confirm password do not match" });
+            return res.render("user/signup", { message: "Password and confirm password do not match" });
         }
-            const specialCharsRegex = /[!@#$%^&*(),.?":{}|<>]/;
-        if (specialCharsRegex.test(username)) {
-            return res.render("user/signup", { message: "Username should not contain special characters" });
+
+        // Step 6: Check if the email already exists in the database
+       
+        const existingUser = await signupcollection.findOne({ email });
+        if (existingUser) {
+            return res.json({ message: "Email already exists" });
         }
-            const existingUser = await signupcollection.findOne({ email });
-            if (existingUser) {
-              return res.render("user/signup", { message: "User Already exists" });
-            }
-             // Hashing the password
-            const hashedPassword = await bcrypt.hash(password, 10);
 
-            const generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-                req.session.signupData = {
-                username,
-                email,
-                password
-                };
-                const newOTP = new otpCollection({
-                username,
-                email,
-                otp: generatedOTP,
-                });
-                await newOTP.save();
-                const mailBody = `Your OTP for registration is ${generatedOTP}`;
-                await mailSender(email, "Registration OTP", mailBody);
-                res.redirect('/otp')
-        } catch (error) {
-                         console.error(error);
-                         // res.status(500).json({ error: 'Internal server error' });
-         }
+        // Step 7: Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Step 8: Generate an OTP for registration
+        const generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
 
-}
+        // Step 9: Save the user's data and OTP to the database
+        req.session.signupData = {
+            username,
+            email,
+            password
+            };
+        //await newUser.save();
+
+        const newOTP = new otpCollection({
+            username,
+            email,
+            otp: generatedOTP,
+        });
+        await newOTP.save();
+
+        // Step 10: Send the OTP to the user's email (Implement mailSender function)
+        const mailBody = `Your OTP for registration is ${generatedOTP}`;
+        await mailSender(email, "Registration OTP", mailBody);
+
+        // Redirect the user to the OTP verification page
+        res.redirect('/otp');
+    } catch (error) {
+        console.error(error);
+        // Handle other errors here
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 
 
