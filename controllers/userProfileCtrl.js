@@ -863,6 +863,7 @@ exports.postWalletPayment = async (req, res) => {
             await userData.save();
             res.json({ success: true }); // Send success response to frontend
         } else {
+            console.log("insufficient");
             res.json({ error: "insufficient balance" }); // Send error response to frontend
         }
     } catch (error) {

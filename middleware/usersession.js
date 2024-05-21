@@ -4,7 +4,7 @@ async function userSession(req,res,next){
     if(req.session.user&&user[0].isBlocked==false){
         next();
     }else{
-        res.redirect('/');
+        res.render('user/login',{message:""});
     }
 }
 module.exports=userSession;

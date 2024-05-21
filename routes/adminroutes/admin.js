@@ -27,6 +27,7 @@ const{
     
     
     
+    
 
     ///postmethods
     postBlockUser,
@@ -77,6 +78,7 @@ router.get('/bestSeller',getBestSeller);
 
 
 
+
 //post
 router.post("/adminlogin",postAdminLogin);
 router.post("/addcartegory",adminSession,postAddcategory);
@@ -90,6 +92,7 @@ router.post('/filterData',postFilterData);
 router.post('/generatePdf',postPDFdownload);
 router.post('/generateExcel',postExceldownload)
 router.post('/deleteImage',postdDeleteImage)
+
 
 
 

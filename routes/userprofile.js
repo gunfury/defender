@@ -52,8 +52,8 @@ router.get('/changeUserPassword',userSession,getChangeUserPassword)
 router.get('/successpage',userSession,getSuccesspage)
 router.get('/userOrder/:page',userSession,getUserOrder)
 router.get('/downloadInvoice/:id',userSession,getdownloadInvoice)
-router.get('/whistList',getwishlist)
-router.get('/userCoupon',getUserCoupon)
+router.get('/whistList',userSession,getwishlist)
+router.get('/userCoupon',userSession,getUserCoupon)
 
 
 
@@ -76,11 +76,11 @@ router.post('/checkoutform',userSession,postcheckoutform);
 router.post('/removeProductFromOrder/:id/:orderId',userSession,postRemoveProductFromOrder);
 router.post('/returnproduct',userSession,postReturnProduct);
 router.post('/RazorpayInstance', userSession,postRazorpayInstance);
-router.post('/addMoneytowallet',postaddMoneytowallet);
-router.post('/walletPayment',postWalletPayment);
-router.post('/checkingCoupon',postCheckingCoupon);
-router.post('/failedcheckoutform',postFailedcheckoutform);
-router.post('/paymentFailedRetry',postPaymentFailedRetry);
+router.post('/addMoneytowallet',userSession,postaddMoneytowallet);
+router.post('/walletPayment',userSession,postWalletPayment);
+router.post('/checkingCoupon',userSession,postCheckingCoupon);
+router.post('/failedcheckoutform',userSession,postFailedcheckoutform);
+router.post('/paymentFailedRetry',userSession,postPaymentFailedRetry);
 
 
 

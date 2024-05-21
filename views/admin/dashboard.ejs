@@ -14,9 +14,67 @@
 </head>
 <style>
     .container .row .col-md-4 {
-    padding: 0 15px; /* Adjust padding for spacing between columns */
-}
+        padding: 0 15px; /* Adjust padding for spacing between columns */
+    }
+
+    .dropdown-item,
+    .nav-link {
+        padding: 15px 20px;
+    }
+
+    .dropdown-menu {
+        font-size: 90%;
+        color: #fff;
+        background-color: black;
+        border-radius: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        min-width: auto;
+    }
+
+    .dropdown-item {
+        color: #fff;
+        padding: 15px 30px;
+    }
+
+    .navbar-nav .active > .nav-link,
+    .navbar-nav .nav-link.active {
+        background-color: #f5a623;
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link.active i {
+        color: #fff;
+    }
+
+    .dropdown-item:focus,
+    .dropdown-item:hover {
+        background-color: black;
+    }
+
+    .navbar-nav a:hover,
+    .navbar-nav a:hover i {
+        color: #f5a623;
+    }
+
+    .nav-item {
+        text-align: center;
+    }
+
+    .nav-item:last-child {
+        margin-right: 0;
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    .dropdown-menu {
+        margin-top: 0;
+        border: 0;
+    }
 </style>
+
 
 <body id="reportsPage" style="background-color: rgb(32, 30, 30);">
     <div class="" id="home">
@@ -39,13 +97,13 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link" href="/banner">
                                 <i class="fas fa-flag"></i>
                                 Banner
                             </a>
                         </li>
-                        
+                         -->
                         
                         <li class="nav-item">
                             <a class="nav-link" href="/coupon">
@@ -73,11 +131,12 @@
                                 Users
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="reportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item dropdown" style="z-index: 1000;">
+                            <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-file-alt"></i>
                                 <span>
-                                    Reports 
+                                    Reports
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="reportDropdown">
@@ -86,7 +145,6 @@
                                 <a class="dropdown-item" href="/bestSeller">Best sellers</a>
                             </div>
                         </li>
-                        
                         
                     </ul>
                     <ul class="navbar-nav">
@@ -103,6 +161,16 @@
         
               
         <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="btn-group" role="group" aria-label="Time Frame">
+                       
+                        <button type="button" class="btn btn-primary filter-btn" data-timeframe="weekly">Weekly</button>
+                        <button type="button" class="btn btn-primary filter-btn" data-timeframe="monthly">Monthly</button>
+                        <button type="button" class="btn btn-primary filter-btn" data-timeframe="yearly">Yearly</button>
+                    </div>
+                </div>
+            </div>
             
           <br>
             <div class="row">
@@ -128,7 +196,7 @@
            
        
 
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Total Orders Chart
                 new Chart(document.getElementById('totalOrdersChart').getContext('2d'), {
@@ -193,7 +261,7 @@
                     }
                 });
             });
-        </script>
+        </script> -->
        <script>
        document.addEventListener('DOMContentLoaded', function() {
     // Total Orders Chart
@@ -278,6 +346,93 @@
             });
         });
     </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const revenueChartCtx = document.getElementById('revenuePerDayChart').getContext('2d');
+    const ordersStatusChartCtx = document.getElementById('ordersPerStatusChart').getContext('2d');
+    const totalOrdersChartCtx = document.getElementById('totalOrdersChart').getContext('2d');
+
+    let revenueChart, ordersStatusChart, totalOrdersChart;
+
+    function createCharts(timeframe) {
+        fetch(`/api/getChartData?timeframe=${timeframe}`)
+            .then(response => response.json())
+            .then(data => {
+                if (revenueChart) revenueChart.destroy();
+                if (ordersStatusChart) ordersStatusChart.destroy();
+                if (totalOrdersChart) totalOrdersChart.destroy();
+
+                revenueChart = new Chart(revenueChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.revenue.labels,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: data.revenue.data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                ordersStatusChart = new Chart(ordersStatusChartCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.ordersStatus.labels,
+                        datasets: [{
+                            label: 'Total Orders',
+                            data: data.ordersStatus.data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                totalOrdersChart = new Chart(totalOrdersChartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.totalOrders.labels,
+                        datasets: [{
+                            label: 'Total Orders',
+                            data: data.totalOrders.data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                });
+            })
+            .catch(error => console.error("Error fetching chart data:", error));
+    }
+
+    createCharts('daily');
+
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const timeframe = this.getAttribute('data-timeframe');
+            createCharts(timeframe);
+        });
+    });
+});
+</script>
     
 </div>
 </div>

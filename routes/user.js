@@ -48,7 +48,7 @@ router.get('/showproductdetails/:id',userSession,getproductDetails)
 router.post('/otp',postOtp);
 router.post('/signup',postsignup)
 router.post('/',postlogin);
-router.post('/productSearch',postProductSearch);
+router.post('/productSearch',userSession,postProductSearch);
 
 
 module.exports =router;

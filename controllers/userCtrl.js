@@ -51,7 +51,7 @@ exports.getlogin=(req,res)=>{
     delete req.session.message;
     res.render("user/login", { message: "" });
     }else{
-        res.redirect("/home");
+        res.redirect("/");
     }
 }
 
