@@ -573,8 +573,66 @@ exports.getBestSeller = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 }
+exports.getProductOffer=async(req,res)=>{
+    try {
+        const products=await productMdl.find();
+        res.render("admin/productOffer",{products})
+        
+    } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+exports.getProductOfferEdit=async(req,res)=>{
+    try {
+        const productId = req.params.id;
+        const product = await productMdl.findById({_id:productId});
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        const products = await productMdl.find(); // Fetch all products for the select dropdown
+        res.json({ product, products });
+    } catch (error) {
+        console.error('Error fetching product data:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
 
 
+
+
+exports.getCartegoryOffers=async(req,res)=>{
+    try {
+        const cartegory=await cartegoryModel.find();
+        res.render('admin/cartegoryOffer',{cartegory});
+        
+    } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        res.status(500).send("Internal Server Error");
+        
+    }
+}
+
+exports.getCartegoryOfferEdit=async(req,res)=>{
+    try {
+        const cartegoryId = req.params.id;
+        const cartegory = await cartegoryModel.findById({_id:cartegoryId});
+
+        if (!cartegory) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        const cartegorys = await cartegoryModel.find(); // Fetch all products for the select dropdown
+        res.json({ cartegory, cartegorys });
+        
+    } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
 
 
 
@@ -841,8 +899,162 @@ exports.postRemoveCoupon=async(req,res)=>{
     }
 }
 
+exports.postAddProductOffer = async (req, res) => {
+    try {
+        const { selectProduct, startDate, endDate, discount } = req.body;
+        console.log("selectProduct",selectProduct);
+        // Input validation
+        if (!selectProduct || !startDate || !endDate || !discount) {
+          
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
 
+        
+        const selectedProduct = await productMdl.findOne({ productName: selectProduct });
+        console.log("selectedProduct",selectedProduct);
+        if (!selectedProduct) {
+            
+            return res.status(404).json({ message: 'Product not found.' });
+        }
 
+        const selectedDiscount = parseInt(discount);
+
+        if (isNaN(selectedDiscount) || selectedDiscount < 0 || selectedDiscount > 100) {
+           
+            return res.status(400).json({ message: 'Invalid discount value.' });
+        }
+
+        // Calculate the discounted price
+        const originalPrice = selectedProduct.price;
+        const discountedPrice = originalPrice * (1 - selectedDiscount / 100);
+
+       
+
+        selectedProduct.discount = selectedDiscount;
+        selectedProduct.offerPrice = discountedPrice;
+        selectedProduct.startDate = startDate;
+        selectedProduct.endDate = endDate;
+
+        // Save the updated product to the database
+       
+        await selectedProduct.save();
+
+        console.log('Product discount applied successfully');
+        res.status(200).json({ 
+            message: 'Product discount applied successfully.', 
+            success: selectedProduct 
+        });
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+    }
+};
+
+exports.postUpdateProductOffer=async(req,res)=>{
+    try {
+        const { id, startDate, endDate, discount } = req.body;
+        const product = await productMdl.findById({_id:id});
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        const originalPrice = product.price;
+        const discountedPrice = originalPrice * (1 - discount / 100);
+
+        product.startDate = new Date(startDate);
+        product.offerPrice = discountedPrice;
+        product.endDate = new Date(endDate);
+        product.discount = discount;
+
+        await product.save();
+        res.json({ success: true });
+        
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+    }
+}
+
+exports.postProductOfferDelete=async(req,res)=>{
+    try {
+        const productId=req.body.id;
+        const product=await productMdl.findById({_id:productId});
+        console.log("offerdelete",product);
+        product.discount=0;
+        await product.save();
+        res.status(200).json({success: true });
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+    }
+}
+exports.postCartegoryOffer=async(req,res)=>{
+    try {
+        const { selectProduct, startDate, endDate, discount } =req.body
+        if (!selectProduct || !startDate || !endDate || !discount) {
+          
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+        const selectedDiscount = parseInt(discount);
+
+        if (isNaN(selectedDiscount) || selectedDiscount < 0 || selectedDiscount > 100) {
+           
+            return res.status(400).json({ message: 'Invalid discount value.' });
+        }
+
+       const selectCartegory=await cartegoryModel.findOne({Category:selectProduct});
+       selectCartegory.startDate=startDate;
+       selectCartegory.endDate=endDate;
+       selectCartegory.discount=selectedDiscount;
+       await selectCartegory.save();
+       res.status(200).json({ 
+        message: 'Product discount applied successfully.', 
+        success: selectCartegory 
+    });
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+    }
+}
+exports.postCartegoryOfferDelete=async(req,res)=>{
+    try {
+        const cartegoryId=req.body.id;
+        const cartegoryData= await cartegoryModel.findById({_id:cartegoryId});
+        cartegoryData.discount=0;
+        await cartegoryData.save();
+        res.status(200).json({success: true });
+
+        
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+        
+    }
+}
+exports.postUpdatecartegoryOffer=async(req,res)=>{
+    try {
+        const { selectProduct, startDate, endDate, discount } = req.body;
+        console.log("selectProduct",selectProduct);
+        const cartegory = await cartegoryModel.findOne({Category:selectProduct});
+        console.log("cartegory",cartegory);
+        if (!cartegory) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+      
+        
+        cartegory.startDate = new Date(startDate);
+        cartegory.offerPrice = discount;
+        cartegory.endDate = new Date(endDate);
+        cartegory.discount = discount;
+
+        await cartegory.save();
+        res.json({ success: true });
+        
+    } catch (error) {
+        console.error('Error applying discount:', error);
+        res.status(500).json({ message: 'An error occurred while applying the discount.' });
+    }
+}
 
 
 

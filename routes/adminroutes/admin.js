@@ -23,6 +23,10 @@ const{
     getCoupon,
     getSalesReport,
     getBestSeller,
+    getProductOffer,
+    getCartegoryOffers,
+    getProductOfferEdit,
+    getCartegoryOfferEdit,
     
     
     
@@ -43,6 +47,12 @@ const{
     postPDFdownload,
     postExceldownload,
     postdDeleteImage,
+    postAddProductOffer,
+    postProductOfferDelete,
+    postUpdateProductOffer,
+    postCartegoryOffer,
+    postCartegoryOfferDelete,
+    postUpdatecartegoryOffer,
     
    
 
@@ -72,6 +82,10 @@ router.get('/order',getOrderManagement);
 router.get('/coupon',adminSession,getCoupon);
 router.get('/salesReport',getSalesReport);
 router.get('/bestSeller',getBestSeller);
+router.get('/productOffers',getProductOffer);
+router.get('/cartegoryOffers',getCartegoryOffers)
+router.get('/getProductOffer/:id',getProductOfferEdit);
+router.get('/getCartegoryOfferEdit/:id',getCartegoryOfferEdit)
 
 
 
@@ -92,6 +106,12 @@ router.post('/filterData',postFilterData);
 router.post('/generatePdf',postPDFdownload);
 router.post('/generateExcel',postExceldownload)
 router.post('/deleteImage',postdDeleteImage)
+router.post('/addproductOffer',postAddProductOffer)
+router.post('/updateProductOffer',postUpdateProductOffer)
+router.post('/productOfferDelete',postProductOfferDelete);
+router.post('/cartegoryOffer',postCartegoryOffer);
+router.post('/cartegoryOfferDelete',postCartegoryOfferDelete);
+router.post('/updatecartegoryOffer',postUpdatecartegoryOffer)
 
 
 
