@@ -264,7 +264,8 @@ function renderProducts(products) {
                   if(!items.isBlocked){%>
 
                <div class="col-sm-6 col-md-4 col-lg-4">
-                  <div class="box">
+                  <div class="box"><%if(items.discount!==0){%><img src="/user/images/offer.png" style="height: 80px; position:absolute;"><%}%>
+                   
                      <div class="option_container">
                         <div class="options">
                            
@@ -296,7 +297,11 @@ function renderProducts(products) {
                            <%=items.productName%>
                         </h5>
                         <h6>
-                           <b>₹ </b><%=items.price%>
+                            <%if(items.discount!==0){%>
+                           <b>₹ </b><%=items.offerPrice%><p style="text-decoration: line-through;color: rgb(255, 140, 0);"> ₹ <%=items.price%></p>
+                           <%}else{%>
+                            <b>₹ </b> <%=items.price%>
+                            <%}%>
                         </h6>
                      </div>
                   </div>

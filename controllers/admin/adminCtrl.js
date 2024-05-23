@@ -927,11 +927,15 @@ exports.postAddProductOffer = async (req, res) => {
         // Calculate the discounted price
         const originalPrice = selectedProduct.price;
         const discountedPrice = originalPrice * (1 - selectedDiscount / 100);
+        const roundedPrice = Math.round(discountedPrice); // Rounds to the nearest integer
+        // Alternatively, to round to two decimal places:
+        const roundedPriceToTwoDecimals = parseFloat(discountedPrice.toFixed(2));
 
-       
+
+       console.log(roundedPriceToTwoDecimals);
 
         selectedProduct.discount = selectedDiscount;
-        selectedProduct.offerPrice = discountedPrice;
+        selectedProduct.offerPrice = roundedPriceToTwoDecimals;
         selectedProduct.startDate = startDate;
         selectedProduct.endDate = endDate;
 
@@ -958,11 +962,17 @@ exports.postUpdateProductOffer=async(req,res)=>{
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
+       
+
         const originalPrice = product.price;
         const discountedPrice = originalPrice * (1 - discount / 100);
+        const roundedPrice = Math.round(discountedPrice); // Rounds to the nearest integer
+        // Alternatively, to round to two decimal places:
+        const roundedPriceToTwoDecimals = parseFloat(discountedPrice.toFixed(2));
+
 
         product.startDate = new Date(startDate);
-        product.offerPrice = discountedPrice;
+        product.offerPrice = roundedPriceToTwoDecimals;
         product.endDate = new Date(endDate);
         product.discount = discount;
 

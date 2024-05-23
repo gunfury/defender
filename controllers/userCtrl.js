@@ -6,6 +6,7 @@ const otpCollection=require('../models/otpModel');
 const nodemailer=require('nodemailer');
 const productMdl=require('../models/admin/productModel');
 const categoryMdl=require('../models/admin/categoryModel');
+const orderModel=require('../models/orderModel');
 require('dotenv').config();
 
 
@@ -92,8 +93,51 @@ exports.getresendotp=async (req, res) => {
 }
 
 exports.gethomepage=async(req,res)=>{
-    const productDisplay=await productMdl.find();
-    res.render("user/home",{productDisplay});
+    try {
+        const productDisplay = await orderModel.aggregate([
+            // Unwind the products array to deconstruct each order into multiple documents
+            { $unwind: "$products" },
+            // Group by productId and accumulate the total quantity purchased
+            {
+                $group: {
+                    _id: "$products.productId",
+                    productName: { $first: "$products.productName" },
+                    productImage: { $first: "$products.productImage" },
+                    price: { $first: "$products.price" },
+                    totalQuantity: { $sum: "$products.quantity" }
+                }
+            },
+            // Perform the lookup to join the product details
+            {
+                $lookup: {
+                    from: "products", // Name of the products collection
+                    localField: "_id", // Field from the grouped result
+                    foreignField: "_id", // Field from products collection
+                    as: "productDetails" // Name for the resulting array
+                }
+            },
+            // Unwind the productDetails array to get the first matching product
+            { $unwind: "$productDetails" },
+            // Add the StockCount from productDetails to the results
+            {
+                $addFields: {
+                    StockCount: "$productDetails.stock"
+                }
+            },
+            // Sort by total quantity in descending order
+            { $sort: { totalQuantity: -1 } },
+            // Limit to top 10 products
+            { $limit: 10 }
+        ]);
+
+       
+        res.render("user/home",{productDisplay});
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+   
 }
 
 exports.getuserlogout=(req,res)=>{

@@ -233,11 +233,17 @@ exports.postUserCart=async(req,res)=>{
         const userID=req.session.user;
         const currentProductID=req.params.currentProductID;
         const product=await productMdl.findById({_id:currentProductID});
+        const offerPrice=product.price * (1 -product.discount / 100);
+        const roundedPrice = Math.round(offerPrice); // Rounds to the nearest integer
+        // Alternatively, to round to two decimal places:
+        const roundedPriceToTwoDecimals = parseFloat(offerPrice.toFixed(2));
         const cartData = {
             userid: userID,
             productid: currentProductID,
             product: product.productName,
+            discount:product.discount,
             price: product.price,
+            offerPrice:roundedPrice,
             description:product.description,
             quantity: 1,
             stock:product.stock,
@@ -573,12 +579,15 @@ exports.postcheckoutform = async (req, res) => {
                 stockCount: parseInt(item.stock), // Corrected field name
                 productImage: item.image,
                 quantity: item.quantity,
+                offerPrice:item.offerPrice,
+                discount:item.discount,
                 price: item.price,
                 status: "Pending",
                 reason: "aaaaaaaa",
                 
                 referralCode: null, // Corrected field name
             });
+           
         }
        
 
@@ -587,7 +596,10 @@ exports.postcheckoutform = async (req, res) => {
             userId: user,
             products: products,
             totalQuantity: products.reduce((total, product) => total + product.quantity, 0),
-            totalPrice: products.reduce((total, product) => total + (product.price * product.quantity), 0),
+            totalPrice: products.reduce((total, product) => {
+                const effectivePrice = product.discount !== 0 ? product.offerPrice : product.price;
+                return total + (effectivePrice * product.quantity);
+            }, 0),
             address: {
                 address: addressdata.address,
                 city: addressdata.city,
@@ -603,7 +615,7 @@ exports.postcheckoutform = async (req, res) => {
         };
 
         const orderDetails = await orderModel.create(orderData);
-       
+       console.log("orderDetails",orderDetails);
         await cartMdl.deleteMany({ userid: user });
 
         for (const item of cart) {

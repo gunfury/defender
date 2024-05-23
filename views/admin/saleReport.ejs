@@ -91,8 +91,8 @@
                                     <th scope="col"><%= userNames[id] %></th>
                                     <th scope="col"><%= items.address.address %>, <%= items.address.city %>, <%= items.address.state %>, <%= items.address.country %>, <%= items.address.zipcode %></th>
                                     <th scope="col"><%= product.quantity %></th>
-                                    <th scope="col"><%= product.price * product.quantity %></th>
-                                    <th scope="col"></th>
+                                    <th scope="col">₹ <%= (product.discount && product.discount !== 0 ? product.offerPrice : product.price) * product.quantity %></th>
+                                    <th scope="col"><%= product.discount !== 0 ? product.discount : 'N/A' %></th>
                                     <th scope="col"><%= items.paymentMethod %></th>
                                     <th scope="col"><%= new Date(items.orderDate).toLocaleDateString("en-US") %> <%= new Date(items.orderDate).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }) %></th>
                                 </tr>

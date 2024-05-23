@@ -491,7 +491,10 @@ color: gold;
             </div>
             <div class="details">
             <h1 class="title"><%=productDetails.productName%></h1>
-            <span class="price">₹ <%=productDetails.price%> </span> <strike class="strike">₹ <%=productDetails.price+50%> </strike>
+            <%if(productDetails.discount!==0){%>
+            <span class="price">₹ <%=productDetails.offerPrice%> </span> <strike class="strike">₹ <%=productDetails.price%> </strike>
+            <%}%>
+            <span class="price">₹ <%=productDetails.price%> </span>
             <div class="star-ratings-css">
             <div class="star-ratings-css-top"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
             <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>

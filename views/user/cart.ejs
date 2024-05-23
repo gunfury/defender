@@ -328,23 +328,25 @@
             <!-- Display the product price -->
             <td>
                 
-                    <!-- Handle the case where price is not available -->
-                    <span><%=item.price%></span>
-                
+                <%if(item.discount!==0){%>
+                    <span> ₹ <%=item.offerPrice%>  <b style="color: rgb(255, 140, 0);">(<%=item.discount%>%)</b></span>
+                <%}else{%>
+                    <span> ₹ <%=item.price%></span>
+                    <%}%>
             </td>
             
             <td class="quantity-cell">
-                <button class="quantity-btn quantity-minus" onclick="decreaseQuantity('<%=item._id%>', '<%=item.price%>')">
+                <button class="quantity-btn quantity-minus" onclick="decreaseQuantity('<%=item._id%>', '<%= item.discount !== 0 ? item.offerPrice : item.price %>')">
                     <i class="fas fa-minus"></i>
                 </button>
                 <input data-item-id="<%= item._id%>" type="number" class="quantity-input" id="quantity_<%= item._id%>" value="<%= item.quantity%>" min="1" max="<%= item.stock%>" disabled>
-                <button class="quantity-btn quantity-plus" onclick="increaseQuantity('<%=item._id%>', '<%=item.price%>')">
+                <button class="quantity-btn quantity-plus" onclick="increaseQuantity('<%=item._id%>', '<%= item.discount !== 0 ? item.offerPrice : item.price %>')">
                     <i class="fas fa-plus"></i>
                 </button>
             </td>
             
             <!-- Display the total price for this item -->
-            <% var itemTotal = item.quantity * item.price; %>
+            <% var itemTotal = item.quantity * (item.discount !== 0 ? item.offerPrice : item.price); %>
             <td class="subtotal" id="subtotal_<%= item._id %>">₹ <span id="itemTotal_<%= item._id %>"><%= itemTotal %></span></td>
             <%  total = total + itemTotal; %>
             

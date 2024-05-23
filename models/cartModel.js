@@ -17,6 +17,12 @@ const cartSchema = new Schema({
     price: {
         type: Number
     },
+    offerPrice:{
+        type: Number
+    },
+    discount:{
+        type:Number
+    },
     description:{
         type: String
     },
