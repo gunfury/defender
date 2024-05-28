@@ -234,7 +234,7 @@ exports.getOrderManagement=async(req,res)=>{
             const userdata = await user.findById(order.userId);
             userNames.push(userdata.username);
         }
-        res.render('admin/ordermangement',{orderData,userNames})
+        res.render('admin/orderMangement',{orderData,userNames})
         
     } catch (error) {
         console.error("Error adding product:", error);
