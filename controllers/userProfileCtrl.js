@@ -172,6 +172,7 @@ exports.getwishlist=async(req,res)=>{
     try {
         const currentUser=req.session.user;
         const userWishlist=await wishlistModel.find({userId:currentUser})
+       
         res.render('user/wishlist',{userWishlist});
         
     } catch (error) {
@@ -293,7 +294,6 @@ exports.postUSerWishlist=async(req,res)=>{
             productImage:currentproduct.images,
             price:currentproduct.price
         }
-      
         await wishlistModel.create(data);
         return res.redirect('/whistList');
        }else {

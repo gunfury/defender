@@ -312,8 +312,8 @@
       <!-- end why section -->
       
       <!-- arrival section -->
-      <section class="arrival_section">
-         <div class="container">
+      <section class="arrival_section" style="background-color:#383838;">
+         <div class="container" style="background-color: whitesmoke;">
             <div class="box">
                <div class="arrival_bg_box">
                   <img src="/user/images/arrival-bg.png" alt="">
@@ -328,7 +328,7 @@
                      <p style="margin-top: 20px;margin-bottom: 30px;">
                         Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
                      </p>
-                     <a href="">
+                     <a href="/userSideProduct/:sortType">
                      Shop Now
                      </a>
                   </div>
@@ -350,31 +350,47 @@
                <%productDisplay.forEach((items,id)=>{
                   if(!items.isBlocked){%>
                
-               <div class="col-sm-6 col-md-4 col-lg-4">
-                  <div class="box">
-                     <div class="option_container">
-                        <div class="options">
-                           <a href="" class="option1">
-                           Add To Cart
-                           </a>
-                           <a href="" class="option2">
-                           Buy Now
-                           </a>
+                     <div class="col-sm-6 col-md-4 col-lg-4">
+                        <div class="box"><%if(items.discount===0){%><img src="/user/images/offer.png" style="height: 80px; position:absolute;"><%}%>
+                         
+                           <div class="option_container">
+                              <div class="options">
+                                 
+                                    <%if(items.stock===0){%>
+                                      
+                                           <button class="option4">Out of stock</button>
+                                       
+                                    <%}else{%>
+                                       <form method="post" action="/addcart/<%=items._id%>">
+                                           <button class="option1">Add to cart</button>
+                                       </form>
+                                 <%}%>
+                                
+                                 <form method="post" action="/addwishlist/<%=items._id%>">
+                                 <button class="option3">
+                                    Add to wishList
+                                 </button>
+                                 </form>
+                                 <a href="/showproductdetails/<%=items._id%>" class="option2">
+                                 Buy Now
+                                 </a>
+                              </div>
+                           </div>
+                           <div class="img-box">
+                              <img src="<%=items.productImage%>" alt="">
+                           </div>
+                           <div class="detail-box">
+                              <h5>
+                                 <%=items.productName%>
+                              </h5>
+                              <h6>
+                                  <%if(items.discount!==0){%>
+                                 <b>₹ </b><%=items.price%>
+                                 <%}%>
+                              </h6>
+                           </div>
                         </div>
                      </div>
-                     <div class="img-box">
-                        <img src="<%=items.productImage[0]%>" alt="">
-                     </div>
-                     <div class="detail-box">
-                        <h5>
-                           <%=items.productName%>
-                        </h5>
-                        <h6>
-                           <b>₹ </b><%=items.price%>
-                        </h6>
-                     </div>
-                  </div>
-               </div>
                <%}});%>
             </div>
             <div class="btn-box">

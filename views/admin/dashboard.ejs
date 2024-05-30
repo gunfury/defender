@@ -10,133 +10,83 @@
     <link rel="stylesheet" href="/admin/css/fontawesome.min.css">
     <link rel="stylesheet" href="/admin/css/bootstrap.min.css">
     <link rel="stylesheet" href="/admin/css/templatemo-style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<style>
-    .container .row .col-md-4 {
-        padding: 0 15px; /* Adjust padding for spacing between columns */
-    }
-
-    .dropdown-item,
-    .nav-link {
-        padding: 15px 20px;
-    }
-
-    .dropdown-menu {
-        font-size: 90%;
-        color: #fff;
-        background-color: black;
-        border-radius: 0;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        min-width: auto;
-    }
-
-    .dropdown-item {
-        color: #fff;
-        padding: 15px 30px;
-    }
-
-    .navbar-nav .active > .nav-link,
-    .navbar-nav .nav-link.active {
-        background-color: #f5a623;
-        color: #fff;
-    }
-
-    .navbar-nav .nav-link.active i {
-        color: #fff;
-    }
-
-    .dropdown-item:focus,
-    .dropdown-item:hover {
-        background-color: black;
-    }
-
-    .navbar-nav a:hover,
-    .navbar-nav a:hover i {
-        color: #f5a623;
-    }
-
-    .nav-item {
-        text-align: center;
-    }
-
-    .nav-item:last-child {
-        margin-right: 0;
-    }
-
-    .dropdown-toggle::after {
-        display: none;
-    }
-
-    .dropdown-menu {
-        margin-top: 0;
-        border: 0;
-    }
-</style>
-
+   
+    </head>
+<!--  -->
 
 <body id="reportsPage" style="background-color: rgb(32, 30, 30);">
     <div class="" id="home">
-        <%-include('./partials/nav.ejs')%>
-        
-              
+        <%- include('./partials/nav.ejs') %>
+
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="btn-group" role="group" aria-label="Time Frame">
-                       
                         <!-- <button type="button" class="btn btn-primary filter-btn" data-timeframe="weekly">Weekly</button>
                         <button type="button" class="btn btn-primary filter-btn" data-timeframe="monthly">Monthly</button>
                         <button type="button" class="btn btn-primary filter-btn" data-timeframe="yearly">Yearly</button> -->
                     </div>
                 </div>
             </div>
-            
-          <br>
+
+            <br>
             <div class="row">
                 <div class="col-md-7" style="border: 2px solid #ffffff;  background-color: #383a3c; padding: 20px;">
                     <h2 style="text-align: center; color: black;">Revenue per Day Chart</h2>
                     <canvas id="revenuePerDayChart" style="height: 200px;"></canvas>
                 </div>
-                
-              
-                <div class="col-md-4"  style="border: 2px solid #ffffff; margin-left: 20px;  background-color: #383a3c; padding: 20px;">
+
+                <div class="col-md-4" style="border: 2px solid #ffffff; margin-left: 20px;  background-color: #383a3c; padding: 20px;">
                     <h2 style="text-align: center; color: black;">Orders per Status Chart</h2>
                     <canvas id="ordersPerStatusChart" style="height: 400px;"></canvas>
-                    </div>
+                </div>
             </div><br><br>
-            
-            <div class="col-md-11"  style="border: 2px solid #ffffff; background-color: #383a3c; padding: 20px; ">
+
+            <div class="col-md-11" style="border: 2px solid #ffffff; background-color: #383a3c; padding: 20px; ">
                 <h2 style="text-align: center; color: black;">Total Orders Chart</h2>
-                <h4  style="text-align: center; color: rgb(237, 206, 6);"><%=totalOrders%></h4>
+                <h4 style="text-align: center; color: rgb(237, 206, 6);"><%=totalOrders%></h4>
                 <canvas id="totalOrdersChart" style="height: 400px;"></canvas>
             </div>
-           
-            <!-- Display raw data for debugging -->
-           
-       
+        </div>
 
-        <!-- <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Total Orders Chart
+                const ordersPerDayLabels = <%- JSON.stringify(ordersPerDay.map(item => item._id)) %>;
+                const ordersPerDayData = <%- JSON.stringify(ordersPerDay.map(item => item.count)) %>;
                 new Chart(document.getElementById('totalOrdersChart').getContext('2d'), {
                     type: 'bar',
                     data: {
-                        labels: ['Total Orders'],
+                        labels: ordersPerDayLabels,
                         datasets: [{
-                            label: '# of Orders',
-                            data: [<%= totalOrders %>],
-                            backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                            borderColor: ['rgba(75, 192, 192, 1)'],
+                            label: 'Total Orders per Day',
+                            data: ordersPerDayData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
                         }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Dates'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Number of Orders'
+                                }
+                            }
+                        }
                     }
                 });
 
                 // Orders per Status Chart
-                const statusLabels = <%= JSON.stringify(ordersPerStatus.map(item => item._id)) %>;
-                const statusCounts = <%= JSON.stringify(ordersPerStatus.map(item => item.count)) %>;
+                const statusLabels = <%- JSON.stringify(ordersPerStatus.map(item => item._id)) %>;
+                const statusCounts = <%- JSON.stringify(ordersPerStatus.map(item => item.count)) %>;
                 new Chart(document.getElementById('ordersPerStatusChart').getContext('2d'), {
                     type: 'pie',
                     data: {
@@ -166,8 +116,8 @@
                 });
 
                 // Revenue per Day Chart
-                const revenueLabels = <%= JSON.stringify(revenuePerDay.map(item => item._id)) %>;
-                const revenueData = <%= JSON.stringify(revenuePerDay.map(item => item.total)) %>;
+                const revenueLabels = <%- JSON.stringify(revenuePerDay.map(item => item._id)) %>;
+                const revenueData = <%- JSON.stringify(revenuePerDay.map(item => item.total)) %>;
                 new Chart(document.getElementById('revenuePerDayChart').getContext('2d'), {
                     type: 'line',
                     data: {
@@ -182,191 +132,16 @@
                     }
                 });
             });
-        </script> -->
-       <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    // Total Orders Chart
-    const ordersPerDayLabels = <%- JSON.stringify(ordersPerDay.map(item => item._id)) %>;
-    const ordersPerDayData = <%- JSON.stringify(ordersPerDay.map(item => item.count)) %>;
-    new Chart(document.getElementById('totalOrdersChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ordersPerDayLabels,
-                    datasets: [{
-                        label: 'Total Orders per Day',
-                        data: ordersPerDayData,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Dates'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Number of Orders'
-                            }
-                        }
-                    }
-                }
-            });
-    
-            // Orders per Status Chart
-            const statusLabels = <%- JSON.stringify(ordersPerStatus.map(item => item._id)) %>;
-            const statusCounts = <%- JSON.stringify(ordersPerStatus.map(item => item.count)) %>;
-            new Chart(document.getElementById('ordersPerStatusChart').getContext('2d'), {
-                type: 'pie',
-                data: {
-                    labels: statusLabels,
-                    datasets: [{
-                        label: 'Total Orders',
-                        data: statusCounts,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                }
-            });
-    
-            // Revenue per Day Chart
-            const revenueLabels = <%- JSON.stringify(revenuePerDay.map(item => item._id)) %>;
-            const revenueData = <%- JSON.stringify(revenuePerDay.map(item => item.total)) %>;
-            new Chart(document.getElementById('revenuePerDayChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: revenueLabels,
-                    datasets: [{
-                        label: 'Revenue',
-                        data: revenueData,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                }
-            });
-        });
-    </script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const revenueChartCtx = document.getElementById('revenuePerDayChart').getContext('2d');
-    const ordersStatusChartCtx = document.getElementById('ordersPerStatusChart').getContext('2d');
-    const totalOrdersChartCtx = document.getElementById('totalOrdersChart').getContext('2d');
-
-    let revenueChart, ordersStatusChart, totalOrdersChart;
-
-    function createCharts(timeframe) {
-        fetch(`/api/getChartData?timeframe=${timeframe}`)
-            .then(response => response.json())
-            .then(data => {
-                if (revenueChart) revenueChart.destroy();
-                if (ordersStatusChart) ordersStatusChart.destroy();
-                if (totalOrdersChart) totalOrdersChart.destroy();
-
-                revenueChart = new Chart(revenueChartCtx, {
-                    type: 'line',
-                    data: {
-                        labels: data.revenue.labels,
-                        datasets: [{
-                            label: 'Revenue',
-                            data: data.revenue.data,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    }
-                });
-
-                ordersStatusChart = new Chart(ordersStatusChartCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: data.ordersStatus.labels,
-                        datasets: [{
-                            label: 'Total Orders',
-                            data: data.ordersStatus.data,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    }
-                });
-
-                totalOrdersChart = new Chart(totalOrdersChartCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.totalOrders.labels,
-                        datasets: [{
-                            label: 'Total Orders',
-                            data: data.totalOrders.data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    }
-                });
-            })
-            .catch(error => console.error("Error fetching chart data:", error));
-    }
-
-    createCharts('daily');
-
-    document.querySelectorAll('.filter-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const timeframe = this.getAttribute('data-timeframe');
-            createCharts(timeframe);
-        });
-    });
-});
-</script>
-    
+        </script>
 </div>
-</div>
-        <footer class="tm-footer row tm-mt-small">
-            <div class="col-12 font-weight-light">
-                <p class="text-center text-white mb-0 px-4 small">
-                    Copyright &copy; <b>2024</b> All rights reserved.
-                    Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Secure Skull</a>
-                </p>
-            </div>
-        </footer>
-    </div>
+<%- include('./partials/adminfooter.ejs') %>
+       
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add these lines -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
 </body>
-
 
 </html>
