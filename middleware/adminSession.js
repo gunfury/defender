@@ -4,6 +4,7 @@ async function  adminSession(req,res,next){
         next();
     }else{
         res.redirect("/adminlogin")
+        
     }
 
 }
