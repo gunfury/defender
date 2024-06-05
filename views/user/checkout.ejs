@@ -342,7 +342,7 @@
                                     <td class="checkoutdescription"><%= item.description %></td>
                                     <td class="checkoutquantity"><%= item.quantity %></td>
                                     <td>
-                                        <% var totalpriceofeachProduct =  (item.discount !== 0 ? item.offerPrice : item.price)  * item.quantity; %>
+                                        <% var totalpriceofeachProduct = (item.discount !== 0 ? item.offerPrice : item.price)  * item.quantity; %>
                                         <span class="checkoutPrice">₹<%= totalpriceofeachProduct %></span>
                                     </td>
                                     <% totalprice = totalprice + totalpriceofeachProduct %>

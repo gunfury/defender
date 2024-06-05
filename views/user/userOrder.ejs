@@ -293,7 +293,7 @@ p{
                                 </td>
                                 <td style="padding-left: 35px;"><%=product.quantity%> </td>
                                 <td class="woocommerce-table__product-total product-total">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₹ </span><%= (product.discount !== 0 ? product.offerPrice : product.price) * product.quantity %></span>
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₹ </span><%= ((product.discount !== 0 ? product.offerPrice : product.price) * product.quantity)  %></span>
                                 </td>
                                 <td style="text-align:center;">
                                     <%if(product.status==='Pending'||product.status==='Processing'||product.status==='shipped'){%>

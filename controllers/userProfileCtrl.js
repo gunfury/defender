@@ -646,7 +646,7 @@ exports.postcheckoutform = async (req, res) => {
 
 exports.postFailedcheckoutform=async (req, res) => {
     try {
-        console.log("c1");
+       
         const user = req.session.user;
         const cart = await cartMdl.find({ userid: user });
        
@@ -674,6 +674,7 @@ exports.postFailedcheckoutform=async (req, res) => {
                 referralCode: null, // Corrected field name
             });
         }
+        console.log("asdfghjkl",products);
        
 
         const orderData = {
@@ -699,6 +700,7 @@ exports.postFailedcheckoutform=async (req, res) => {
        if(!findCart){
         const orderDetails = await orderModel.create(orderData);
        }
+       console.log("dfghj",orderData);
        console.log("c2");
         // await cartMdl.deleteMany({ userid: user });
 
